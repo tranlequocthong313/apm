@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Form, Input, message } from 'antd';
+import { Button, Checkbox, Flex, Form, Input } from 'antd';
 import logo from '../../assets/images/ac-mini-logo.jpeg';
 import { FaAt, FaLock, FaLockOpen } from 'react-icons/fa';
 import { Controller, useForm } from 'react-hook-form';
@@ -47,10 +47,10 @@ const LoginPage = () => {
 
   const login = async (data: { [key: string]: string | boolean }) => {
     try {
-      const response = await http.post<LoginResponse>(
-        AUTH_ENDPOINT.login,
-        data
-      );
+      const response = await http.post<LoginResponse>(AUTH_ENDPOINT.login, {
+        email: data.email,
+        password: data.password,
+      });
       const { accessToken, refreshToken } = response.data;
       const profile = await getProfile(accessToken);
       if (!profile) {

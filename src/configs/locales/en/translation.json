@@ -11,7 +11,7 @@
     "invalidEmail": "Invalid email address",
     "emailRequired": "Email is required",
     "passwordRequired": "Password is required",
-    "passwordWeak": "Password must contain at least 1 number, 1 letter, and be at least 8 characters long",
+    "passwordWeak": "Must contain at least 1 number, 1 letter, and be at least 8 characters long",
     "notAllowed": "Not allowed",
     "somethingWentWrong": "Something went wrong",
     "invalidEmailOrPassword": "Invalid email or password"

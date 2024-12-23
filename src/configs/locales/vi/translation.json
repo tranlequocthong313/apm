@@ -11,7 +11,7 @@
     "invalidEmail": "Địa chỉ email không hợp lệ",
     "emailRequired": "Email là bắt buộc",
     "passwordRequired": "Mật khẩu là bắt buộc",
-    "passwordWeak": "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 số, và có độ dài ít nhất 8 ký tự",
+    "passwordWeak": "Phải chứa ít nhất 1 chữ cái, 1 số, và có độ dài ít nhất 8 ký tự",
     "notAllowed": "Không được phép truy cập",
     "somethingWentWrong": "Có lỗi xảy ra",
     "invalidEmailOrPassword": "Email hoặc mật khẩu không chính xác"
