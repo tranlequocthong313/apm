@@ -1,17 +1,30 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router';
 import ContentOnlyLayout from '../layouts/ContentOnlyLayout';
 import LoginPage from '../pages/Login';
+import NavAndSidebarLayout from '../layouts/NavAndSidebarLayout';
+import HomePage from '../pages/Home';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../store';
 
 const GuestOnlyRoute = ({ isLoggedIn = false, redirect = '/' }) => {
+  return !isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
+};
+
+const ProtectedRoute = ({ isLoggedIn = false, redirect = '/login' }) => {
   return isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
 };
 
 const AppRoute = () => {
-  const isLoggedIn = true; // TODO: edit later
+  const user = useSelector((state: IRootState) => state.auth.user);
 
   return (
     <Routes>
-      <Route element={<GuestOnlyRoute isLoggedIn={isLoggedIn} redirect='/' />}>
+      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect='/login' />}>
+        <Route element={<NavAndSidebarLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
+      </Route>
+      <Route element={<GuestOnlyRoute isLoggedIn={!!user} redirect='/' />}>
         <Route element={<ContentOnlyLayout />}>
           <Route path='/login' element={<LoginPage />} />
         </Route>

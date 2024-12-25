@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Form, Input, message } from 'antd';
+import { Button, Checkbox, Flex, Form, Input } from 'antd';
 import logo from '../../assets/images/ac-mini-logo.jpeg';
 import { FaAt, FaLock, FaLockOpen } from 'react-icons/fa';
 import { Controller, useForm } from 'react-hook-form';
@@ -16,6 +16,8 @@ import USER_ENDPOINT from '../../configs/apis/endpoints/user';
 import { User } from '../../configs/types/user';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { login as loginAction } from '../../store/slices/authSlice';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -29,6 +31,7 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -47,10 +50,10 @@ const LoginPage = () => {
 
   const login = async (data: { [key: string]: string | boolean }) => {
     try {
-      const response = await http.post<LoginResponse>(
-        AUTH_ENDPOINT.login,
-        data
-      );
+      const response = await http.post<LoginResponse>(AUTH_ENDPOINT.login, {
+        email: data.email,
+        password: data.password,
+      });
       const { accessToken, refreshToken } = response.data;
       const profile = await getProfile(accessToken);
       if (!profile) {
@@ -66,9 +69,11 @@ const LoginPage = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
+      dispatch(loginAction(profile));
+
       navigate('/');
-    } catch (error: AxiosError) {
-      if (String(error.status).startsWith('4')) {
+    } catch (error) {
+      if (error instanceof AxiosError && String(error.status).startsWith('4')) {
         toast.error(t('invalidEmailOrPassword'));
       } else {
         toast.error(t('somethingWentWrong'));

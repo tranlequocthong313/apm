@@ -1,0 +1,3 @@
+.ant-card-head {
+  @apply !border-b-0;
+}
