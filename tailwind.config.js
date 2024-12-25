@@ -50,6 +50,9 @@ export default {
         primaryLight: '#C7C7D1', // Primary 1
         primaryDark: '#006678', // Primary 7
         danger: '#EF4444',
+        success: '#44EF44',
+        info: '#4444EF',
+        warn: '#EFEF44',
       },
     },
   },

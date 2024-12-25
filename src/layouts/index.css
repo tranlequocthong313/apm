@@ -1,0 +1,43 @@
+.ant-menu-inline-collapsed > .ant-menu-item {
+  @apply justify-center items-center !px-0;
+}
+
+.ant-menu-item > .ant-menu-title-content {
+  @apply !ml-5 inline-block font-bold;
+}
+
+.ant-menu-inline-collapsed .ant-menu-title-content {
+  @apply !hidden;
+}
+
+.ant-menu-item {
+  @apply !flex !my-10 !h-16 !leading-[64px];
+}
+
+.ant-table table {
+  @apply border-separate border-spacing-y-4 mt-3;
+}
+
+.ant-table-tbody > tr > td {
+  @apply bg-secondaryBackground border-none !p-5 rounded-lg text-lg;
+}
+
+.ant-table-thead > tr > th {
+  @apply text-sm !bg-transparent !border-none;
+}
+
+.ant-btn {
+  @apply border-tertiaryBackground border-2 transition-all duration-300 ease-linear;
+}
+
+.ant-btn:hover {
+  @apply !text-white !bg-tertiaryBackground !border-tertiaryBackground;
+}
+
+.icon {
+  @apply p-2 rounded-full bg-tertiaryBackground text-white w-8 h-8 mr-2;
+}
+
+.tag {
+  @apply text-[10px] h-5 leading-5 rounded-xl ml-5 px-4;
+}

@@ -16,6 +16,8 @@ import USER_ENDPOINT from '../../configs/apis/endpoints/user';
 import { User } from '../../configs/types/user';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { login as loginAction } from '../../store/slices/authSlice';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -29,6 +31,7 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -66,9 +69,11 @@ const LoginPage = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
+      dispatch(loginAction(profile));
+
       navigate('/');
-    } catch (error: AxiosError) {
-      if (String(error.status).startsWith('4')) {
+    } catch (error) {
+      if (error instanceof AxiosError && String(error.status).startsWith('4')) {
         toast.error(t('invalidEmailOrPassword'));
       } else {
         toast.error(t('somethingWentWrong'));
