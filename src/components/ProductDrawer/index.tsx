@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createProductSchema, editProductSchema } from "../../configs/schemas/product";
 import { useTranslation } from "react-i18next";
 import { MdDelete } from "react-icons/md";
+import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
 
 interface Props {
   onClose: () => void;
@@ -46,8 +47,10 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get<Category[]>(PRODUCT_ENDPOINT.categories);
-        const options = response.data.map(category => ({
+        const response = await axiosInstance.get<{ categories: Category[]; total: number }>(
+          CATEGORY_ENDPOINT.categories,
+        );
+        const options = response.data.categories.map(category => ({
           label: category.name,
           value: category.id || "",
         }));
@@ -57,7 +60,9 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
       }
     };
     fetchCategories();
+  }, []);
 
+  useEffect(() => {
     if (isEditing && product) {
       reset({ ...product, categories: [] });
       setFileList(
@@ -73,7 +78,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           : [],
       );
     }
-  }, [isEditing, product, reset]);
+  }, [reset, product, isEditing]);
 
   const handleUploadAfterCreate = async (productId: string) => {
     if (image) {

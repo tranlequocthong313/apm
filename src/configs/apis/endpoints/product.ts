@@ -4,7 +4,6 @@ const PRODUCT_ENDPOINT = {
     create: '/product/',
     upload: (id: string) => '/product/picture/' + id,
     update: (id: string) => '/product/' + id,
-    categories: '/category',
 }
 
 export default PRODUCT_ENDPOINT

@@ -179,7 +179,7 @@ const Products = () => {
         closable={false}
         maskClosable={true}
         open={openConfirmDelete}
-        className="confirm-delete"
+        className="product-table__confirm-delete"
         onCancel={() => setOpenConfirmDelete(false)}
         centered
         width={380}
@@ -326,7 +326,7 @@ const Products = () => {
                 }),
               );
             } else {
-              fetchProducts({ q: debouncedQuery, p: page });
+              setProducts(prods => [...prods, prod]);
             }
           }}
           onClose={() => {

@@ -78,3 +78,31 @@
 .error-message {
   @apply text-[14px];
 }
+
+.confirm-delete .ant-modal-content {
+  @apply rounded-3xl;
+}
+
+.table .ant-table-tbody > tr > td {
+  @apply text-textPrimary;
+}
+
+.table .ant-table-tbody > tr:hover {
+  @apply bg-primaryMain/10 cursor-pointer;
+}
+
+.table .ant-table-thead > tr > th {
+  @apply text-sm text-textSecondary font-bold !bg-white;
+}
+
+.table .ant-pagination {
+  border-radius: 50%;
+}
+
+.table .ant-pagination-item,
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next {
+  border-radius: 50%;
+}

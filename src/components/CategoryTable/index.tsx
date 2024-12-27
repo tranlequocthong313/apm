@@ -1,31 +1,31 @@
 import React from "react";
 import { Space, Table, TableProps } from "antd";
-import { Product } from "../../configs/types/product";
 import { FaPen, FaTrash } from "react-icons/fa";
 import "./index.css";
+import { Category } from "../../configs/types/category";
 
 interface Props {
-  onSelect?: (product: Product) => void;
+  onSelect?: (product: Category) => void;
   onDelete: () => void;
   onEdit: () => void;
   onChangePage: (page: number) => void;
-  products: Product[];
-  selectedItem?: Product;
+  categories: Category[];
+  selectedItem?: Category;
   page: number;
   pageSize: number;
 }
 
-const ProductTable: React.FC<Props> = ({
+const CategoryTable: React.FC<Props> = ({
   selectedItem,
   onSelect,
   onDelete,
   onChangePage,
-  products,
+  categories,
   onEdit,
   page,
   pageSize,
 }) => {
-  const columns: TableProps<Product>["columns"] = [
+  const columns: TableProps<Category>["columns"] = [
     {
       title: "Id",
       dataIndex: "id",
@@ -37,23 +37,6 @@ const ProductTable: React.FC<Props> = ({
       dataIndex: "name",
       key: "name",
       render: text => <strong>{text}</strong>,
-    },
-    {
-      title: "Price $",
-      dataIndex: "basePrice",
-      key: "basePrice",
-      render: text => `$${text}`,
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-    },
-    {
-      title: "Discount %",
-      dataIndex: "discountPercentage",
-      key: "discountPercentage",
-      render: text => `${text}%`,
     },
     {
       title: "Action",
@@ -69,7 +52,7 @@ const ProductTable: React.FC<Props> = ({
 
   return (
     <>
-      <Table<Product>
+      <Table<Category>
         className="table w-full"
         onRow={record => {
           return {
@@ -86,13 +69,13 @@ const ProductTable: React.FC<Props> = ({
         }}
         rowKey={"id"}
         columns={columns}
-        dataSource={products}
+        dataSource={categories}
         rowHoverable={false}
         rowSelection={{
           type: "radio",
           selectedRowKeys: selectedItem ? [selectedItem.id] : [],
           onChange: selectedKeys => {
-            const selectedRow = products.find(product => product.id === selectedKeys[0]);
+            const selectedRow = categories.find(category => category.id === selectedKeys[0]);
             if (selectedRow) {
               onSelect?.(selectedRow);
             }
@@ -103,4 +86,4 @@ const ProductTable: React.FC<Props> = ({
   );
 };
 
-export default ProductTable;
+export default CategoryTable;
