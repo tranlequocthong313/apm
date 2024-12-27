@@ -16,8 +16,8 @@ const TableHeader: React.FC<Props> = ({ query, onQuery, onOpenAdd }) => {
   const [openSearch, setOpenSearch] = useState(false);
 
   return (
-    <Flex justify="space-between" align="center" className="mb-5">
-      <Flex gap={16} align="center" className="pl-6" justify="space-between">
+    <Flex justify="space-between" align="center" className="mb-5 flex-col md:flex-row">
+      <Flex gap={16} align="center" className="lg:pl-6 mb-5 md:mb-0" justify="space-between">
         <Button
           className="border-none bg-secondaryBackground px-8 py-6 rounded-3xl"
           icon={<FaHistory />}
@@ -49,12 +49,13 @@ const TableHeader: React.FC<Props> = ({ query, onQuery, onOpenAdd }) => {
               "py-2.5",
               "transition-all",
               "duration-500",
+              "mr-5",
             )}
             autoFocus
           />
         )}
       </Flex>
-      <Flex gap={16} align="center" justify="space-between">
+      <Flex gap={16} align="center" justify="space-between mb-5 md:mb-0">
         <Button
           className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
           icon={<RiImportFill className="w-5 h-5" />}

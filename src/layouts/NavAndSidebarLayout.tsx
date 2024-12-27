@@ -17,13 +17,15 @@ const NavAndSidebarLayout = () => {
 
       <Layout
         className={classnames(
-          collapsed ? "ml-[100px]" : "ml-[280px]",
+          collapsed ? "md:ml-[100px]" : "md:ml-[280px]",
           "transition-all",
           "duration-500",
+          "px-3 md:px-0",
+          "bg-white",
         )}
       >
-        <Navbar />
-        <Content className="bg-white px-10 pt-7">
+        <Navbar onToggle={() => setCollapsed(!collapsed)} />
+        <Content className="bg-white md:px-10 pt-7">
           <Outlet />
         </Content>
       </Layout>

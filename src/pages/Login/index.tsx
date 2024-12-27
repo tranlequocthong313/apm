@@ -99,13 +99,13 @@ const LoginPage = () => {
       {/* Left Section */}
       {/* TODO: Swiper */}
       {/* TODO: Animation */}
-      <section className="h-screen flex-1 hidden lg:block bg-primaryMain">
+      <Flex className="h-screen flex-1 hidden lg:block bg-primaryMain">
         <img
           src={woman1}
           alt="woman"
           className="animate__animated animate__fadeInLeft absolute bottom-0"
         />
-      </section>
+      </Flex>
 
       {/* Right Section */}
       <section className="h-screen flex-1">

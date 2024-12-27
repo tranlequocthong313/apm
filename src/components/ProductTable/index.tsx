@@ -71,6 +71,7 @@ const ProductTable: React.FC<Props> = ({
     <>
       <Table<Product>
         className="table w-full"
+        scroll={{ x: true }}
         onRow={record => {
           return {
             onClick: () => onSelect?.(record),

@@ -1,7 +1,7 @@
+import "./index.css";
 import { Avatar, Button, Card, Col, Flex, Row, Table, TableProps, Tag } from "antd";
 import { RiShareForwardLine } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
-import "./index.css";
 import { Product } from "../../configs/types/product";
 import { BsApple } from "react-icons/bs";
 import { FaGoogle } from "react-icons/fa";
@@ -93,7 +93,7 @@ const data: Product[] = [
     createdAt: "2022-03-26T15:41:28.527Z",
   },
   {
-    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0a",
+    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0b",
     name: "Brand black wheelchair",
     urlName: "brand-black-wheelchair",
     picture: "image.jpg",
@@ -104,7 +104,7 @@ const data: Product[] = [
     createdAt: "2022-03-26T15:41:28.527Z",
   },
   {
-    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0a",
+    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0c",
     name: "Brand black wheelchair",
     urlName: "brand-black-wheelchair",
     picture: "image.jpg",
@@ -115,7 +115,7 @@ const data: Product[] = [
     createdAt: "2022-03-26T15:41:28.527Z",
   },
   {
-    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0a",
+    id: "6f4ca8a4-8aa0-4302-ac1b-7b5547f01b0d",
     name: "Brand black wheelchair",
     urlName: "brand-black-wheelchair",
     picture: "image.jpg",
@@ -131,7 +131,7 @@ const HomePage = () => {
   return (
     <Flex vertical className="home-page">
       <Row gutter={18}>
-        <Col span={6}>
+        <Col className="mb-5 lg:mb-0" lg={6} span={24}>
           <Card
             title={
               <CardHeader
@@ -145,7 +145,7 @@ const HomePage = () => {
             <FaChartLine className="mt-6 w-40 h-40 ml-auto mr-5 text-[#efdc5a]" />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col lg={6} span={24} className="mb-5 lg:mb-0">
           <Flex gap={18} vertical>
             <Card
               title={
@@ -156,13 +156,13 @@ const HomePage = () => {
               }
               className="bg-success rounded-2xl"
             >
-              <Flex justify="space-between" align="flex-end">
+              <Flex justify="space-between" align="flex-end" className="mb-5 lg:mb-0">
                 <h2 className="w-3/5 text-h2 text-textPrimary font-bold">32h</h2>
                 <IoStatsChart className="w-32 h-32" />
               </Flex>
             </Card>
             <Row gutter={18}>
-              <Col span={18}>
+              <Col lg={18} span={24} className="mb-5 lg:mb-0">
                 <Card
                   title={
                     <CardHeader
@@ -175,7 +175,7 @@ const HomePage = () => {
                   <h2 className="text-h2 text-white font-bold">+80%</h2>
                 </Card>
               </Col>
-              <Col span={6}>
+              <Col span={24} lg={6}>
                 <div className="border-tertiaryBackground border h-full rounded-2xl flex items-center">
                   <IoMdAdd className="w-10 h-10 mx-auto" />
                 </div>
@@ -183,7 +183,7 @@ const HomePage = () => {
             </Row>
           </Flex>
         </Col>
-        <Col span={7}>
+        <Col lg={7} span={24} className="mb-5 lg:mb-0">
           <Flex vertical justify="space-between" className="bg-info rounded-2xl h-full px-6 py-5">
             <Flex vertical gap={20}>
               <h6 className="text-white text-h6 font-semibold">Product Management Insights</h6>
@@ -198,7 +198,7 @@ const HomePage = () => {
             </Flex>
           </Flex>
         </Col>
-        <Col span={5}>
+        <Col span={24} lg={5}>
           <Flex
             vertical
             justify="space-between"
@@ -227,7 +227,16 @@ const HomePage = () => {
         </Col>
       </Row>
 
-      <Table<Product> columns={columns} dataSource={data} pagination={false} />
+      <Table<Product>
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        rowKey={record => {
+          console.log(record.id);
+          return record.id;
+        }}
+        scroll={{ x: true }}
+      />
     </Flex>
   );
 };

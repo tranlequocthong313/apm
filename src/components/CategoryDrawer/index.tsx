@@ -8,6 +8,7 @@ import { MdDelete } from "react-icons/md";
 import { Category } from "../../configs/types/category";
 import { createCategorySchema } from "../../configs/schemas/category";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
+import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 
 interface Props {
   onClose: () => void;
@@ -53,6 +54,17 @@ const CategoryDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, 
     }
   }, [reset, category, isEditing]);
 
+  const resetAll = () => {
+    reset({
+      name: "",
+    });
+  };
+
+  const handleClose = () => {
+    onClose();
+    resetAll();
+  };
+
   return (
     <Drawer
       title={isEditing ? "Edit category" : "Create a new category"}
@@ -61,28 +73,39 @@ const CategoryDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, 
       open={open}
       extra={
         <Space>
-          <Button className="rounded-3xl border-none p-5 hover:!bg-slate-400" onClick={onClose}>
+          <Button
+            className="rounded-3xl border-none p-5 hover:!bg-slate-400 hidden md:flex"
+            onClick={handleClose}
+          >
             Cancel
           </Button>
           <Button
-            className="rounded-3xl border-none p-5"
+            className="rounded-3xl border-none p-5 hover:!bg-slate-400 bg-secondaryBackground text-textPrimary md:hidden !w-10 !h-10"
+            onClick={handleClose}
+            icon={<IoMdClose />}
+          />
+          <Button
+            className="rounded-3xl border-none p-5 hidden md:flex"
             htmlType="submit"
             onClick={handleSubmit(onSubmit)}
             type="primary"
           >
             Submit
           </Button>
+          <Button
+            className="rounded-3xl border-none p-5 md:hidden !w-10 !h-10"
+            htmlType="submit"
+            onClick={handleSubmit(onSubmit)}
+            type="primary"
+            icon={<IoMdCheckmark />}
+          />
         </Space>
       }
     >
       <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
         <Row>
           <Button
-            onClick={() => {
-              reset({
-                name: "",
-              });
-            }}
+            onClick={resetAll}
             title="Clear all"
             className="active:translate-y-1 bg-danger text-white border-none hover:!bg-danger hover:opacity-80 ml-auto !w-10 !h-10"
             icon={<MdDelete className="w-6 h-6" />}

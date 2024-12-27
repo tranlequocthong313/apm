@@ -54,6 +54,7 @@ const CategoryTable: React.FC<Props> = ({
     <>
       <Table<Category>
         className="table w-full"
+        scroll={{ x: true }}
         onRow={record => {
           return {
             onClick: () => onSelect?.(record),

@@ -1,13 +1,14 @@
-import { Avatar, Image, Layout, Menu, MenuProps } from "antd";
+import { Avatar, Button, Col, Image, Layout, Menu, MenuProps, Row } from "antd";
 import { Link } from "react-router";
 import { User } from "../../configs/types/user";
 import { MdOutlineCategory, MdOutlineDashboard, MdOutlineWarehouse } from "react-icons/md";
-import React from "react";
+import React, { useState } from "react";
 import miniLogo from "../../assets/images/ac-mini-logo.jpeg";
 import bigLogo from "../../assets/images/ac-logo.png";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import "./index.css";
+import { IoMdClose } from "react-icons/io";
 
 const { Sider } = Layout;
 
@@ -66,37 +67,53 @@ interface Props {
 
 const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
   const user = useSelector((state: IRootState) => state.auth.user)!;
+  const [onMobile, setOnMobile] = useState(false);
 
   return (
     <Sider
-      collapsedWidth={100}
-      width={280}
+      collapsedWidth={onMobile ? 0 : 100}
+      width={onMobile ? "100%" : 280}
       collapsible
       collapsed={collapsed}
-      className="fixed top-0 bottom-0 overflow-auto transition-all duration-500"
+      className="fixed top-0 bottom-0 overflow-auto transition-all duration-500 z-50"
       trigger={null}
       onMouseEnter={() => onCollapse(false)}
       onMouseLeave={() => onCollapse(true)}
+      breakpoint="xs"
+      onBreakpoint={setOnMobile}
     >
-      <Link to={"/"}>
-        {collapsed ? (
-          <Image
-            className="rounded-2xl mx-auto mt-8 !w-12"
-            wrapperClassName="!w-full"
-            preview={false}
-            src={miniLogo}
-            alt="logo"
+      <Row>
+        <Col span={16} md={24}>
+          <Link to={"/"}>
+            {collapsed ? (
+              <Image
+                className="rounded-2xl md:mx-auto mt-8 !w-12 ml-5"
+                wrapperClassName="!w-full"
+                preview={false}
+                src={miniLogo}
+                alt="logo"
+              />
+            ) : (
+              <Image
+                className="md:mx-auto mt-12 !w-[160px] !h-[32px] ml-5"
+                src={bigLogo}
+                preview={false}
+                alt="logo"
+                wrapperClassName="!w-full"
+              />
+            )}
+          </Link>
+        </Col>
+
+        <Col span={8} className="md:hidden flex items-center justify-end pr-5">
+          <Button
+            type="text"
+            icon={<IoMdClose className="w-8 h-8" />}
+            className="mt-8 text-white border-none md:hidden"
+            onClick={() => onCollapse(true)}
           />
-        ) : (
-          <Image
-            className="mx-auto mt-12 !w-[160px] !h-[32px]"
-            src={bigLogo}
-            preview={false}
-            alt="logo"
-            wrapperClassName="!w-full"
-          />
-        )}
-      </Link>
+        </Col>
+      </Row>
 
       <Menu
         className="mt-40"

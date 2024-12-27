@@ -214,8 +214,8 @@ const Products = () => {
 
       {/* Left Section */}
       {product ? (
-        <Col span={8} className="border-r-2 border-secondaryBackground">
-          <Flex vertical className="pr-6">
+        <Col span={24} lg={8} className="lg:border-r-2 lg:border-secondaryBackground">
+          <Flex vertical className="lg:pr-6">
             <Flex align="center" justify="space-between">
               <Flex vertical gap={8}>
                 <h6 className="text-h6 font-bold">{product?.name}</h6>
@@ -299,19 +299,21 @@ const Products = () => {
       )}
 
       {/* Right Section */}
-      <Col span={16}>
+      <Col span={24} lg={16} className="mt-10 lg:mt-0">
         <TableHeader onOpenAdd={() => setIsAdding(true)} onQuery={onQueryChange} query={query} />
 
-        <ProductTable
-          products={products}
-          selectedItem={product}
-          onSelect={setProduct}
-          onDelete={() => setOpenConfirmDelete(true)}
-          onEdit={() => setIsEditing(true)}
-          pageSize={pageSize}
-          page={page}
-          onChangePage={setPage}
-        />
+        <div className="w-full overflow-x-scroll">
+          <ProductTable
+            products={products}
+            selectedItem={product}
+            onSelect={setProduct}
+            onDelete={() => setOpenConfirmDelete(true)}
+            onEdit={() => setIsEditing(true)}
+            pageSize={pageSize}
+            page={page}
+            onChangePage={setPage}
+          />
+        </div>
 
         <ProductDrawer
           onCreated={prod => {
