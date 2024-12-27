@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-export const loginSchema = (t: (key: string) => string) =>
+export const createLoginSchema = (t: (key: string) => string) =>
     yup.object().shape({
         email: yup
             .string()
@@ -16,4 +16,4 @@ export const loginSchema = (t: (key: string) => string) =>
         rememberMe: yup.boolean()
     })
 
-export default loginSchema
+export default createLoginSchema

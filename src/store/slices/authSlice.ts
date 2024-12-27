@@ -3,7 +3,7 @@ import { AuthState } from '../../configs/types/auth'
 import { User } from '../../configs/types/user'
 
 const initialState: AuthState = {
-    user: null,
+    user: undefined,
 }
 
 const authSlice = createSlice({
@@ -13,9 +13,12 @@ const authSlice = createSlice({
         login(state, action: PayloadAction<User>) {
             state.user = action.payload
         },
+        logout(state) {
+            state.user = undefined
+        }
     },
 })
 
-export const { login } = authSlice.actions
+export const { login, logout } = authSlice.actions
 
 export default authSlice.reducer
