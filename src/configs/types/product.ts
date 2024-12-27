@@ -8,4 +8,10 @@ export interface Product {
     stock: number
     description: string
     createdAt: string
+    categories?: Category[]
+}
+
+export interface Category {
+    id?: string
+    name: string
 }

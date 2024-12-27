@@ -1,3 +1,23 @@
-.ant-card-head {
+.home-page .ant-card-head {
   @apply !border-b-0;
+}
+
+.home-page .ant-table table {
+  @apply border-separate border-spacing-y-4 mt-3;
+}
+
+.home-page .ant-table-tbody > tr > td {
+  @apply bg-secondaryBackground border-none !p-5 rounded-lg text-lg;
+}
+
+.home-page .ant-table-thead > tr > th {
+  @apply text-sm !bg-transparent !border-none;
+}
+
+.home-page .icon {
+  @apply p-2 rounded-full bg-tertiaryBackground text-white w-8 h-8 mr-2;
+}
+
+.home-page .tag {
+  @apply text-[10px] h-5 leading-5 rounded-xl ml-5 px-4;
 }

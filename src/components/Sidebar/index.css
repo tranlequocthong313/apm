@@ -1,0 +1,15 @@
+.ant-menu-inline-collapsed > .ant-menu-item {
+  @apply justify-center items-center !px-0;
+}
+
+.ant-menu-item > .ant-menu-title-content {
+  @apply !ml-5 inline-block font-bold;
+}
+
+.ant-menu-inline-collapsed .ant-menu-title-content {
+  @apply !hidden;
+}
+
+.ant-menu-item {
+  @apply !flex !my-10 !h-16 !leading-[64px];
+}

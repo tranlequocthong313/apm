@@ -1,0 +1,27 @@
+.product-table .ant-table-tbody > tr > td {
+  @apply text-textPrimary;
+}
+
+.product-table .ant-table-tbody > tr:hover {
+  @apply bg-primaryMain/10 cursor-pointer;
+}
+
+.product-table .ant-table-thead > tr > th {
+  @apply text-sm text-textSecondary font-bold !bg-white;
+}
+
+.product-table .ant-pagination {
+  border-radius: 50%;
+}
+
+.product-table .ant-pagination-item,
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next {
+  border-radius: 50%;
+}
+
+.product-table__confirm-delete .ant-modal-content {
+  @apply rounded-3xl;
+}
