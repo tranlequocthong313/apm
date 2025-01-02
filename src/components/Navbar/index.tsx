@@ -73,7 +73,7 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
         />
       </Flex>
 
-      <Flex gap={30}>
+      <Flex gap={10}>
         <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Customize">
           <VscSettings className="w-5 h-5" />
         </Button>

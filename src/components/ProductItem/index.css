@@ -1,0 +1,3 @@
+.product-item .ant-card-body {
+  @apply px-0 py-5;
+}

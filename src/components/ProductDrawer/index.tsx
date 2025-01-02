@@ -281,7 +281,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
                     <Select
                       {...field}
                       mode="multiple"
-                      placeholder="Select items"
+                      placeholder="Select categories"
                       className="w-full h-12 rounded-lg !bg-secondaryBackground"
                       options={categoryOptions}
                     />

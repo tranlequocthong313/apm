@@ -40,21 +40,21 @@ const getItems = (user: User): MenuItem[] => [
   getItem(
     "Home",
     "2",
-    <Link to={"/"}>
+    <Link to={"/admin"}>
       <MdOutlineDashboard className="w-7 h-7" />
     </Link>,
   ),
   getItem(
     "Products",
     "3",
-    <Link to={"/products"}>
+    <Link to={"/admin/products"}>
       <MdOutlineWarehouse className="w-7 h-7" />
     </Link>,
   ),
   getItem(
     "Categories",
     "4",
-    <Link to={"/categories"}>
+    <Link to={"/admin/categories"}>
       <MdOutlineCategory className="w-7 h-7" />
     </Link>,
   ),
@@ -84,7 +84,7 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
     >
       <Row>
         <Col span={16} md={24}>
-          <Link to={"/"}>
+          <Link to={"/admin"}>
             {collapsed ? (
               <Image
                 className="rounded-2xl md:mx-auto mt-8 !w-12 ml-5"

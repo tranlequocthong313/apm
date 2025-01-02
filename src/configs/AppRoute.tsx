@@ -2,11 +2,14 @@ import { Navigate, Outlet, Route, Routes } from "react-router";
 import ContentOnlyLayout from "../layouts/ContentOnlyLayout";
 import LoginPage from "../pages/Login";
 import NavAndSidebarLayout from "../layouts/NavAndSidebarLayout";
-import HomePage from "../pages/Home";
+import Dashboard from "../pages/Dashboard";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import Products from "../pages/Products";
 import Categories from "../pages/Categories";
+import NavOnlyLayout from "../layouts/NavOnlyLayout";
+import HomePage from "../pages/Home";
+import SignUpPage from "../pages/SignUp";
 
 const GuestOnlyRoute = ({ isLoggedIn = false, redirect = "/" }) => {
   return !isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
@@ -16,21 +19,37 @@ const ProtectedRoute = ({ isLoggedIn = false, redirect = "/login" }) => {
   return isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
 };
 
+const AdminRoute = ({ isAdmin = false, redirect = "/login" }) => {
+  return isAdmin ? <Outlet /> : <Navigate replace to={redirect} />;
+};
+
 const AppRoute = () => {
   const user = useSelector((state: IRootState) => state.auth.user);
 
+  const isAdmin = () => {
+    return user?.role === "ADMIN";
+  };
+
   return (
     <Routes>
-      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/login" />}>
-        <Route element={<NavAndSidebarLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/categories" element={<Categories />} />
+      <Route element={<NavOnlyLayout />}>
+        <Route index element={<HomePage />} />
+      </Route>
+
+      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>
+        <Route element={<AdminRoute isAdmin={isAdmin()} redirect="/" />}>
+          <Route path="/admin" element={<NavAndSidebarLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<Products />} />
+            <Route path="categories" element={<Categories />} />
+          </Route>
         </Route>
       </Route>
+
       <Route element={<GuestOnlyRoute isLoggedIn={!!user} redirect="/" />}>
         <Route element={<ContentOnlyLayout />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
         </Route>
       </Route>
     </Routes>

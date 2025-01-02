@@ -1,28 +1,25 @@
-import { Button, Checkbox, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 import logo from "../../assets/images/ac-mini-logo.jpeg";
-import { FaAt, FaLock, FaLockOpen } from "react-icons/fa";
+import { FaAddressBook, FaAt, FaLock, FaLockOpen } from "react-icons/fa";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { loginSchema } from "../../configs/schemas/auth";
+import { signUpSchema } from "../../configs/schemas/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginErrorFields, LoginResponse } from "../../configs/types/auth";
+import { SignUpErrorFields } from "../../configs/types/auth";
 import woman1 from "../../assets/images/woman1.png";
 import "./index.css";
 import http from "../../configs/apis";
 import AUTH_ENDPOINT from "../../configs/apis/endpoints/auth";
-import USER_ENDPOINT from "../../configs/apis/endpoints/user";
-import { User } from "../../configs/types/user";
 import { Link, useNavigate } from "react-router";
 import { AxiosError } from "axios";
-import { useDispatch } from "react-redux";
-import { login as loginAction } from "../../store/slices/authSlice";
+import { IoPersonSharp } from "react-icons/io5";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const schema = loginSchema(t);
+  const schema = signUpSchema(t);
   const {
     control,
     handleSubmit,
@@ -31,66 +28,35 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    document.title = "Login - Appscyclone Product Management";
+    document.title = "SignUp - Appscyclone Product Management";
   }, []);
 
   useEffect(() => {
-    const names: (keyof LoginErrorFields)[] = Object.keys(errors) as (keyof LoginErrorFields)[];
+    const names: (keyof SignUpErrorFields)[] = Object.keys(errors) as (keyof SignUpErrorFields)[];
     if (names.length > 0) {
-      const name: LoginErrorFields = names[0] as LoginErrorFields;
+      const name: SignUpErrorFields = names[0] as SignUpErrorFields;
       setFocus(name);
     }
   }, [errors, setFocus]);
 
-  const login = async (data: { [key: string]: string | boolean }) => {
+  const signUp = async (data: { [key: string]: string | boolean }) => {
     try {
-      const response = await http.post<LoginResponse>(AUTH_ENDPOINT.login, {
+      await http.post(AUTH_ENDPOINT.signUp, {
         email: data.email,
         password: data.password,
+        name: data.name,
+        address: data.address,
       });
-      const { accessToken, refreshToken } = response.data;
-      const profile = await getProfile(accessToken);
-      if (!profile) {
-        toast.error(t("somethingWentWrong"));
-        return;
-      }
-
-      // TODO: Previous ticket required ADMIN role to login
-      // const isAdmin = profile.role === "ADMIN";
-      // if (!isAdmin) {
-      //   toast.error(t("notAllowed"));
-      //   return;
-      // }
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      dispatch(loginAction(profile));
-
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       if (error instanceof AxiosError && String(error.status).startsWith("4")) {
         toast.error(t("invalidEmailOrPassword"));
       } else {
         toast.error(t("somethingWentWrong"));
       }
-    }
-  };
-
-  const getProfile = async (accessToken: string) => {
-    try {
-      const response = await http.get<User>(USER_ENDPOINT.profile, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      return response.data;
-    } catch {
-      toast.error(t("somethingWentWrong"));
     }
   };
 
@@ -123,7 +89,49 @@ const LoginPage = () => {
                 </p>
               </Flex>
 
-              <Form onFinish={handleSubmit(login)} className="w-full">
+              <Form onFinish={handleSubmit(signUp)} className="w-full">
+                <Form.Item
+                  className="mb-8"
+                  name="name"
+                  validateStatus={errors.name ? "error" : ""}
+                  help={<p className="error-message">{errors.name ? errors.name.message : ""}</p>}
+                >
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder={t("namePlaceholder")}
+                        className="h-14 px-5"
+                        suffix={<IoPersonSharp className="w-5 h-5 text-primaryMain" />}
+                      />
+                    )}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  className="mb-8"
+                  name="address"
+                  validateStatus={errors.address ? "error" : ""}
+                  help={
+                    <p className="error-message">{errors.address ? errors.address.message : ""}</p>
+                  }
+                >
+                  <Controller
+                    name="address"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder={t("addressPlaceholder")}
+                        className="h-14 px-5"
+                        suffix={<FaAddressBook className="w-5 h-5 text-primaryMain" />}
+                      />
+                    )}
+                  />
+                </Form.Item>
+
                 <Form.Item
                   className="mb-8"
                   name="email"
@@ -181,27 +189,44 @@ const LoginPage = () => {
                   />
                 </Form.Item>
 
-                <Flex justify="space-between" align="center" className="mb-10">
-                  <Form.Item
-                    name="rememberMe"
-                    validateStatus={errors.rememberMe ? "error" : ""}
-                    help={
-                      <p className="error-message">
-                        {errors.rememberMe ? errors.rememberMe.message : ""}
-                      </p>
-                    }
-                  >
-                    <Controller
-                      name="rememberMe"
-                      control={control}
-                      render={({ field }) => (
-                        <Checkbox {...field} checked={field.value} className="text-textSecondary">
-                          {t("rememberMe")}
-                        </Checkbox>
-                      )}
-                    />
-                  </Form.Item>
+                <Form.Item
+                  className="mb-8"
+                  name="passwordConfirm"
+                  validateStatus={errors.passwordConfirm ? "error" : ""}
+                  help={
+                    <p className="error-message">
+                      {errors.passwordConfirm ? errors.passwordConfirm.message : ""}
+                    </p>
+                  }
+                >
+                  <Controller
+                    name="passwordConfirm"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder={t("passwordConfirmPlaceholder")}
+                        className="h-14 px-5"
+                        type={showPassword ? "text" : "password"}
+                        suffix={
+                          showPassword ? (
+                            <FaLockOpen
+                              onClick={() => setShowPassword(false)}
+                              className="w-5 h-5 text-primaryMain cursor-pointer hover:opacity-80"
+                            />
+                          ) : (
+                            <FaLock
+                              onClick={() => setShowPassword(true)}
+                              className="w-5 h-5 text-primaryMain cursor-pointer hover:opacity-80"
+                            />
+                          )
+                        }
+                      />
+                    )}
+                  />
+                </Form.Item>
 
+                <Flex justify="space-between" align="center" className="mb-10">
                   <Form.Item>
                     <Button
                       className="text-primaryMain hover:!text-primaryMain hover:opacity-80 hover:!bg-transparent px-0 border-none"
@@ -214,7 +239,7 @@ const LoginPage = () => {
 
                 <Form.Item>
                   <Button htmlType="submit" type="primary" className="w-full h-14 rounded-lg">
-                    {t("login")}
+                    {t("signUp")}
                   </Button>
                 </Form.Item>
               </Form>
@@ -222,12 +247,12 @@ const LoginPage = () => {
           </Flex>
 
           <Flex align="center" justify="center" className="mb-10">
-            <p className="text-textSecondary">{t("noAccount")}</p>
+            <p className="text-textSecondary">{t("haveAccount")}</p>
             <Button
               className="text-primaryMain ml-2.5 font-semibold text-[16px] hover:opacity-80 hover:!text-primaryMain hover:!bg-transparent px-0 border-none"
               type="text"
             >
-              <Link to={"/signup"}>{t("signUp")}</Link>
+              <Link to={"/login"}>{t("login")}</Link>
             </Button>
           </Flex>
         </Flex>
@@ -236,4 +261,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

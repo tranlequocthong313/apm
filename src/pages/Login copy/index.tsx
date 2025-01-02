@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { loginSchema } from "../../configs/schemas/auth";
+import loginSchema from "../../configs/schemas/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginErrorFields, LoginResponse } from "../../configs/types/auth";
 import woman1 from "../../assets/images/woman1.png";
@@ -14,7 +14,7 @@ import http from "../../configs/apis";
 import AUTH_ENDPOINT from "../../configs/apis/endpoints/auth";
 import USER_ENDPOINT from "../../configs/apis/endpoints/user";
 import { User } from "../../configs/types/user";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "../../store/slices/authSlice";
@@ -227,7 +227,7 @@ const LoginPage = () => {
               className="text-primaryMain ml-2.5 font-semibold text-[16px] hover:opacity-80 hover:!text-primaryMain hover:!bg-transparent px-0 border-none"
               type="text"
             >
-              <Link to={"/signup"}>{t("signUp")}</Link>
+              {t("signUp")}
             </Button>
           </Flex>
         </Flex>

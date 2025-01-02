@@ -1,5 +1,6 @@
 const AUTH_ENDPOINT = {
     login: '/login',
+    signUp: '/user',
     refreshToken: '/refresh'
 }
 
