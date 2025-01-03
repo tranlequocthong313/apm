@@ -1,17 +1,17 @@
-import { ConfigProvider } from 'antd';
-import './App.css';
-import AppRoute from './configs/AppRoute';
-import './index.css';
+import { ConfigProvider } from "antd";
+import "./App.css";
+import AppRoute from "./configs/AppRoute";
+import "./index.css";
 
 function App() {
   return (
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#00A8A4',
-          colorText: '#0D0F35',
-          colorTextSecondary: '#71738B',
-          colorError: '#EF4444',
+          colorPrimary: "#00A8A4",
+          colorText: "#0D0F35",
+          colorTextSecondary: "#71738B",
+          colorError: "#EF4444",
           fontSize: 16,
           borderRadius: 4,
           fontFamily:
@@ -19,14 +19,14 @@ function App() {
         },
         components: {
           Input: {
-            colorBgContainer: '#F4F4F6',
-            colorBorder: '#DDDDE3',
+            colorBgContainer: "#F4F4F6",
+            colorBorder: "#DDDDE3",
             borderRadius: 4,
           },
         },
       }}
     >
-      <AppRoute />;
+      <AppRoute />
     </ConfigProvider>
   );
 }

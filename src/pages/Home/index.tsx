@@ -8,7 +8,7 @@ import HomeBottomSection from "../../components/HomeBottomSection";
 
 const HomePage = () => {
   return (
-    <Flex vertical className="h-screen">
+    <Flex vertical>
       <Banner />
 
       <HomeBottomSection />

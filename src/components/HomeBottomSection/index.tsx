@@ -12,6 +12,7 @@ import {
   Segmented,
   Select,
   Slider,
+  SliderSingleProps,
 } from "antd";
 import { IoFilter, IoSearch } from "react-icons/io5";
 import { BarsOutlined, AppstoreOutlined } from "@ant-design/icons";
@@ -26,9 +27,18 @@ import { Category } from "../../configs/types/category";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
 import noDataFoundImage from "../../assets/images/no-data-found.jpg";
 import debounce from "lodash.debounce";
+import { FaRegTrashAlt } from "react-icons/fa";
+
+const marks: SliderSingleProps["marks"] = {
+  0: "$0",
+  999: {
+    label: <strong>$999</strong>,
+  },
+};
 
 const HomeBottomSection = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<{ label: string; value: string }[]>([
     { label: "", value: "" },
   ]);
@@ -37,15 +47,34 @@ const HomeBottomSection = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pageSize, setPageSize] = useState(12);
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [category, sestCategory] = useState<string>("");
+  const [priceRange, setPriceRange] = useState<number[]>([0, 999]);
 
   const handleDebouncedQuery = useMemo(() => {
     return debounce(setDebouncedQuery, 1000);
+  }, []);
+
+  const handlePriceFilter = useMemo(() => {
+    return debounce(setPriceRange, 500);
   }, []);
 
   const onQuery = (value: string) => {
     setQuery(value);
     handleDebouncedQuery(value);
   };
+
+  useEffect(() => {
+    setFilteredProducts(
+      products.filter(prod => {
+        const p = prod.basePrice - prod.basePrice * (prod.discountPercentage / 100);
+        const match = p >= priceRange[0] && p <= priceRange[1];
+        if (category) {
+          return match && prod.categories?.map(category => category.name).includes(category);
+        }
+        return match;
+      }),
+    );
+  }, [category, priceRange, products]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -82,7 +111,7 @@ const HomeBottomSection = () => {
   }, [fetchProducts, page, pageSize, debouncedQuery]);
 
   return (
-    <Flex vertical className="lg:px-14 px-4 md:px-10 pt-10 pb-20">
+    <Flex vertical className="lg:px-14 px-4 md:px-10 pt-10 pb-20 overflow-hidden">
       <h5 className="text-h5 font-extrabold mt-4 mb-8">
         {totalPage} result for {query || "All"}
       </h5>
@@ -134,11 +163,22 @@ const HomeBottomSection = () => {
               placeholder="Select categories"
               className="w-full h-12  !bg-secondaryBackground"
               options={categoryOptions}
+              labelInValue
+              onChange={option => sestCategory(option.label)}
             />
           </Form.Item>
 
           <Form.Item name={"price"} label="Price">
-            <Slider min={0} max={99999} />
+            <Slider
+              onChange={handlePriceFilter}
+              marks={marks}
+              defaultValue={[0, 999]}
+              max={999}
+              min={0}
+              value={priceRange}
+              range
+              tooltip={{ open: false }}
+            />
           </Form.Item>
 
           <p className="mb-3">Rating:</p>
@@ -167,6 +207,18 @@ const HomeBottomSection = () => {
               <Rate disabled value={1} />
             </Checkbox>
           </Form.Item>
+
+          <Button
+            onClick={() => {
+              onQuery("");
+              sestCategory("");
+              setPriceRange([0, 999]);
+            }}
+            icon={<FaRegTrashAlt />}
+            className="w-full py-6 bg-secondaryBackground rounded-3xl border-none text-gray-800 mt-8"
+          >
+            Clear filter
+          </Button>
         </Col>
 
         <Col lg={18} span={24}>
@@ -187,9 +239,9 @@ const HomeBottomSection = () => {
             </Button>
           </Row>
 
-          <ProductList products={products} />
+          <ProductList products={filteredProducts} />
 
-          {products.length > 0 && (
+          {filteredProducts.length > 0 && (
             <Pagination
               className="justify-center mt-5"
               onChange={setPage}
@@ -199,7 +251,7 @@ const HomeBottomSection = () => {
             />
           )}
 
-          {products.length === 0 && (
+          {filteredProducts.length === 0 && (
             <Flex vertical align="center" className="h-full">
               <Image preview={false} src={noDataFoundImage} width={500} />
               <h5 className="text-h5 font-bold text-textSecondary">No data</h5>

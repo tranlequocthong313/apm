@@ -7,9 +7,10 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import Products from "../pages/Products";
 import Categories from "../pages/Categories";
-import NavOnlyLayout from "../layouts/NavOnlyLayout";
 import HomePage from "../pages/Home";
 import SignUpPage from "../pages/SignUp";
+import ProductDetail from "../pages/ProductDetail";
+import NavAndFooterLayout from "../layouts/NavAndFooterLayout";
 
 const GuestOnlyRoute = ({ isLoggedIn = false, redirect = "/" }) => {
   return !isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
@@ -32,8 +33,9 @@ const AppRoute = () => {
 
   return (
     <Routes>
-      <Route element={<NavOnlyLayout />}>
+      <Route element={<NavAndFooterLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="/product/:urlName" element={<ProductDetail />} />
       </Route>
 
       <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>

@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Image, Layout, Menu, MenuProps, Row } from "antd";
+import { Avatar, Button, Col, Flex, Image, Layout, Menu, MenuProps, Row } from "antd";
 import { Link } from "react-router";
 import { User } from "../../configs/types/user";
 import { MdOutlineCategory, MdOutlineDashboard, MdOutlineWarehouse } from "react-icons/md";
@@ -28,15 +28,7 @@ function getItem(
   } as MenuItem;
 }
 
-const getItems = (user: User): MenuItem[] => [
-  getItem(
-    user.name,
-    "1",
-    <Avatar
-      size={48}
-      src={`https://ui-avatars.com/api/?name=${user.name}&background=00A8A4&color=ffffff`}
-    />,
-  ),
+const menuItems: MenuItem[] = [
   getItem(
     "Home",
     "2",
@@ -115,13 +107,15 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
         </Col>
       </Row>
 
-      <Menu
-        className="mt-40"
-        defaultSelectedKeys={["2"]}
-        mode="inline"
-        theme="dark"
-        items={getItems(user)}
-      />
+      <Menu defaultSelectedKeys={["2"]} mode="inline" theme="dark" items={menuItems} />
+
+      <Flex className="mt-96" justify="center" align="center">
+        <Avatar
+          className=""
+          size={48}
+          src={`https://ui-avatars.com/api/?name=${user.name}&background=00A8A4&color=ffffff`}
+        />
+      </Flex>
     </Sider>
   );
 };

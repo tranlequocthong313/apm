@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import { Product } from "../../configs/types/product";
 import ProductItem from "../ProductItem";
+import "./index.css";
 
 interface Props {
   products: Product[];

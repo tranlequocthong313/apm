@@ -1,5 +1,6 @@
 const PRODUCT_ENDPOINT = {
     products: '/product',
+    detail: (urlName: string) => '/product/' + urlName,
     delete: (id: string) => '/product/' + id,
     create: '/product/',
     upload: (id: string) => '/product/picture/' + id,
