@@ -27,7 +27,6 @@ import { Category } from "../../configs/types/category";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
 import noDataFoundImage from "../../assets/images/no-data-found.jpg";
 import debounce from "lodash.debounce";
-import { FaRegTrashAlt } from "react-icons/fa";
 
 const marks: SliderSingleProps["marks"] = {
   0: "$0",
@@ -207,18 +206,6 @@ const HomeBottomSection = () => {
               <Rate disabled value={1} />
             </Checkbox>
           </Form.Item>
-
-          <Button
-            onClick={() => {
-              onQuery("");
-              sestCategory("");
-              setPriceRange([0, 999]);
-            }}
-            icon={<FaRegTrashAlt />}
-            className="w-full py-6 bg-secondaryBackground rounded-3xl border-none text-gray-800 mt-8"
-          >
-            Clear filter
-          </Button>
         </Col>
 
         <Col lg={18} span={24}>
