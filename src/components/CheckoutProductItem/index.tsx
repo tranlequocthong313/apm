@@ -17,11 +17,8 @@ const CheckoutProductItem: React.FC<Props> = ({ product, onChangeAmount }) => {
     <Flex justify="space-between" align="center" className="mb-3">
       <Flex gap={16} align="center">
         <Image
-          src={
-            product.picture
-              ? "http://" + product.picture
-              : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-          }
+          src={"http://" + product.picture}
+          fallback="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
           className="rounded-lg min-w-20 max-w-20"
         />
 

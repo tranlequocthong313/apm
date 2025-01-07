@@ -28,7 +28,7 @@ const randomDeliveryPrice = Math.round(Math.random() * 20);
 
 const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
   const [checkoutItems, setCheckoutItems] = useState<CheckoutItem[]>();
-  const [purchaseSuccess, setPuchasseSuccess] = useState<PurchaseSuccess>();
+  const [purchaseSuccess, setPuchaseSuccess] = useState<PurchaseSuccess>();
 
   useEffect(() => {
     setCheckoutItems(
@@ -79,7 +79,7 @@ const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
           });
         }),
       );
-      setPuchasseSuccess({
+      setPuchaseSuccess({
         id: data.id,
         totalPrice: data.totalPrice,
         createdAt: data.createdAt,
@@ -99,11 +99,20 @@ const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
       open={open}
       cancelButtonProps={{ style: { display: "none" } }}
       okButtonProps={{ style: { display: "none" } }}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        setPuchaseSuccess(undefined);
+      }}
       className="checkout-modal"
     >
       {purchaseSuccess ? (
-        <CheckoutSuccess onDone={onOk} purchaseSuccess={purchaseSuccess} />
+        <CheckoutSuccess
+          onDone={() => {
+            onOk();
+            setPuchaseSuccess(undefined);
+          }}
+          purchaseSuccess={purchaseSuccess}
+        />
       ) : (
         <>
           <Flex vertical className="pb-8 pt-5 border-b-2 border-slate-200">

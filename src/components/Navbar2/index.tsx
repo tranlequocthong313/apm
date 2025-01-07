@@ -85,7 +85,9 @@ const Navbar = () => {
         </Badge>
         <Badge count={0}>
           <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Setting">
-            <MdFavoriteBorder className="w-5 h-5" />
+            <Link reloadDocument to={"/purchases"}>
+              <MdFavoriteBorder className="w-5 h-5" />
+            </Link>
           </Button>
         </Badge>
 

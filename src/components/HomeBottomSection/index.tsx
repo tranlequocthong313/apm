@@ -4,7 +4,6 @@ import {
   Col,
   Flex,
   Form,
-  Image,
   Input,
   Pagination,
   Rate,
@@ -25,7 +24,6 @@ import { MdClear } from "react-icons/md";
 import classNames from "classnames";
 import { Category } from "../../configs/types/category";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
-import noDataFoundImage from "../../assets/images/no-data-found.jpg";
 import debounce from "lodash.debounce";
 
 const marks: SliderSingleProps["marks"] = {
@@ -124,7 +122,7 @@ const HomeBottomSection = () => {
               query.length === 0 ? (
                 <IoSearch className="w-5 h-5" />
               ) : (
-                <MdClear className="w-5 h-5 cursor-pointer" onClick={() => setQuery("")} />
+                <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
               )
             }
             placeholder="Search..."
@@ -238,13 +236,6 @@ const HomeBottomSection = () => {
               current={page}
               pageSize={pageSize}
             />
-          )}
-
-          {filteredProducts.length === 0 && (
-            <Flex vertical align="center" className="h-full">
-              <Image preview={false} src={noDataFoundImage} width={500} />
-              <h5 className="text-h5 font-bold text-textSecondary">No data</h5>
-            </Flex>
           )}
         </Col>
       </Row>

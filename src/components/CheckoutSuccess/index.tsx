@@ -73,7 +73,12 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
 
       <Flex vertical gap={14}>
         <Button className="h-12 rounded-lg bg-white text-textPrimary" type="primary">
-          <Link className="w-full h-full leading-10" to={"/purchases"}>
+          <Link
+            onClick={onDone}
+            className="w-full h-full leading-10"
+            to={"/purchases?id=" + purchaseSuccess.id}
+            reloadDocument
+          >
             View Purchase Detail
           </Link>
         </Button>

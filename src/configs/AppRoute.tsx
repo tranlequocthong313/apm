@@ -11,6 +11,7 @@ import HomePage from "../pages/Home";
 import SignUpPage from "../pages/SignUp";
 import ProductDetail from "../pages/ProductDetail";
 import NavAndFooterLayout from "../layouts/NavAndFooterLayout";
+import Purchases from "../pages/Purchases";
 
 const GuestOnlyRoute = ({ isLoggedIn = false, redirect = "/" }) => {
   return !isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
@@ -35,7 +36,13 @@ const AppRoute = () => {
     <Routes>
       <Route element={<NavAndFooterLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/product/:urlName" element={<ProductDetail />} />
+        <Route path="/products/:urlName" element={<ProductDetail />} />
+      </Route>
+
+      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>
+        <Route element={<NavAndFooterLayout />}>
+          <Route path="/purchases" element={<Purchases />} />
+        </Route>
       </Route>
 
       <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>

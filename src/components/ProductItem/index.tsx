@@ -4,7 +4,6 @@ import { Card, Flex, Image, Rate } from "antd";
 import { CiHeart } from "react-icons/ci";
 import "./index.css";
 import { Link } from "react-router";
-import PRODUCT_ENDPOINT from "../../configs/apis/endpoints/product";
 
 interface Props {
   product: Product;
@@ -14,18 +13,15 @@ interface Props {
 // TODO: Vertial margin on small devices
 const ProductItem: React.FC<Props> = ({ product }) => {
   return (
-    <Link to={PRODUCT_ENDPOINT.detail(product.urlName)}>
+    <Link to={"/products/" + product.urlName}>
       <Card
         hoverable
         cover={
           <Image
             preview={false}
             alt={"image"}
-            src={
-              product.picture
-                ? "http://" + product.picture
-                : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-            }
+            src={"http://" + product.picture}
+            fallback="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
             className="min-h-96 max-h-96 object-cover rounded-xl"
           />
         }

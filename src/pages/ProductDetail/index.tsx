@@ -50,18 +50,11 @@ const ProductDetail = () => {
             i === selectedImg ? "border-primaryMain border-4" : "",
           )}
           onClick={() => {
-            setImg(
-              product?.picture
-                ? "http://" + product.picture
-                : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg",
-            );
+            setImg("http://" + product?.picture);
             setSelectedImg(i);
           }}
-          src={
-            product?.picture
-              ? "http://" + product.picture
-              : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-          }
+          src={"http://" + product?.picture}
+          fallback="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
         />,
       );
     }

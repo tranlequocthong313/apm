@@ -1,0 +1,142 @@
+import { Button, Flex, Image } from "antd";
+import { Purchase } from "../../configs/types/purchase";
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../../configs/apis";
+import PRODUCT_ENDPOINT from "../../configs/apis/endpoints/product";
+import { Product } from "../../configs/types/product";
+import { TfiReload } from "react-icons/tfi";
+import { IoIosMore } from "react-icons/io";
+import { Link } from "react-router";
+import CheckoutModal from "../CheckoutModal";
+import { FaStar } from "react-icons/fa";
+import ReviewModal from "../ReviewModal";
+
+interface Props {
+  purchase: Purchase;
+}
+
+const PurchaseItem: React.FC<Props> = ({ purchase }) => {
+  const [product, setProduct] = useState<Product>();
+  const [isBuyAgain, setIsBuyAgain] = useState(false);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [rate, setRate] = useState(purchase.reviewNote);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axiosInstance.get<{ products: Product[]; totalCount: number }>(
+          PRODUCT_ENDPOINT.products + "?productName=" + purchase.product.name,
+        );
+        setProduct(response.data.products[0]);
+      } catch (error) {
+        console.log("Error fetching product:", error);
+      }
+    };
+    fetchProduct();
+  }, [purchase]);
+
+  const formatDatetime = (d: Date) => {
+    return (
+      d.getUTCFullYear() +
+      "-" +
+      ("0" + (d.getUTCMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + d.getUTCDate()).slice(-2) +
+      " " +
+      ("0" + d.getUTCHours()).slice(-2) +
+      ":" +
+      ("0" + d.getUTCMinutes()).slice(-2) +
+      ":" +
+      ("0" + d.getUTCSeconds()).slice(-2)
+    );
+  };
+
+  return (
+    <Flex vertical gap={20} className="p-10 border border-slate-300 last:rounded-b-xl">
+      <Flex justify="space-between" align="center">
+        <h6 className="mb-4 text-lg font-bold">Delivered June 5</h6>
+
+        {rate && (
+          <Flex align="center" gap={4}>
+            <span>{rate}</span>
+            <FaStar className="text-warn" />
+          </Flex>
+        )}
+      </Flex>
+
+      <Flex gap={30}>
+        <Image
+          className="rounded-lg !w-32 !h-32 object-cover"
+          preview={false}
+          src={"http://" + product?.picture}
+          fallback={"https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
+        />
+        <Flex vertical gap={16}>
+          <h5 className="font-bold text-xl text-ellipsis">{product?.name}</h5>
+          <Flex vertical gap={20}>
+            <Flex justify="space-between" align="center">
+              <span className="text-textSecondary">Ref Id</span>
+              <span>{purchase.id}</span>
+            </Flex>
+            <Flex justify="space-between" align="center">
+              <span className="text-textSecondary">Amount</span>
+              <span>{purchase.amount}</span>
+            </Flex>
+            <Flex justify="space-between" align="center">
+              <span className="text-textSecondary">Payment Time</span>
+              <span>{formatDatetime(new Date(purchase.createdAt))}</span>
+            </Flex>
+            <Flex
+              justify="space-between"
+              align="center"
+              className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2"
+            >
+              <span className="text-textSecondary text-lg">Total Payment</span>
+              <span className="text-xl font-bold">${Number(purchase.totalPrice).toFixed(2)}</span>
+            </Flex>
+          </Flex>
+          <Flex gap={10}>
+            <Button
+              icon={<TfiReload />}
+              className="bg-primaryMain text-white !border-primaryMain rounded-lg py-5"
+              onClick={() => setIsBuyAgain(true)}
+            >
+              Buy it again
+            </Button>
+            <Button className="!border-slate-300 rounded-lg py-5">
+              <Link to={"/products/" + product?.urlName}>View your item</Link>
+            </Button>
+            <Button
+              onClick={() => setIsReviewing(true)}
+              className="text-textPrimary bg-warn !border-warn rounded-lg py-5"
+            >
+              Review product
+            </Button>
+            <Button icon={<IoIosMore />} className="!p-5 rounded-lg !border-slate-300" />
+          </Flex>
+        </Flex>
+      </Flex>
+
+      {product && (
+        <CheckoutModal
+          products={[product]}
+          open={isBuyAgain}
+          onCancel={() => setIsBuyAgain(false)}
+          onOk={() => setIsBuyAgain(false)}
+        />
+      )}
+
+      <ReviewModal
+        onCancel={() => setIsReviewing(false)}
+        onOk={(rate: number) => {
+          setIsReviewing(false);
+          setRate(rate);
+        }}
+        purchase={purchase}
+        open={isReviewing}
+      />
+    </Flex>
+  );
+};
+
+export default PurchaseItem;
