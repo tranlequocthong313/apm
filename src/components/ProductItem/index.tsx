@@ -10,6 +10,8 @@ interface Props {
   product: Product;
 }
 
+// TODO: Skeleton loading
+// TODO: Vertial margin on small devices
 const ProductItem: React.FC<Props> = ({ product }) => {
   return (
     <Link to={PRODUCT_ENDPOINT.detail(product.urlName)}>

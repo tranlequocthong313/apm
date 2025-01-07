@@ -30,6 +30,8 @@ const Navbar = () => {
           align="center"
           className="text-danger"
           onClick={() => {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
             dispatch(logout());
             navigate("/login");
           }}

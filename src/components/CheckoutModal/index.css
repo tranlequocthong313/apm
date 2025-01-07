@@ -1,0 +1,3 @@
+.checkout-modal .ant-modal-content {
+  @apply rounded-2xl;
+}

@@ -35,6 +35,8 @@ const marks: SliderSingleProps["marks"] = {
   },
 };
 
+// TODO: verticalize labels and inputs
+// TODO: put per page at the bottom next to pagination
 const HomeBottomSection = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);

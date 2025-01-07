@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Flex, Image, Rate, Row, Spin, Tag } from "antd";
 import axiosInstance from "../../configs/apis";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Product } from "../../configs/types/product";
 import classNames from "classnames";
 import "./index.css";
 import RecommendedProductList from "../../components/RecommendedProductList";
+import CheckoutModal from "../../components/CheckoutModal";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store/index";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<Product>();
@@ -14,6 +17,9 @@ const ProductDetail = () => {
     "https://www.svgrepo.com/show/508699/landscape-placeholder.svg",
   );
   const [selectedImg, setSelectedImg] = useState(0);
+  const [isCheckout, setIsCheckout] = useState(false);
+  const user = useSelector((state: IRootState) => state.auth.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,6 +43,7 @@ const ProductDetail = () => {
     for (let i = 0; i < size; i++) {
       res.push(
         <Image
+          key={i}
           preview={false}
           className={classNames(
             "rounded-xl cursor-pointer",
@@ -59,6 +66,14 @@ const ProductDetail = () => {
       );
     }
     return res;
+  };
+
+  const openCheckout = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setIsCheckout(true);
   };
 
   if (!product) {
@@ -110,13 +125,24 @@ const ProductDetail = () => {
           >
             Add To Cart
           </Button>
-          <Button className="flex-1 rounded-3xl py-6 font-bold border-none" type="primary">
+          <Button
+            onClick={openCheckout}
+            className="flex-1 rounded-3xl py-6 font-bold border-none"
+            type="primary"
+          >
             Checkout Now
           </Button>
         </Flex>
       </Col>
 
       <RecommendedProductList size={4} filterItem={product} />
+
+      <CheckoutModal
+        products={[product]}
+        open={isCheckout}
+        onCancel={() => setIsCheckout(false)}
+        onOk={() => setIsCheckout(false)}
+      />
     </Row>
   );
 };
