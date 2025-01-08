@@ -1,5 +1,5 @@
-import { Button, Flex, Modal } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { Button, Flex, Modal, Space, TableProps } from "antd";
+import { FaPen, FaTrash } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -9,6 +9,7 @@ import CATEGORY_ENDPOINT from "../../../configs/apis/endpoints/category";
 import { Category } from "../../../configs/types/category";
 import CategoryTable from "../../../components/CategoryTable";
 import CategoryDrawer from "../../../components/CategoryDrawer";
+import { parseCSV } from "../../../utils/parser";
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -20,6 +21,37 @@ const Categories = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const columns: TableProps<Category>["columns"] = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: id => <div className="w-24 truncate">{id}</div>,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: text => <strong>{text}</strong>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <Space size="middle">
+          <FaPen
+            onClick={() => setIsEditing(true)}
+            className="text-textSecondary hover:text-textPrimary"
+          />
+          <FaTrash
+            onClick={() => setOpenConfirmDelete(true)}
+            className="text-textSecondary hover:text-textPrimary"
+          />
+        </Space>
+      ),
+    },
+  ];
 
   const handleQueryChange = useMemo(
     () =>
@@ -83,6 +115,11 @@ const Categories = () => {
     }
   };
 
+  const parse = (data: string[][]) => {
+    const result: Category[] = parseCSV(data) as Category[];
+    setCategories(result);
+  };
+
   return (
     <>
       <Modal
@@ -123,7 +160,14 @@ const Categories = () => {
       </Modal>
 
       {/* Right Section */}
-      <TableHeader onOpenAdd={() => setIsAdding(true)} onQuery={onQueryChange} query={query} />
+      <TableHeader
+        onParse={parse}
+        exportedFilename={"category_" + new Date().toLocaleString()}
+        exportedData={categories}
+        onOpenAdd={() => setIsAdding(true)}
+        onQuery={onQueryChange}
+        query={query}
+      />
 
       <CategoryTable
         categories={categories}
@@ -131,6 +175,7 @@ const Categories = () => {
         onSelect={setCategory}
         onDelete={() => setOpenConfirmDelete(true)}
         onEdit={() => setIsEditing(true)}
+        columns={columns}
         pageSize={pageSize}
         page={page}
         onChangePage={setPage}

@@ -1,4 +1,4 @@
-import { Button, Flex, Modal } from "antd";
+import { Button, Flex, Modal, Space, TableProps } from "antd";
 import { FaTrash } from "react-icons/fa";
 
 import { useCallback, useEffect, useState } from "react";
@@ -7,6 +7,51 @@ import axiosInstance from "../../../configs/apis";
 import PURCHASE_ENDPOINT from "../../../configs/apis/endpoints/purchase";
 import { Purchase } from "../../../configs/types/purchase";
 import PurchaseTable from "../../../components/PurchaseTable";
+import { parseCSV } from "../../../utils/parser";
+import { formatDatetime } from "../../../utils/formatter";
+
+const HEADERS = [
+  {
+    label: "id",
+    key: "id",
+  },
+  {
+    label: "userId",
+    key: "userId",
+  },
+  {
+    label: "productId",
+    key: "productId",
+  },
+  {
+    label: "amount",
+    key: "amount",
+  },
+  {
+    label: "totalPrice",
+    key: "totalPrice",
+  },
+  {
+    label: "reviewNote",
+    key: "reviewNote",
+  },
+  {
+    label: "reviewComment",
+    key: "reviewComment",
+  },
+  {
+    label: "createdAt",
+    key: "createdAt",
+  },
+  {
+    label: "user.email",
+    key: "user.email",
+  },
+  {
+    label: "product.name",
+    key: "product.name",
+  },
+];
 
 const Purchases = () => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -14,6 +59,58 @@ const Purchases = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(0);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+
+  const columns: TableProps<Purchase>["columns"] = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: id => <div className="w-24 truncate">{id}</div>,
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Total price",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+    },
+    {
+      title: "reviewNote",
+      dataIndex: "reviewNote",
+      key: "reviewNote",
+    },
+    {
+      title: "reviewComment",
+      dataIndex: "reviewComment",
+      key: "reviewComment",
+      render: comment => (
+        <div title={comment} className="w-24 truncate">
+          {comment}
+        </div>
+      ),
+    },
+    {
+      title: "createdAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: createdAt => <div>{formatDatetime(createdAt)}</div>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <Space size="middle">
+          <FaTrash
+            onClick={() => setOpenConfirmDelete(true)}
+            className="text-textSecondary hover:text-textPrimary"
+          />
+        </Space>
+      ),
+    },
+  ];
 
   const fetchPurchases = useCallback(async ({ p }: { p: number }) => {
     try {
@@ -63,6 +160,11 @@ const Purchases = () => {
     }
   };
 
+  const parse = (data: string[][]) => {
+    const result: Purchase[] = parseCSV(data) as Purchase[];
+    setPurchases(result);
+  };
+
   return (
     <>
       <Modal
@@ -103,7 +205,12 @@ const Purchases = () => {
       </Modal>
 
       {/* Right Section */}
-      <TableHeader />
+      <TableHeader
+        onParse={parse}
+        exportedFilename={"purchase_" + new Date().toLocaleString()}
+        exportedData={purchases}
+        headers={HEADERS}
+      />
 
       <div className="w-full overflow-x-scroll">
         <PurchaseTable
@@ -112,6 +219,7 @@ const Purchases = () => {
           onSelect={setPurchase}
           onDelete={() => setOpenConfirmDelete(true)}
           pageSize={pageSize}
+          columns={columns}
           page={page}
           onChangePage={setPage}
         />

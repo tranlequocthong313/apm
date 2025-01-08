@@ -1,8 +1,8 @@
-import React from "react";
-import { Space, Table, TableProps } from "antd";
-import { FaPen, FaTrash } from "react-icons/fa";
+import React, { useState } from "react";
+import { Flex, Table, TableProps } from "antd";
 import "./index.css";
 import { Category } from "../../configs/types/category";
+import ToggleColumnDropdown from "../ToggleColumnDropdown";
 
 interface Props {
   onSelect?: (product: Category) => void;
@@ -13,45 +13,30 @@ interface Props {
   selectedItem?: Category;
   page: number;
   pageSize: number;
+  columns: TableProps<Category>["columns"];
 }
 
 const CategoryTable: React.FC<Props> = ({
   selectedItem,
   onSelect,
-  onDelete,
   onChangePage,
   categories,
-  onEdit,
   page,
   pageSize,
+  columns,
 }) => {
-  const columns: TableProps<Category>["columns"] = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: id => <div className="w-24 truncate">{id}</div>,
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: text => <strong>{text}</strong>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: () => (
-        <Space size="middle">
-          <FaPen onClick={onEdit} className="text-textSecondary hover:text-textPrimary" />
-          <FaTrash onClick={onDelete} className="text-textSecondary hover:text-textPrimary" />
-        </Space>
-      ),
-    },
-  ];
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    columns!.map(col => String(col.key)),
+  );
 
   return (
-    <>
+    <Flex vertical gap={20}>
+      <ToggleColumnDropdown
+        columns={columns!.map(col => ({ key: String(col.key), label: String(col.title) }))}
+        selectedColumns={selectedColumns}
+        setSelectedColumns={setSelectedColumns}
+      />
+
       <Table<Category>
         className="table w-full"
         scroll={{ x: true }}
@@ -69,7 +54,7 @@ const CategoryTable: React.FC<Props> = ({
           pageSize: 10,
         }}
         rowKey={"id"}
-        columns={columns}
+        columns={columns!.filter(column => selectedColumns.includes(String(column.key)))}
         dataSource={categories}
         rowHoverable={false}
         rowSelection={{
@@ -83,7 +68,7 @@ const CategoryTable: React.FC<Props> = ({
           },
         }}
       />
-    </>
+    </Flex>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Avatar, Button, Dropdown, Flex, Input, Layout, MenuProps } from "antd";
-import { MdOutlineSettings } from "react-icons/md";
+import { MdHome, MdOutlineSettings } from "react-icons/md";
 import classNames from "classnames";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { VscSettings } from "react-icons/vsc";
@@ -26,6 +26,23 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
   const items: MenuProps["items"] = [
     {
       key: "1",
+      label: (
+        <Flex
+          gap={30}
+          align="center"
+          className="p-2"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <MdHome className="w-6 h-6" />
+          Home
+        </Flex>
+      ),
+    },
+    { type: "divider" },
+    {
+      key: "2",
       label: (
         <Flex
           gap={30}

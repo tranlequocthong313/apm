@@ -1,8 +1,7 @@
-import React from "react";
-import { Space, Table, TableProps } from "antd";
-import { FaTrash } from "react-icons/fa";
+import React, { useState } from "react";
+import { Flex, Table, TableProps } from "antd";
 import { Purchase } from "../../configs/types/purchase";
-import { formatDatetime } from "../../utils/formatter";
+import ToggleColumnDropdown from "../ToggleColumnDropdown";
 
 interface Props {
   onSelect?: (product: Purchase) => void;
@@ -12,98 +11,62 @@ interface Props {
   selectedItem?: Purchase;
   page: number;
   pageSize: number;
+  columns: TableProps<Purchase>["columns"];
 }
 
 const PurchaseTable: React.FC<Props> = ({
   selectedItem,
   onSelect,
-  onDelete,
   onChangePage,
   purchases,
   page,
   pageSize,
+  columns,
 }) => {
-  const columns: TableProps<Purchase>["columns"] = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: id => <div className="w-24 truncate">{id}</div>,
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Total price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-    },
-    {
-      title: "reviewNote",
-      dataIndex: "reviewNote",
-      key: "reviewNote",
-    },
-    {
-      title: "reviewComment",
-      dataIndex: "reviewComment",
-      key: "reviewComment",
-      render: comment => (
-        <div title={comment} className="w-24 truncate">
-          {comment}
-        </div>
-      ),
-    },
-    {
-      title: "createdAt",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: createdAt => <div>{formatDatetime(createdAt)}</div>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: () => (
-        <Space size="middle">
-          <FaTrash onClick={onDelete} className="text-textSecondary hover:text-textPrimary" />
-        </Space>
-      ),
-    },
-  ];
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    columns!.map(col => String(col.key)),
+  );
 
   return (
-    <Table<Purchase>
-      className="table w-full"
-      scroll={{ x: true }}
-      onRow={record => {
-        return {
-          onClick: () => onSelect?.(record),
-        };
-      }}
-      pagination={{
-        onChange(page) {
-          onChangePage(page);
-        },
-        total: pageSize,
-        current: page,
-        pageSize: 10,
-      }}
-      rowKey={"id"}
-      columns={columns}
-      dataSource={purchases}
-      rowHoverable={false}
-      rowSelection={{
-        type: "radio",
-        selectedRowKeys: selectedItem ? [selectedItem.id] : [],
-        onChange: selectedKeys => {
-          const selectedRow = purchases.find(purchase => purchase.id === selectedKeys[0]);
-          if (selectedRow) {
-            onSelect?.(selectedRow);
-          }
-        },
-      }}
-    />
+    <Flex vertical gap={20}>
+      <ToggleColumnDropdown
+        columns={columns!.map(col => ({ key: String(col.key), label: String(col.title) }))}
+        selectedColumns={selectedColumns}
+        setSelectedColumns={setSelectedColumns}
+      />
+
+      <Table<Purchase>
+        className="table w-full"
+        scroll={{ x: true }}
+        onRow={record => {
+          return {
+            onClick: () => onSelect?.(record),
+          };
+        }}
+        pagination={{
+          onChange(page) {
+            onChangePage(page);
+          },
+          total: pageSize,
+          current: page,
+          pageSize: 10,
+        }}
+        rowKey={"id"}
+        columns={columns!.filter(column => selectedColumns.includes(String(column.key)))}
+        dataSource={purchases}
+        rowHoverable={false}
+        rowSelection={{
+          type: "radio",
+          selectedRowKeys: selectedItem ? [selectedItem.id] : [],
+          onChange: selectedKeys => {
+            const selectedRow = purchases.find(purchase => purchase.id === selectedKeys[0]);
+            if (selectedRow) {
+              onSelect?.(selectedRow);
+            }
+          },
+        }}
+      />
+    </Flex>
   );
 };
 

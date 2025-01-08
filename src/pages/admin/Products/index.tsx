@@ -1,4 +1,4 @@
-import { Button, Col, Flex, Image, Modal, Row, Tag } from "antd";
+import { Button, Col, Flex, Image, Modal, Row, Space, TableProps, Tag } from "antd";
 import ProductTable from "../../../components/ProductTable";
 import { IoStatsChart } from "react-icons/io5";
 import { FaCaretDown } from "react-icons/fa";
@@ -24,6 +24,7 @@ import ProductDrawer from "../../../components/ProductDrawer";
 import axiosInstance from "../../../configs/apis";
 import PRODUCT_ENDPOINT from "../../../configs/apis/endpoints/product";
 import ImageWithActions from "../../../components/ImageWithActions";
+import { parseCSV } from "../../../utils/parser";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -82,6 +83,53 @@ const Products = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const columns: TableProps<Product>["columns"] = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: id => <div className="w-24 truncate">{id}</div>,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: text => <strong>{text}</strong>,
+    },
+    {
+      title: "Price $",
+      dataIndex: "basePrice",
+      key: "basePrice",
+      render: text => `$${text}`,
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+    },
+    {
+      title: "Discount %",
+      dataIndex: "discountPercentage",
+      key: "discountPercentage",
+      render: text => `${text}%`,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <Space size="middle">
+          <FaPen
+            onClick={() => setIsEditing(true)}
+            className="text-textSecondary hover:text-textPrimary"
+          />
+          <FaTrash
+            onClick={() => setOpenConfirmDelete(true)}
+            className="text-textSecondary hover:text-textPrimary"
+          />
+        </Space>
+      ),
+    },
+  ];
 
   const handleQueryChange = useMemo(
     () =>
@@ -171,6 +219,11 @@ const Products = () => {
         console.log(error);
       }
     }
+  };
+
+  const parse = (data: string[][]) => {
+    const result: Product[] = parseCSV(data) as Product[];
+    setProducts(result);
   };
 
   return (
@@ -300,10 +353,21 @@ const Products = () => {
 
       {/* Right Section */}
       <Col span={24} lg={16} className="mt-10 lg:mt-0">
-        <TableHeader onOpenAdd={() => setIsAdding(true)} onQuery={onQueryChange} query={query} />
+        <TableHeader
+          exportedFilename={"product_" + new Date().toLocaleString()}
+          exportedData={products.map(prod => ({
+            ...prod,
+            categories: JSON.stringify(prod.categories),
+          }))}
+          onOpenAdd={() => setIsAdding(true)}
+          onQuery={onQueryChange}
+          query={query}
+          onParse={parse}
+        />
 
         <div className="w-full overflow-x-scroll">
           <ProductTable
+            columns={columns}
             products={products}
             selectedItem={product}
             onSelect={setProduct}

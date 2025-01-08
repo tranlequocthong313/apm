@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
 
 export const refreshToken = async (): Promise<string> => {
     try {
+        console.log(`Refresh token:::`, localStorage.getItem('refreshToken'))
         const response = await axiosInstance.post<LoginResponse>(AUTH_ENDPOINT.refreshToken, {
             refreshToken: localStorage.getItem('refreshToken'),
         })
@@ -17,7 +18,8 @@ export const refreshToken = async (): Promise<string> => {
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)
         return accessToken
-    } catch {
+    } catch (error) {
+        console.log(`Failed to refresh token:::`, error)
         throw new Error('Failed to refresh token')
     }
 }
@@ -51,8 +53,6 @@ axiosInstance.interceptors.response.use(
             } catch (refreshError) {
                 console.error('Failed to refresh token:', refreshError)
                 store.dispatch(logout())
-                localStorage.removeItem('accessToken')
-                localStorage.removeItem('refreshToken')
                 window.location.href = '/login'
                 return Promise.reject(refreshError)
             }
