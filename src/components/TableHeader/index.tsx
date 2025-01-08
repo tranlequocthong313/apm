@@ -7,13 +7,47 @@ import { RiImportFill, RiShareBoxFill } from "react-icons/ri";
 import { MdClear } from "react-icons/md";
 
 interface Props {
-  query: string;
-  onQuery: (query: string) => void;
-  onOpenAdd: () => void;
+  query?: string;
+  onQuery?: (query: string) => void;
+  onOpenAdd?: () => void;
 }
 
 const TableHeader: React.FC<Props> = ({ query, onQuery, onOpenAdd }) => {
   const [openSearch, setOpenSearch] = useState(false);
+
+  const querySection = onQuery ? (
+    !openSearch ? (
+      <Button
+        className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
+        icon={<IoSearch className="w-5 h-5" />}
+        onClick={() => setOpenSearch(true)}
+      />
+    ) : (
+      <Input
+        suffix={
+          query && query.length === 0 ? (
+            <IoSearch className="w-5 h-5" />
+          ) : (
+            <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
+          )
+        }
+        placeholder="Search..."
+        onChange={e => onQuery(e.target.value)}
+        value={query}
+        className={classNames(
+          "rounded-3xl",
+          "px-5",
+          "py-2.5",
+          "transition-all",
+          "duration-500",
+          "mr-5",
+        )}
+        autoFocus
+      />
+    )
+  ) : (
+    <></>
+  );
 
   return (
     <Flex justify="space-between" align="center" className="mb-5 flex-col md:flex-row">
@@ -25,35 +59,7 @@ const TableHeader: React.FC<Props> = ({ query, onQuery, onOpenAdd }) => {
         >
           History
         </Button>
-        {!openSearch ? (
-          <Button
-            className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
-            icon={<IoSearch className="w-5 h-5" />}
-            onClick={() => setOpenSearch(true)}
-          />
-        ) : (
-          <Input
-            suffix={
-              query.length === 0 ? (
-                <IoSearch className="w-5 h-5" />
-              ) : (
-                <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
-              )
-            }
-            placeholder="Search..."
-            onChange={e => onQuery(e.target.value)}
-            value={query}
-            className={classNames(
-              "rounded-3xl",
-              "px-5",
-              "py-2.5",
-              "transition-all",
-              "duration-500",
-              "mr-5",
-            )}
-            autoFocus
-          />
-        )}
+        {querySection}
       </Flex>
       <Flex gap={16} align="center" justify="space-between mb-5 md:mb-0">
         <Button
@@ -64,14 +70,16 @@ const TableHeader: React.FC<Props> = ({ query, onQuery, onOpenAdd }) => {
           className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
           icon={<RiShareBoxFill className="w-5 h-5" />}
         />
-        <Button
-          className="border-none px-8 py-6 rounded-3xl"
-          type="primary"
-          iconPosition="start"
-          onClick={() => onOpenAdd()}
-        >
-          Add item
-        </Button>
+        {onOpenAdd && (
+          <Button
+            className="border-none px-8 py-6 rounded-3xl"
+            type="primary"
+            iconPosition="start"
+            onClick={() => onOpenAdd()}
+          >
+            Add item
+          </Button>
+        )}
       </Flex>
     </Flex>
   );

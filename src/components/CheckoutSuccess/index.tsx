@@ -3,6 +3,7 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { Link } from "react-router";
 import { PurchaseSuccess } from "../CheckoutModal";
 import React from "react";
+import { formatDatetime } from '../../utils/formatter'
 
 interface Props {
   purchaseSuccess: PurchaseSuccess;
@@ -10,22 +11,6 @@ interface Props {
 }
 
 const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
-  const formatDatetime = (d: Date) => {
-    return (
-      d.getUTCFullYear() +
-      "-" +
-      ("0" + (d.getUTCMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + d.getUTCDate()).slice(-2) +
-      " " +
-      ("0" + d.getUTCHours()).slice(-2) +
-      ":" +
-      ("0" + d.getUTCMinutes()).slice(-2) +
-      ":" +
-      ("0" + d.getUTCSeconds()).slice(-2)
-    );
-  };
-
   return (
     <>
       <Flex vertical gap={16} align="center" className="mb-10">

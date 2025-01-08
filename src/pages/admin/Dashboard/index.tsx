@@ -2,7 +2,7 @@ import "./index.css";
 import { Avatar, Button, Card, Col, Flex, Row, Table, TableProps, Tag } from "antd";
 import { RiShareForwardLine } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
-import { Product } from "../../configs/types/product";
+import { Product } from "../../../configs/types/product";
 import { BsApple } from "react-icons/bs";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";

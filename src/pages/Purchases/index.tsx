@@ -1,4 +1,4 @@
-import { Flex, Form, Pagination, Segmented, Select } from "antd";
+import { Flex, Pagination } from "antd";
 import PurchaseList from "../../components/PurchasesList";
 import { useEffect, useState } from "react";
 import { Purchase } from "../../configs/types/purchase";
@@ -41,25 +41,7 @@ const Purchases = () => {
 
   return (
     <Flex vertical className="w-2/5 mx-auto pt-6 pb-20">
-      <h4 className="mb-5 text-h4 font-bold">Your Purchases</h4>
-
-      <Flex align="center" justify="space-between" className="mb-8">
-        <Segmented
-          size="large"
-          options={[
-            { label: "Orders", value: "Orders" },
-            {
-              value: "Not yet shipped",
-              label: "Not yet shipped",
-            },
-            { value: "Cancelled orders", label: "Cancelled orders" },
-          ]}
-        />
-
-        <Form.Item className="!mb-0">
-          <Select className="h-10" value={"Past 3 Month"} />
-        </Form.Item>
-      </Flex>
+      <h4 className="mb-8 text-h4 font-bold">Your Purchases</h4>
 
       {purchases.length > 0 && (
         <Flex className="px-10 py-5 rounded-t-xl bg-secondaryBackground w-full" gap={60}>
@@ -82,7 +64,7 @@ const Purchases = () => {
 
       <PurchaseList purchases={purchases} />
 
-      {purchases.length > 1 && (
+      {purchases.length > 0 && (
         <Pagination
           className="justify-center mt-5"
           onChange={setPage}

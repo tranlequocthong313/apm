@@ -17,6 +17,9 @@ const ReviewModal: React.FC<Props> = ({ onOk, onCancel, purchase, open }) => {
   const [comment, setComment] = useState(purchase.reviewComment || "");
 
   const submit = async () => {
+    if (rate === 0) {
+      return;
+    }
     try {
       await axiosInstance.patch(PURCHASE_ENDPOINT.review(purchase.id), {
         reviewComment: comment,

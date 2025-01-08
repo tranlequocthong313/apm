@@ -1,9 +1,9 @@
 import { Button, Col, Flex, Image, Modal, Row, Tag } from "antd";
-import ProductTable from "../../components/ProductTable";
+import ProductTable from "../../../components/ProductTable";
 import { IoStatsChart } from "react-icons/io5";
 import { FaCaretDown } from "react-icons/fa";
 import { FaCaretUp, FaPen, FaTrash } from "react-icons/fa";
-import noDataFoundImage from "../../assets/images/no-data-found.jpg";
+import noDataFoundImage from "../../../assets/images/no-data-found.jpg";
 import debounce from "lodash.debounce";
 
 import { Line } from "react-chartjs-2";
@@ -18,12 +18,12 @@ import {
   Legend,
 } from "chart.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Product } from "../../configs/types/product";
-import TableHeader from "../../components/TableHeader";
-import ProductDrawer from "../../components/ProductDrawer";
-import axiosInstance from "../../configs/apis";
-import PRODUCT_ENDPOINT from "../../configs/apis/endpoints/product";
-import ImageWithActions from "../../components/ImageWithActions";
+import { Product } from "../../../configs/types/product";
+import TableHeader from "../../../components/TableHeader";
+import ProductDrawer from "../../../components/ProductDrawer";
+import axiosInstance from "../../../configs/apis";
+import PRODUCT_ENDPOINT from "../../../configs/apis/endpoints/product";
+import ImageWithActions from "../../../components/ImageWithActions";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

@@ -2,16 +2,17 @@ import { Navigate, Outlet, Route, Routes } from "react-router";
 import ContentOnlyLayout from "../layouts/ContentOnlyLayout";
 import LoginPage from "../pages/Login";
 import NavAndSidebarLayout from "../layouts/NavAndSidebarLayout";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/admin/Dashboard";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import Products from "../pages/Products";
-import Categories from "../pages/Categories";
+import Products from "../pages/admin/Products";
+import Categories from "../pages/admin/Categories";
 import HomePage from "../pages/Home";
 import SignUpPage from "../pages/SignUp";
 import ProductDetail from "../pages/ProductDetail";
 import NavAndFooterLayout from "../layouts/NavAndFooterLayout";
 import Purchases from "../pages/Purchases";
+import PurchasesAdmin from "../pages/admin/Purchases";
 
 const GuestOnlyRoute = ({ isLoggedIn = false, redirect = "/" }) => {
   return !isLoggedIn ? <Outlet /> : <Navigate replace to={redirect} />;
@@ -51,6 +52,7 @@ const AppRoute = () => {
             <Route index element={<Dashboard />} />
             <Route path="products" element={<Products />} />
             <Route path="categories" element={<Categories />} />
+            <Route path="purchases" element={<PurchasesAdmin />} />
           </Route>
         </Route>
       </Route>

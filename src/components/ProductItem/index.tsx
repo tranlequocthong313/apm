@@ -10,7 +10,6 @@ interface Props {
 }
 
 // TODO: Skeleton loading
-// TODO: Vertial margin on small devices
 const ProductItem: React.FC<Props> = ({ product }) => {
   return (
     <Link to={"/products/" + product.urlName}>
@@ -25,7 +24,7 @@ const ProductItem: React.FC<Props> = ({ product }) => {
             className="min-h-96 max-h-96 object-cover rounded-xl"
           />
         }
-        className="rounded-xl border-none p-0 hover:shadow-none hover:scale-105 product-item mb-5"
+        className="rounded-xl border-none p-0 hover:shadow-none hover:scale-105 product-item mb-10 lg:mb-5"
       >
         <div className="absolute top-2 right-2 px-4 py-2 font-bold text-lg bg-gradient-to-r from-red-500 to-orange-400 text-white rounded-full shadow-lg flex items-center">
           <span className="mr-1">🔥</span> {product.discountPercentage}%

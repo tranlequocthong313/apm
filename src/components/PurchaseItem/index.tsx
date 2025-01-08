@@ -10,6 +10,7 @@ import { Link } from "react-router";
 import CheckoutModal from "../CheckoutModal";
 import { FaStar } from "react-icons/fa";
 import ReviewModal from "../ReviewModal";
+import { formatDatetime } from "../../utils/formatter";
 
 interface Props {
   purchase: Purchase;
@@ -34,22 +35,6 @@ const PurchaseItem: React.FC<Props> = ({ purchase }) => {
     };
     fetchProduct();
   }, [purchase]);
-
-  const formatDatetime = (d: Date) => {
-    return (
-      d.getUTCFullYear() +
-      "-" +
-      ("0" + (d.getUTCMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + d.getUTCDate()).slice(-2) +
-      " " +
-      ("0" + d.getUTCHours()).slice(-2) +
-      ":" +
-      ("0" + d.getUTCMinutes()).slice(-2) +
-      ":" +
-      ("0" + d.getUTCSeconds()).slice(-2)
-    );
-  };
 
   return (
     <Flex vertical gap={20} className="p-10 border border-slate-300 last:rounded-b-xl">

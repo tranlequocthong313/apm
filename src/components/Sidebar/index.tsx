@@ -1,6 +1,5 @@
 import { Avatar, Button, Col, Flex, Image, Layout, Menu, MenuProps, Row } from "antd";
 import { Link } from "react-router";
-import { User } from "../../configs/types/user";
 import { MdOutlineCategory, MdOutlineDashboard, MdOutlineWarehouse } from "react-icons/md";
 import React, { useState } from "react";
 import miniLogo from "../../assets/images/ac-mini-logo.jpeg";
@@ -9,6 +8,7 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import "./index.css";
 import { IoMdClose } from "react-icons/io";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const { Sider } = Layout;
 
@@ -48,6 +48,13 @@ const menuItems: MenuItem[] = [
     "4",
     <Link to={"/admin/categories"}>
       <MdOutlineCategory className="w-7 h-7" />
+    </Link>,
+  ),
+  getItem(
+    "Purchases",
+    "5",
+    <Link to={"/admin/purchases"}>
+      <AiOutlineShoppingCart className="w-7 h-7" />
     </Link>,
   ),
 ];

@@ -3,12 +3,12 @@ import { FaTrash } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import TableHeader from "../../components/TableHeader";
-import axiosInstance from "../../configs/apis";
-import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
-import { Category } from "../../configs/types/category";
-import CategoryTable from "../../components/CategoryTable";
-import CategoryDrawer from "../../components/CategoryDrawer";
+import TableHeader from "../../../components/TableHeader";
+import axiosInstance from "../../../configs/apis";
+import CATEGORY_ENDPOINT from "../../../configs/apis/endpoints/category";
+import { Category } from "../../../configs/types/category";
+import CategoryTable from "../../../components/CategoryTable";
+import CategoryDrawer from "../../../components/CategoryDrawer";
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);

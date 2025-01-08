@@ -33,8 +33,6 @@ const marks: SliderSingleProps["marks"] = {
   },
 };
 
-// TODO: verticalize labels and inputs
-// TODO: put per page at the bottom next to pagination
 const HomeBottomSection = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -143,21 +141,7 @@ const HomeBottomSection = () => {
             autoFocus
           />
 
-          <Form.Item name={"offset"} label="Products per page">
-            <Select
-              value={pageSize}
-              placeholder="Products per page"
-              className="w-full h-12  !bg-secondaryBackground"
-              onChange={value => setPageSize(value)}
-              options={[
-                { label: "6", value: 6 },
-                { label: "8", value: 8 },
-                { label: "12", value: 12 },
-              ]}
-            />
-          </Form.Item>
-
-          <Form.Item name={"categories"} label="Category">
+          <Form.Item name={"categories"} label="Category" layout="vertical">
             <Select
               placeholder="Select categories"
               className="w-full h-12  !bg-secondaryBackground"
@@ -167,7 +151,7 @@ const HomeBottomSection = () => {
             />
           </Form.Item>
 
-          <Form.Item name={"price"} label="Price">
+          <Form.Item name={"price"} label="Price" layout="vertical">
             <Slider
               onChange={handlePriceFilter}
               marks={marks}
@@ -180,7 +164,7 @@ const HomeBottomSection = () => {
             />
           </Form.Item>
 
-          <p className="mb-3">Rating:</p>
+          <p className="mb-3">Rating</p>
           <Form.Item>
             <Checkbox>
               <Rate disabled value={5} />
@@ -229,13 +213,22 @@ const HomeBottomSection = () => {
           <ProductList products={filteredProducts} />
 
           {filteredProducts.length > 0 && (
-            <Pagination
-              className="justify-center mt-5"
-              onChange={setPage}
-              total={totalPage}
-              current={page}
-              pageSize={pageSize}
-            />
+            <Flex align="center" gap={10}>
+              <Form.Item name={"offset"} className="mb-0">
+                <Select
+                  value={pageSize}
+                  defaultValue={pageSize}
+                  onChange={value => setPageSize(value)}
+                  options={[
+                    { label: "6", value: 6 },
+                    { label: "8", value: 8 },
+                    { label: "12", value: 12 },
+                  ]}
+                />
+              </Form.Item>
+
+              <Pagination onChange={setPage} total={totalPage} current={page} pageSize={pageSize} />
+            </Flex>
           )}
         </Col>
       </Row>
