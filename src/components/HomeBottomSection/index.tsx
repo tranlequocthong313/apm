@@ -25,6 +25,7 @@ import classNames from "classnames";
 import { Category } from "../../configs/types/category";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
 import debounce from "lodash.debounce";
+import RecentlyViewedProductList from "../RecentlyViewedProductList";
 
 const marks: SliderSingleProps["marks"] = {
   0: "$0",
@@ -115,85 +116,64 @@ const HomeBottomSection = () => {
 
       <Row gutter={50}>
         <Col lg={6} span={24}>
-          <Input
-            suffix={
-              query.length === 0 ? (
-                <IoSearch className="w-5 h-5" />
-              ) : (
-                <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
-              )
-            }
-            placeholder="Search..."
-            onChange={e => {
-              onQuery(e.target.value);
-              setPage(1);
-            }}
-            value={query}
-            className={classNames(
-              "rounded-3xl",
-              "px-5",
-              "py-2.5",
-              "transition-all",
-              "duration-500",
-              "mr-5",
-              "mb-10",
-            )}
-            autoFocus
-          />
+          <Form>
+            <Form.Item name={"categories"} label="Category" layout="vertical" className="md:mb-20">
+              <Select
+                placeholder="Select categories"
+                className="w-full h-12  !bg-secondaryBackground"
+                options={categoryOptions}
+                labelInValue
+                onChange={option => sestCategory(option.label)}
+              />
+            </Form.Item>
 
-          <Form.Item name={"categories"} label="Category" layout="vertical">
-            <Select
-              placeholder="Select categories"
-              className="w-full h-12  !bg-secondaryBackground"
-              options={categoryOptions}
-              labelInValue
-              onChange={option => sestCategory(option.label)}
-            />
-          </Form.Item>
+            <Form.Item name={"price"} label="Price" layout="vertical" className="md:mb-20">
+              <Slider
+                onChange={handlePriceFilter}
+                marks={marks}
+                max={999}
+                min={0}
+                value={priceRange}
+                range
+                tooltip={{ open: false }}
+              />
+            </Form.Item>
 
-          <Form.Item name={"price"} label="Price" layout="vertical">
-            <Slider
-              onChange={handlePriceFilter}
-              marks={marks}
-              defaultValue={[0, 999]}
-              max={999}
-              min={0}
-              value={priceRange}
-              range
-              tooltip={{ open: false }}
-            />
-          </Form.Item>
-
-          <p className="mb-3">Rating</p>
-          <Form.Item>
-            <Checkbox>
-              <Rate disabled value={5} />
-            </Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Checkbox>
-              <Rate disabled value={4} />
-            </Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Checkbox>
-              <Rate disabled value={3} />
-            </Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Checkbox>
-              <Rate disabled value={2} />
-            </Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Checkbox>
-              <Rate disabled value={1} />
-            </Checkbox>
-          </Form.Item>
+            <p className="mb-3">Rating</p>
+            <Form.Item>
+              <Checkbox>
+                <Rate disabled value={5} />
+              </Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Checkbox>
+                <Rate disabled value={4} />
+              </Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Checkbox>
+                <Rate disabled value={3} />
+              </Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Checkbox>
+                <Rate disabled value={2} />
+              </Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Checkbox>
+                <Rate disabled value={1} />
+              </Checkbox>
+            </Form.Item>
+          </Form>
         </Col>
 
         <Col lg={18} span={24}>
-          <Row justify={"space-between"} className="pb-5 border-b border-gray-200 mb-10">
+          <Flex
+            gap={20}
+            justify={"space-between"}
+            className="pb-5 border-b border-gray-200 mb-10  flex-col md:flex-row items-start md:items-center"
+          >
             <Segmented
               size="large"
               options={[
@@ -201,37 +181,67 @@ const HomeBottomSection = () => {
                 { value: "List", icon: <BarsOutlined /> },
               ]}
             />
-            <Button
-              icon={<IoFilter />}
-              size="large"
-              className="!border-secondaryBackground text-textSecondary "
-            >
-              Sort by: <strong className="text-textPrimary hover:text-white">Popular</strong>
-            </Button>
-          </Row>
+            <Form className="flex items-center gap-5">
+              <Form.Item className="mb-0">
+                <Input
+                  suffix={
+                    query.length === 0 ? (
+                      <IoSearch className="w-5 h-5" />
+                    ) : (
+                      <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
+                    )
+                  }
+                  placeholder="Search..."
+                  onChange={e => {
+                    onQuery(e.target.value);
+                    setPage(1);
+                  }}
+                  value={query}
+                  className={classNames(
+                    "rounded-3xl",
+                    "px-5",
+                    "py-2",
+                    "transition-all",
+                    "duration-500",
+                  )}
+                  autoFocus
+                />
+              </Form.Item>
+              <Button
+                icon={<IoFilter />}
+                size="large"
+                className="!border-secondaryBackground text-textSecondary "
+              >
+                Sort by: <strong className="text-textPrimary hover:text-white">Popular</strong>
+              </Button>
+            </Form>
+          </Flex>
 
           <ProductList products={filteredProducts} />
 
           {filteredProducts.length > 0 && (
             <Flex align="center" gap={10}>
-              <Form.Item name={"offset"} className="mb-0">
-                <Select
-                  value={pageSize}
-                  defaultValue={pageSize}
-                  onChange={value => setPageSize(value)}
-                  options={[
-                    { label: "6", value: 6 },
-                    { label: "8", value: 8 },
-                    { label: "12", value: 12 },
-                  ]}
-                />
-              </Form.Item>
+              <Form>
+                <Form.Item name={"offset"} className="mb-0">
+                  <Select
+                    value={pageSize}
+                    onChange={value => setPageSize(value)}
+                    options={[
+                      { label: "6", value: 6 },
+                      { label: "8", value: 8 },
+                      { label: "12", value: 12 },
+                    ]}
+                  />
+                </Form.Item>
+              </Form>
 
               <Pagination onChange={setPage} total={totalPage} current={page} pageSize={pageSize} />
             </Flex>
           )}
         </Col>
       </Row>
+
+      <RecentlyViewedProductList size={4} />
     </Flex>
   );
 };

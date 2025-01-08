@@ -7,6 +7,7 @@ import bigLogo from "../../assets/images/ac-logo.png";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import useSelectedMenuItem from "../../hooks/useSelectedMenuItem";
 import "./index.css";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 const { Sider } = Layout;
 
@@ -79,8 +80,6 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
       breakpoint="lg"
       onBreakpoint={setOnTablet}
     >
-      {/* <Row> */}
-      {/* <Col span={16} md={24}> */}
       <Link to={"/admin"}>
         {collapsed ? (
           <Image
@@ -92,7 +91,7 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
           />
         ) : (
           <Image
-            className="md:mx-auto mt-12 !w-[160px] !h-[32px] ml-5"
+            className="md:mx-auto mt-12 !w-[160px] !h-[32px] mx-auto"
             src={bigLogo}
             preview={false}
             alt="logo"
@@ -100,17 +99,6 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
           />
         )}
       </Link>
-      {/* </Col> */}
-      {/* 
-        <Col span={8} className="lg:hidden">
-          <Button
-            type="text"
-            icon={<IoMdClose className="w-8 h-8" />}
-            className="text-white border-none lg:hidden"
-            onClick={() => onCollapse(true)}
-          />
-        </Col> */}
-      {/* </Row> */}
 
       <Menu
         selectedKeys={[selectedMenuItem]}
@@ -123,6 +111,15 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
         theme="dark"
         items={menuItems}
       />
+
+      {onTablet && (
+        <div
+          className="w-full bg-primaryMain/30 p-5 cursor-pointer"
+          onClick={() => onCollapse(true)}
+        >
+          <FaCircleArrowLeft className="mx-auto w-8 h-8 text-white" />
+        </div>
+      )}
     </Sider>
   );
 };

@@ -106,3 +106,25 @@
 .ant-pagination-jump-next {
   border-radius: 50%;
 }
+
+.custom-prev,
+.custom-next {
+  @apply absolute top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none rounded-full w-14 h-14 flex justify-center items-center cursor-pointer transition-colors duration-300 ease-linear;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+  @apply bg-black/80;
+}
+
+.custom-prev {
+  @apply left-2.5;
+}
+
+.custom-next {
+  @apply right-2.5;
+}
+
+.swiper-slide-container {
+  @apply w-full h-full flex justify-center items-center overflow-hidden bg-[#f5f5f5];
+}

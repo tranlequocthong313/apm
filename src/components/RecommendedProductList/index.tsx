@@ -37,7 +37,7 @@ const RecommendedProductList: React.FC<Props> = ({ size = 4, filterItem }) => {
       <h5 className="lg:text-h5 text-h6 font-bold mt-14 mb-10">Recommended products</h5>
       <Row gutter={60}>
         {products.map(product => (
-          <Col lg={6} span={24} key={product.id}>
+          <Col lg={24 / size} span={24} key={product.id}>
             <ProductItem product={product} />
           </Col>
         ))}

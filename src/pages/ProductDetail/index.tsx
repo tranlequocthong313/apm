@@ -37,6 +37,23 @@ const ProductDetail = () => {
     fetchProduct();
   }, [urlName]);
 
+  useEffect(() => {
+    const handleViewedProducts = () => {
+      if (!product) {
+        return;
+      }
+      const viewedProductsJson = localStorage.getItem("viewedProducts");
+      let viewedProducts: Product[] = [];
+      if (viewedProductsJson) {
+        viewedProducts = JSON.parse(viewedProductsJson);
+      }
+      viewedProducts = viewedProducts.filter(prod => prod.id !== product.id);
+      viewedProducts.unshift(product);
+      localStorage.setItem("viewedProducts", JSON.stringify(viewedProducts));
+    };
+    handleViewedProducts();
+  }, [product]);
+
   // TODO: for dev purpose
   const getPlaceholderImages = (size: number = 4) => {
     const res = [];
