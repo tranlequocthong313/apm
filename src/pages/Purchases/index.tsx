@@ -40,11 +40,11 @@ const Purchases = () => {
   }, [page]);
 
   return (
-    <Flex vertical className="w-2/5 mx-auto pt-6 pb-20">
+    <Flex vertical className="lg:w-2/5 mx-auto pt-6 pb-20 lg:px-auto md:px-5 px-2">
       <h4 className="mb-8 text-h4 font-bold">Your Purchases</h4>
 
       {purchases.length > 0 && (
-        <Flex className="px-10 py-5 rounded-t-xl bg-secondaryBackground w-full" gap={60}>
+        <Flex className="px-10 py-5 rounded-t-xl bg-secondaryBackground w-full flex-col md:flex-row gap-3 md:gap-14">
           <Flex vertical gap={10}>
             <span className="text-textSecondary text-sm">Order placed</span>
             <strong>June 3 2024</strong>

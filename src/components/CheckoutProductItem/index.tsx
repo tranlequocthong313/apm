@@ -19,10 +19,10 @@ const CheckoutProductItem: React.FC<Props> = ({ product, onChangeAmount }) => {
         <Image
           src={"http://" + product.picture}
           fallback="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-          className="rounded-lg min-w-20 max-w-20"
+          className="rounded-lg min-w-20 max-w-20 hidden md:block"
         />
 
-        <Flex vertical>
+        <Flex vertical className="w-40 md:w-full">
           <strong className="text-lg font-bold text-ellipsis">{product.name}</strong>
           <span title={product.description} className="text-textSecondary truncate w-60">
             {product.description}

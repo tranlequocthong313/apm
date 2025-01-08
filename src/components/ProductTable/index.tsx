@@ -68,39 +68,37 @@ const ProductTable: React.FC<Props> = ({
   ];
 
   return (
-    <>
-      <Table<Product>
-        className="table w-full"
-        scroll={{ x: true }}
-        onRow={record => {
-          return {
-            onClick: () => onSelect?.(record),
-          };
-        }}
-        pagination={{
-          onChange(page) {
-            onChangePage(page);
-          },
-          total: pageSize,
-          current: page,
-          pageSize: 10,
-        }}
-        rowKey={"id"}
-        columns={columns}
-        dataSource={products}
-        rowHoverable={false}
-        rowSelection={{
-          type: "radio",
-          selectedRowKeys: selectedItem ? [selectedItem.id] : [],
-          onChange: selectedKeys => {
-            const selectedRow = products.find(product => product.id === selectedKeys[0]);
-            if (selectedRow) {
-              onSelect?.(selectedRow);
-            }
-          },
-        }}
-      />
-    </>
+    <Table<Product>
+      className="table w-full"
+      scroll={{ x: true }}
+      onRow={record => {
+        return {
+          onClick: () => onSelect?.(record),
+        };
+      }}
+      pagination={{
+        onChange(page) {
+          onChangePage(page);
+        },
+        total: pageSize,
+        current: page,
+        pageSize: 10,
+      }}
+      rowKey={"id"}
+      columns={columns}
+      dataSource={products}
+      rowHoverable={false}
+      rowSelection={{
+        type: "radio",
+        selectedRowKeys: selectedItem ? [selectedItem.id] : [],
+        onChange: selectedKeys => {
+          const selectedRow = products.find(product => product.id === selectedKeys[0]);
+          if (selectedRow) {
+            onSelect?.(selectedRow);
+          }
+        },
+      }}
+    />
   );
 };
 

@@ -105,15 +105,17 @@ const Purchases = () => {
       {/* Right Section */}
       <TableHeader />
 
-      <PurchaseTable
-        purchases={purchases}
-        selectedItem={purchase}
-        onSelect={setPurchase}
-        onDelete={() => setOpenConfirmDelete(true)}
-        pageSize={pageSize}
-        page={page}
-        onChangePage={setPage}
-      />
+      <div className="w-full overflow-x-scroll">
+        <PurchaseTable
+          purchases={purchases}
+          selectedItem={purchase}
+          onSelect={setPurchase}
+          onDelete={() => setOpenConfirmDelete(true)}
+          pageSize={pageSize}
+          page={page}
+          onChangePage={setPage}
+        />
+      </div>
     </>
   );
 };

@@ -17,7 +17,7 @@ const NavAndSidebarLayout = () => {
 
       <Layout
         className={classnames(
-          collapsed ? "md:ml-[100px]" : "md:ml-[280px]",
+          collapsed ? "lg:ml-[100px]" : "lg:ml-[280px]",
           "transition-all",
           "duration-500",
           "px-3 md:px-0",

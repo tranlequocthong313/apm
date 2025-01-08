@@ -28,10 +28,9 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
       key: "1",
       label: (
         <Flex
-          gap={50}
-          justify="space-between"
+          gap={30}
           align="center"
-          className="text-danger"
+          className="text-danger p-2"
           onClick={() => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
@@ -39,8 +38,8 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
             navigate("/login");
           }}
         >
-          Logout
           <IoLogOutOutline className="w-6 h-6" />
+          Logout
         </Flex>
       ),
     },
@@ -65,7 +64,7 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
       <Flex align="center" className="w-full md:mr-10">
         <Button
           onClick={onToggle}
-          className="mr-6 text-white bg-tertiaryBackground border-none !p-5 rounded-lg md:hidden"
+          className="mr-6 text-white bg-tertiaryBackground border-none !p-5 rounded-lg lg:hidden"
           icon={<IoMenu className="w-7 h-7" />}
         />
         <Input
@@ -75,7 +74,7 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
         />
       </Flex>
 
-      <Flex gap={10}>
+      <Flex gap={32}>
         <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Customize">
           <VscSettings className="w-5 h-5" />
         </Button>
@@ -88,6 +87,7 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
 
         <Dropdown menu={{ items }} trigger={["click"]}>
           <Avatar
+            className="cursor-pointer"
             size={40}
             src={`https://ui-avatars.com/api/?name=${user?.name}&background=00A8A4&color=ffffff`}
           />

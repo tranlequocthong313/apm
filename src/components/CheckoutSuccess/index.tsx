@@ -3,7 +3,7 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { Link } from "react-router";
 import { PurchaseSuccess } from "../CheckoutModal";
 import React from "react";
-import { formatDatetime } from '../../utils/formatter'
+import { formatDatetime } from "../../utils/formatter";
 
 interface Props {
   purchaseSuccess: PurchaseSuccess;
@@ -26,12 +26,20 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
       <Flex vertical gap={20}>
         <span className="font-semibold text-lg mb-2">Payment Details</span>
 
-        <Flex justify="space-between" align="center">
+        <Flex
+          justify="space-between"
+          align="center"
+          className="flex-col md:flex-row items-start md:items-center"
+        >
           <span className="text-textSecondary">Ref Id</span>
           <span>{purchaseSuccess.id}</span>
         </Flex>
 
-        <Flex justify="space-between" align="center">
+        <Flex
+          justify="space-between"
+          align="center"
+          className="flex-col md:flex-row items-start md:items-center"
+        >
           <span className="text-textSecondary">Payment Status</span>
           <Flex gap={6} align="center">
             <FaCircleCheck className="text-primaryMain" />
@@ -39,7 +47,11 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
           </Flex>
         </Flex>
 
-        <Flex justify="space-between" align="center">
+        <Flex
+          justify="space-between"
+          align="center"
+          className="flex-col md:flex-row items-start md:items-center"
+        >
           <span className="text-textSecondary">Payment Time</span>
           <span>{formatDatetime(new Date(purchaseSuccess.createdAt))}</span>
         </Flex>
@@ -47,7 +59,7 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
         <Flex
           justify="space-between"
           align="center"
-          className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2"
+          className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2 flex-col md:flex-row items-start md:items-center"
         >
           <span className="text-textSecondary text-lg">Total Payment</span>
           <span className="text-xl font-bold">

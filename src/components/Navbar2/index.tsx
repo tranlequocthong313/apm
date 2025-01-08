@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import bigLogo from "../../assets/images/ac-logo.png";
 import { RiNotification4Line } from "react-icons/ri";
-import { MdFavoriteBorder } from "react-icons/md";
+import { MdDashboard, MdFavoriteBorder } from "react-icons/md";
 import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
@@ -12,6 +12,7 @@ import { logout } from "../../store/slices/authSlice";
 import { Link, useNavigate } from "react-router";
 import { IoLogOutOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { User } from "../../configs/types/user";
 
 const { Header } = Layout;
 
@@ -20,28 +21,54 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <Flex
-          gap={50}
-          justify="space-between"
-          align="center"
-          className="text-danger"
-          onClick={() => {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            dispatch(logout());
-            navigate("/login");
-          }}
-        >
-          Logout
-          <IoLogOutOutline className="w-6 h-6" />
-        </Flex>
-      ),
-    },
-  ];
+  const items = (user: User) => {
+    const dropdownItems: MenuProps["items"] = [];
+    if (user.role === "ADMIN") {
+      dropdownItems.push({
+        key: "1",
+        label: (
+          <Flex
+            gap={30}
+            align="center"
+            className="p-2"
+            onClick={() => {
+              navigate("/admin");
+            }}
+          >
+            <MdDashboard className="w-6 h-6" />
+            Dashboard
+          </Flex>
+        ),
+      });
+
+      dropdownItems.push({
+        type: "divider",
+      });
+    }
+
+    return [
+      ...dropdownItems,
+      {
+        key: "2",
+        label: (
+          <Flex
+            gap={30}
+            align="center"
+            className="text-danger p-2"
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("refreshToken");
+              dispatch(logout());
+              navigate("/login");
+            }}
+          >
+            <IoLogOutOutline className="w-6 h-6" />
+            Logout
+          </Flex>
+        ),
+      },
+    ];
+  };
 
   return (
     <Header
@@ -92,7 +119,7 @@ const Navbar = () => {
         </Badge>
 
         {user ? (
-          <Dropdown menu={{ items }} trigger={["click"]}>
+          <Dropdown menu={{ items: items(user) }} trigger={["click"]}>
             <Flex align="center" className="leading-5 cursor-pointer" gap={12}>
               <Avatar
                 size={46}

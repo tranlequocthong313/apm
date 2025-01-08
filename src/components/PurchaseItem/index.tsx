@@ -37,7 +37,7 @@ const PurchaseItem: React.FC<Props> = ({ purchase }) => {
   }, [purchase]);
 
   return (
-    <Flex vertical gap={20} className="p-10 border border-slate-300 last:rounded-b-xl">
+    <Flex vertical gap={20} className="md:p-10 p-5 border border-slate-300 last:rounded-b-xl">
       <Flex justify="space-between" align="center">
         <h6 className="mb-4 text-lg font-bold">Delivered June 5</h6>
 
@@ -49,9 +49,9 @@ const PurchaseItem: React.FC<Props> = ({ purchase }) => {
         )}
       </Flex>
 
-      <Flex gap={30}>
+      <Flex className="md:gap-6 gap-4">
         <Image
-          className="rounded-lg !w-32 !h-32 object-cover"
+          className="rounded-lg !w-32 !h-32 object-cover hidden md:block"
           preview={false}
           src={"http://" + product?.picture}
           fallback={"https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
@@ -59,28 +59,36 @@ const PurchaseItem: React.FC<Props> = ({ purchase }) => {
         <Flex vertical gap={16}>
           <h5 className="font-bold text-xl text-ellipsis">{product?.name}</h5>
           <Flex vertical gap={20}>
-            <Flex justify="space-between" align="center">
+            <Flex
+              justify="space-between"
+              className="flex-col md:flex-row items-start md:items-center"
+            >
               <span className="text-textSecondary">Ref Id</span>
               <span>{purchase.id}</span>
             </Flex>
-            <Flex justify="space-between" align="center">
+            <Flex
+              justify="space-between"
+              className="flex-col md:flex-row items-start md:items-center"
+            >
               <span className="text-textSecondary">Amount</span>
               <span>{purchase.amount}</span>
             </Flex>
-            <Flex justify="space-between" align="center">
+            <Flex
+              justify="space-between"
+              className="flex-col md:flex-row items-start md:items-center"
+            >
               <span className="text-textSecondary">Payment Time</span>
               <span>{formatDatetime(new Date(purchase.createdAt))}</span>
             </Flex>
             <Flex
               justify="space-between"
-              align="center"
-              className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2"
+              className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2 flex-col md:flex-row items-start md:items-center"
             >
               <span className="text-textSecondary text-lg">Total Payment</span>
               <span className="text-xl font-bold">${Number(purchase.totalPrice).toFixed(2)}</span>
             </Flex>
           </Flex>
-          <Flex gap={10}>
+          <Flex className="flex-col md:flex-row" gap={10}>
             <Button
               icon={<TfiReload />}
               className="bg-primaryMain text-white !border-primaryMain rounded-lg py-5"
@@ -97,7 +105,10 @@ const PurchaseItem: React.FC<Props> = ({ purchase }) => {
             >
               Review product
             </Button>
-            <Button icon={<IoIosMore />} className="!p-5 rounded-lg !border-slate-300" />
+            <Button
+              icon={<IoIosMore />}
+              className="!p-5 rounded-lg !border-slate-300 !w-full md:w-auto"
+            />
           </Flex>
         </Flex>
       </Flex>

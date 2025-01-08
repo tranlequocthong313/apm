@@ -50,7 +50,7 @@ const PurchaseTable: React.FC<Props> = ({
       dataIndex: "reviewComment",
       key: "reviewComment",
       render: comment => (
-        <div className="w-24 truncate" title={comment}>
+        <div title={comment} className="w-24 truncate">
           {comment}
         </div>
       ),
@@ -73,39 +73,37 @@ const PurchaseTable: React.FC<Props> = ({
   ];
 
   return (
-    <>
-      <Table<Purchase>
-        className="table w-full"
-        scroll={{ x: true }}
-        onRow={record => {
-          return {
-            onClick: () => onSelect?.(record),
-          };
-        }}
-        pagination={{
-          onChange(page) {
-            onChangePage(page);
-          },
-          total: pageSize,
-          current: page,
-          pageSize: 10,
-        }}
-        rowKey={"id"}
-        columns={columns}
-        dataSource={purchases}
-        rowHoverable={false}
-        rowSelection={{
-          type: "radio",
-          selectedRowKeys: selectedItem ? [selectedItem.id] : [],
-          onChange: selectedKeys => {
-            const selectedRow = purchases.find(purchase => purchase.id === selectedKeys[0]);
-            if (selectedRow) {
-              onSelect?.(selectedRow);
-            }
-          },
-        }}
-      />
-    </>
+    <Table<Purchase>
+      className="table w-full"
+      scroll={{ x: true }}
+      onRow={record => {
+        return {
+          onClick: () => onSelect?.(record),
+        };
+      }}
+      pagination={{
+        onChange(page) {
+          onChangePage(page);
+        },
+        total: pageSize,
+        current: page,
+        pageSize: 10,
+      }}
+      rowKey={"id"}
+      columns={columns}
+      dataSource={purchases}
+      rowHoverable={false}
+      rowSelection={{
+        type: "radio",
+        selectedRowKeys: selectedItem ? [selectedItem.id] : [],
+        onChange: selectedKeys => {
+          const selectedRow = purchases.find(purchase => purchase.id === selectedKeys[0]);
+          if (selectedRow) {
+            onSelect?.(selectedRow);
+          }
+        },
+      }}
+    />
   );
 };
 

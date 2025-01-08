@@ -1,14 +1,12 @@
-import { Avatar, Button, Col, Flex, Image, Layout, Menu, MenuProps, Row } from "antd";
+import { Image, Layout, Menu, MenuProps } from "antd";
 import { Link } from "react-router";
 import { MdOutlineCategory, MdOutlineDashboard, MdOutlineWarehouse } from "react-icons/md";
 import React, { useState } from "react";
 import miniLogo from "../../assets/images/ac-mini-logo.jpeg";
 import bigLogo from "../../assets/images/ac-logo.png";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import "./index.css";
-import { IoMdClose } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import useSelectedMenuItem from "../../hooks/useSelectedMenuItem";
+import "./index.css";
 
 const { Sider } = Layout;
 
@@ -31,28 +29,28 @@ function getItem(
 const menuItems: MenuItem[] = [
   getItem(
     "Home",
-    "2",
+    "/admin",
     <Link to={"/admin"}>
       <MdOutlineDashboard className="w-7 h-7" />
     </Link>,
   ),
   getItem(
     "Products",
-    "3",
+    "/admin/products",
     <Link to={"/admin/products"}>
       <MdOutlineWarehouse className="w-7 h-7" />
     </Link>,
   ),
   getItem(
     "Categories",
-    "4",
+    "/admin/categories",
     <Link to={"/admin/categories"}>
       <MdOutlineCategory className="w-7 h-7" />
     </Link>,
   ),
   getItem(
     "Purchases",
-    "5",
+    "/admin/purchases",
     <Link to={"/admin/purchases"}>
       <AiOutlineShoppingCart className="w-7 h-7" />
     </Link>,
@@ -65,64 +63,66 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
-  const user = useSelector((state: IRootState) => state.auth.user)!;
-  const [onMobile, setOnMobile] = useState(false);
+  const [onTablet, setOnTablet] = useState(false);
+  const { selectedMenuItem, setSelectedMenuItem } = useSelectedMenuItem();
 
   return (
     <Sider
-      collapsedWidth={onMobile ? 0 : 100}
-      width={onMobile ? "100%" : 280}
+      collapsedWidth={onTablet ? 0 : 100}
+      width={onTablet ? "100%" : 280}
       collapsible
       collapsed={collapsed}
       className="fixed top-0 bottom-0 overflow-auto transition-all duration-500 z-50"
       trigger={null}
       onMouseEnter={() => onCollapse(false)}
       onMouseLeave={() => onCollapse(true)}
-      breakpoint="xs"
-      onBreakpoint={setOnMobile}
+      breakpoint="lg"
+      onBreakpoint={setOnTablet}
     >
-      <Row>
-        <Col span={16} md={24}>
-          <Link to={"/admin"}>
-            {collapsed ? (
-              <Image
-                className="rounded-2xl md:mx-auto mt-8 !w-12 ml-5"
-                wrapperClassName="!w-full"
-                preview={false}
-                src={miniLogo}
-                alt="logo"
-              />
-            ) : (
-              <Image
-                className="md:mx-auto mt-12 !w-[160px] !h-[32px] ml-5"
-                src={bigLogo}
-                preview={false}
-                alt="logo"
-                wrapperClassName="!w-full"
-              />
-            )}
-          </Link>
-        </Col>
-
-        <Col span={8} className="md:hidden flex items-center justify-end pr-5">
+      {/* <Row> */}
+      {/* <Col span={16} md={24}> */}
+      <Link to={"/admin"}>
+        {collapsed ? (
+          <Image
+            className="rounded-2xl md:mx-auto mt-8 !w-12 ml-5"
+            wrapperClassName="!w-full"
+            preview={false}
+            src={miniLogo}
+            alt="logo"
+          />
+        ) : (
+          <Image
+            className="md:mx-auto mt-12 !w-[160px] !h-[32px] ml-5"
+            src={bigLogo}
+            preview={false}
+            alt="logo"
+            wrapperClassName="!w-full"
+          />
+        )}
+      </Link>
+      {/* </Col> */}
+      {/* 
+        <Col span={8} className="lg:hidden">
           <Button
             type="text"
             icon={<IoMdClose className="w-8 h-8" />}
-            className="mt-8 text-white border-none md:hidden"
+            className="text-white border-none lg:hidden"
             onClick={() => onCollapse(true)}
           />
-        </Col>
-      </Row>
+        </Col> */}
+      {/* </Row> */}
 
-      <Menu defaultSelectedKeys={["2"]} mode="inline" theme="dark" items={menuItems} />
-
-      <Flex className="mt-96" justify="center" align="center">
-        <Avatar
-          className=""
-          size={48}
-          src={`https://ui-avatars.com/api/?name=${user.name}&background=00A8A4&color=ffffff`}
-        />
-      </Flex>
+      <Menu
+        selectedKeys={[selectedMenuItem]}
+        onClick={e => {
+          setSelectedMenuItem(e.key);
+          onCollapse(true);
+        }}
+        defaultSelectedKeys={["1"]}
+        mode="inline"
+        theme="dark"
+        items={menuItems}
+      />
     </Sider>
   );
 };
