@@ -20,6 +20,10 @@ const Purchases = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Purchases - Appscyclone Ecommerce";
+  }, []);
+
+  useEffect(() => {
     const fetchPurchases = async (id?: string | null) => {
       try {
         setLoading(true);

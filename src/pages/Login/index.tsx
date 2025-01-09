@@ -35,7 +35,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    document.title = "Login - Appscyclone Product Management";
+    document.title = "Login - Appscyclone Ecommerce";
   }, []);
 
   useEffect(() => {

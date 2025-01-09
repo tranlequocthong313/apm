@@ -9,7 +9,7 @@ import RecommendedProductList from "../../components/RecommendedProductList";
 import CheckoutModal from "../../components/CheckoutModal";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store/index";
-import SkeletonProductDetail from "../SkeletonProductDetail";
+import SkeletonProductDetail from "../../components/SkeletonProductDetail";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<Product>();
@@ -22,6 +22,10 @@ const ProductDetail = () => {
   const user = useSelector((state: IRootState) => state.auth.user);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    document.title = product?.name + " - Appscyclone Ecommerce";
+  }, [product]);
 
   useEffect(() => {
     const fetchProduct = async () => {

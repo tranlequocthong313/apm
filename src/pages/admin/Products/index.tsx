@@ -90,6 +90,10 @@ const Products = () => {
   const [isImportedData, setIsImportedData] = useState(false);
   const [addedItems, setAddedItems] = useState<Product[]>([]);
 
+  useEffect(() => {
+    document.title = "Products - Appscyclone Ecommerce Management";
+  }, []);
+
   const includedItem = (product: Product) => {
     return addedItems.find(item => item.id === product.id || item.name === product.name);
   };

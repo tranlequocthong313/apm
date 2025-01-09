@@ -112,6 +112,10 @@ const Purchases = () => {
     },
   ];
 
+  useEffect(() => {
+    document.title = "Purchases - Appscyclone Ecommerce Management";
+  }, []);
+
   const fetchPurchases = useCallback(async ({ p }: { p: number }) => {
     try {
       const response = await axiosInstance.get<{ purchases: Purchase[]; total: number }>(

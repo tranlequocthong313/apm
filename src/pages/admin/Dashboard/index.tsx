@@ -9,6 +9,7 @@ import { FaFacebook } from "react-icons/fa";
 import { SiShopee } from "react-icons/si";
 import { IoStatsChart } from "react-icons/io5";
 import { FaChartLine } from "react-icons/fa";
+import { useEffect } from "react";
 
 const CardHeader = ({ title, icon }: { title: React.ReactNode; icon?: React.ReactNode }) => {
   return (
@@ -128,6 +129,10 @@ const data: Product[] = [
 ];
 
 const Dashboard = () => {
+  useEffect(() => {
+    document.title = "Dashboard - Appscyclone Ecommerce Management";
+  }, []);
+
   return (
     <Flex vertical className="dashboard">
       <Row gutter={18}>

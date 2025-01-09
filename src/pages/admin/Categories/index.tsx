@@ -26,6 +26,10 @@ const Categories = () => {
   const [isImportedData, setIsImportedData] = useState(false);
   const [addedItems, setAddedItems] = useState<Category[]>([]);
 
+  useEffect(() => {
+    document.title = "Categories - Appscyclone Ecommerce Management";
+  }, []);
+
   const includedItem = (category: Category) => {
     return (
       addedItems.find(item => item.id === category.id) ||
