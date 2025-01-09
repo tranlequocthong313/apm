@@ -225,7 +225,7 @@ const ProductsSection = () => {
 
           {filteredProducts.length > 0 && (
             <Flex align="center" gap={10}>
-              <Form>
+              {/* <Form>
                 <Form.Item name={"offset"} className="mb-0">
                   <Select
                     value={pageSize}
@@ -237,9 +237,23 @@ const ProductsSection = () => {
                     ]}
                   />
                 </Form.Item>
-              </Form>
+              </Form> */}
 
-              <Pagination onChange={setPage} total={totalPage} current={page} pageSize={pageSize} />
+              <Pagination
+                showSizeChanger={{
+                  value: pageSize,
+                  onChange: setPageSize,
+                  options: [
+                    { label: "6", value: 6 },
+                    { label: "8", value: 8 },
+                    { label: "12", value: 12 },
+                  ],
+                }}
+                onChange={setPage}
+                total={totalPage}
+                current={page}
+                pageSize={pageSize}
+              />
             </Flex>
           )}
         </Col>

@@ -70,6 +70,7 @@ const Purchases = () => {
 
       {purchases.length > 0 && (
         <Pagination
+          showSizeChanger={false}
           className="justify-center mt-5"
           onChange={setPage}
           total={totalPage}
