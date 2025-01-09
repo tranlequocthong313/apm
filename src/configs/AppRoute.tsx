@@ -40,14 +40,14 @@ const AppRoute = () => {
         <Route path="/products/:urlName" element={<ProductDetail />} />
       </Route>
 
-      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>
+      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/login" />}>
         <Route element={<NavAndFooterLayout />}>
           <Route path="/purchases" element={<Purchases />} />
         </Route>
       </Route>
 
-      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/" />}>
-        <Route element={<AdminRoute isAdmin={isAdmin()} redirect="/" />}>
+      <Route element={<ProtectedRoute isLoggedIn={!!user} redirect="/login" />}>
+        <Route element={<AdminRoute isAdmin={isAdmin()} redirect="/login" />}>
           <Route path="/admin" element={<NavAndSidebarLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="products" element={<Products />} />

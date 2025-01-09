@@ -2,8 +2,16 @@ import { ConfigProvider } from "antd";
 import "./App.css";
 import AppRoute from "./configs/AppRoute";
 import "./index.css";
+import { useLocation } from "react-router";
+import { useLayoutEffect } from "react";
 
 function App() {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <ConfigProvider
       theme={{

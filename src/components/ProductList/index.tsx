@@ -14,7 +14,7 @@ interface Props {
 const ProductList: React.FC<Props> = ({ loading, products, pageSize }) => {
   if (!loading && products.length === 0) {
     return (
-      <Flex vertical align="center" className="h-full mx-auto">
+      <Flex vertical align="center" className="h-full mx-auto animate__animated animate__fadeIn">
         <Image preview={false} src={noDataFoundImage} width={500} />
         <h5 className="text-h5 font-bold text-textSecondary">No data</h5>
       </Flex>

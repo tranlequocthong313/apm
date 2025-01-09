@@ -9,6 +9,7 @@ import { Purchase } from "../../../configs/types/purchase";
 import PurchaseTable from "../../../components/PurchaseTable";
 import { parseCSV } from "../../../utils/parser";
 import { formatDatetime } from "../../../utils/formatter";
+import { ToastContainer } from "react-toastify";
 
 const HEADERS = [
   {
@@ -105,7 +106,7 @@ const Purchases = () => {
         <Space size="middle">
           <FaTrash
             onClick={() => setOpenConfirmDelete(true)}
-            className="text-textSecondary hover:text-textPrimary"
+            className="text-danger hover:text-textPrimary"
           />
         </Space>
       ),
@@ -167,6 +168,8 @@ const Purchases = () => {
 
   return (
     <>
+      <ToastContainer />
+
       <Modal
         closable={false}
         maskClosable={true}
@@ -210,6 +213,7 @@ const Purchases = () => {
         exportedFilename={"purchase_" + new Date().toLocaleString()}
         exportedData={purchases}
         headers={HEADERS}
+        canImport={false}
       />
 
       <div className="w-full overflow-x-scroll">

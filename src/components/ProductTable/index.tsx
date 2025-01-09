@@ -14,6 +14,7 @@ interface Props {
   page: number;
   pageSize: number;
   columns: TableProps<Product>["columns"];
+  pagination?: boolean;
 }
 
 const ProductTable: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const ProductTable: React.FC<Props> = ({
   page,
   pageSize,
   columns,
+  pagination = true,
 }) => {
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns!.map(col => String(col.key)),
@@ -45,14 +47,16 @@ const ProductTable: React.FC<Props> = ({
             onClick: () => onSelect?.(record),
           };
         }}
-        pagination={{
-          onChange(page) {
-            onChangePage(page);
-          },
-          total: pageSize,
-          current: page,
-          pageSize: 10,
-        }}
+        pagination={
+          pagination && {
+            onChange(page) {
+              onChangePage(page);
+            },
+            total: pageSize,
+            current: page,
+            pageSize: 10,
+          }
+        }
         rowKey={"id"}
         columns={columns!.filter(column => selectedColumns.includes(String(column.key)))}
         dataSource={products}

@@ -15,6 +15,7 @@ interface Props {
   exportedFilename: string;
   onParse: (result: string[][]) => void;
   headers?: { label: string; key: string }[];
+  canImport?: boolean;
 }
 
 const TableHeader: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const TableHeader: React.FC<Props> = ({
   exportedFilename,
   onParse,
   headers,
+  canImport = true,
 }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const importedInputRef = useRef<HTMLInputElement>(null);
@@ -89,22 +91,26 @@ const TableHeader: React.FC<Props> = ({
         {querySection}
       </Flex>
 
-      <input
-        onChange={handleUploadFile}
-        ref={importedInputRef}
-        type="file"
-        name="importedFile"
-        accept=".csv"
-        hidden
-      />
+      {canImport && (
+        <input
+          onChange={handleUploadFile}
+          ref={importedInputRef}
+          type="file"
+          name="importedFile"
+          accept=".csv"
+          hidden
+        />
+      )}
 
       <Flex gap={16} align="center" justify="space-between mb-5 md:mb-0">
-        <Button
-          title="Import"
-          className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
-          icon={<RiImportFill className="w-5 h-5" />}
-          onClick={() => importedInputRef.current?.click()}
-        />
+        {canImport && (
+          <Button
+            title="Import"
+            className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
+            icon={<RiImportFill className="w-5 h-5" />}
+            onClick={() => importedInputRef.current?.click()}
+          />
+        )}
         <CSVLink data={exportedData} filename={exportedFilename} headers={headers}>
           <Button
             title="Export"

@@ -25,6 +25,10 @@ import axiosInstance from "../../../configs/apis";
 import PRODUCT_ENDPOINT from "../../../configs/apis/endpoints/product";
 import ImageWithActions from "../../../components/ImageWithActions";
 import { parseCSV } from "../../../utils/parser";
+import { IoMdAddCircle } from "react-icons/io";
+import { toast, ToastContainer } from "react-toastify";
+import { Category } from "../../../configs/types/category";
+import CATEGORY_ENDPOINT from "../../../configs/apis/endpoints/category";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -83,6 +87,9 @@ const Products = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isImportedData, setIsImportedData] = useState(false);
+  const [addedItems, setAddedItems] = useState<string[]>([]);
+
   const columns: TableProps<Product>["columns"] = [
     {
       title: "Id",
@@ -116,20 +123,73 @@ const Products = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: value => (
         <Space size="middle">
-          <FaPen
-            onClick={() => setIsEditing(true)}
-            className="text-textSecondary hover:text-textPrimary"
-          />
-          <FaTrash
-            onClick={() => setOpenConfirmDelete(true)}
-            className="text-textSecondary hover:text-textPrimary"
-          />
+          {addedItems.includes(value.name) && (
+            <>
+              <FaPen
+                onClick={() => setIsEditing(true)}
+                className="text-info hover:text-textPrimary"
+              />
+              <FaTrash
+                onClick={() => setOpenConfirmDelete(true)}
+                className="text-danger hover:text-textPrimary"
+              />
+            </>
+          )}
+          {isImportedData && !addedItems.includes(value.name) && (
+            <IoMdAddCircle
+              onClick={() => addRecord(value)}
+              className="hover:text-textPrimary w-5 h-5 text-success"
+            />
+          )}
         </Space>
       ),
     },
   ];
+
+  const addRecord = async (product: Product) => {
+    if (!product) {
+      return;
+    }
+    try {
+      const names = product.categories?.map(category => category.name);
+      if (!names) {
+        toast.error("Something went wrong!");
+        return;
+      }
+      Promise.all(
+        names.map(name => axiosInstance.get<Category>(CATEGORY_ENDPOINT.detailByName(name))),
+      )
+        .then(async responses => {
+          const categories = responses.map(res => res.data.id);
+          const response = await axiosInstance.post<Product>(PRODUCT_ENDPOINT.create, {
+            name: product.name,
+            basePrice: product.basePrice,
+            discountPercentage: product.discountPercentage,
+            stock: product.stock,
+            description: product.description,
+            categories: categories,
+          });
+          setAddedItems([...addedItems, response.data.name]);
+          setProducts(prods =>
+            prods.map(prod => {
+              if (prod.id === product.id) {
+                return response.data;
+              }
+              return prod;
+            }),
+          );
+        })
+        .catch(error => {
+          toast.error("Something went wrong!");
+          console.log("Error fetch categories: ", error);
+        });
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.log("Error create category: ", error);
+    }
+  };
 
   const handleQueryChange = useMemo(
     () =>
@@ -155,6 +215,7 @@ const Products = () => {
       if (response.data.products.length > 0) {
         setProduct(response.data.products[0]);
       }
+      setAddedItems(response.data.products.map(prod => prod.name));
     } catch (error) {
       console.log("Error fetching products: ", error);
     }
@@ -224,10 +285,13 @@ const Products = () => {
   const parse = (data: string[][]) => {
     const result: Product[] = parseCSV(data) as Product[];
     setProducts(result);
+    setIsImportedData(true);
   };
 
   return (
     <Row>
+      <ToastContainer />
+
       <Modal
         closable={false}
         maskClosable={true}
@@ -376,33 +440,36 @@ const Products = () => {
             pageSize={pageSize}
             page={page}
             onChangePage={setPage}
+            pagination={!isImportedData}
           />
         </div>
 
-        <ProductDrawer
-          onCreated={prod => {
-            if (isEditing) {
-              setProducts(prods =>
-                prods.map(p => {
-                  if (p.id === prod.id) {
-                    setProduct(prod);
-                    return prod;
-                  }
-                  return p;
-                }),
-              );
-            } else {
-              fetchProducts({ q: debouncedQuery, p: page });
-            }
-          }}
-          onClose={() => {
-            setIsAdding(false);
-            setIsEditing(false);
-          }}
-          isEditing={isEditing}
-          product={product}
-          open={isAdding || isEditing}
-        />
+        {(isAdding || isEditing) && (
+          <ProductDrawer
+            onCreated={prod => {
+              if (isEditing) {
+                setProducts(prods =>
+                  prods.map(p => {
+                    if (p.id === prod.id) {
+                      setProduct(prod);
+                      return prod;
+                    }
+                    return p;
+                  }),
+                );
+              } else {
+                fetchProducts({ q: debouncedQuery, p: page });
+              }
+            }}
+            onClose={() => {
+              setIsAdding(false);
+              setIsEditing(false);
+            }}
+            isEditing={isEditing}
+            product={product}
+            open={isAdding || isEditing}
+          />
+        )}
       </Col>
     </Row>
   );

@@ -10,6 +10,8 @@ import { Category } from "../../../configs/types/category";
 import CategoryTable from "../../../components/CategoryTable";
 import CategoryDrawer from "../../../components/CategoryDrawer";
 import { parseCSV } from "../../../utils/parser";
+import { IoMdAddCircle } from "react-icons/io";
+import { toast, ToastContainer } from "react-toastify";
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -21,6 +23,8 @@ const Categories = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isImportedData, setIsImportedData] = useState(false);
+  const [addedItems, setAddedItems] = useState<string[]>([]);
 
   const columns: TableProps<Category>["columns"] = [
     {
@@ -38,20 +42,70 @@ const Categories = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: value => (
         <Space size="middle">
-          <FaPen
-            onClick={() => setIsEditing(true)}
-            className="text-textSecondary hover:text-textPrimary"
-          />
-          <FaTrash
-            onClick={() => setOpenConfirmDelete(true)}
-            className="text-textSecondary hover:text-textPrimary"
-          />
+          {addedItems.includes(value.name) && (
+            <>
+              <FaPen
+                onClick={() => setIsEditing(true)}
+                className="text-info hover:text-textPrimary"
+              />
+              <FaTrash
+                onClick={() => setOpenConfirmDelete(true)}
+                className="text-danger hover:text-textPrimary"
+              />
+            </>
+          )}
+          {isImportedData && !addedItems.includes(value.name) && (
+            <IoMdAddCircle
+              onClick={() => addRecord(value)}
+              className="hover:text-textPrimary w-5 h-5 text-success"
+            />
+          )}
         </Space>
       ),
     },
   ];
+
+  const addRecord = async (category: Category) => {
+    if (!category) {
+      return;
+    }
+    try {
+      const response = await axiosInstance.post<Category>(CATEGORY_ENDPOINT.create, {
+        name: category.name,
+      });
+      setAddedItems([...addedItems, response.data.name]);
+      setCategories(cates =>
+        cates.map(cate => {
+          if (cate.id === category.id) {
+            return response.data;
+          }
+          return cate;
+        }),
+      );
+    } catch (error) {
+      toast.error("Category already existed!");
+      setAddedItems([...addedItems, category.name]);
+      console.log("Error create category: ", error);
+    }
+  };
+
+  const handleNewRecord = (record: Category) => {
+    if (isEditing) {
+      setCategories(cates =>
+        cates.map(p => {
+          if (p.id === record.id) {
+            setCategory(record);
+            return record;
+          }
+          return p;
+        }),
+      );
+    } else {
+      fetchCategories({ q: debouncedQuery, p: page });
+    }
+  };
 
   const handleQueryChange = useMemo(
     () =>
@@ -77,8 +131,11 @@ const Categories = () => {
       if (response.data.categories.length > 0) {
         setCategory(response.data.categories[0]);
       }
+      setAddedItems(response.data.categories.map(cate => cate.name));
     } catch (error) {
       console.log("Error fetching categories: ", error);
+    } finally {
+      setIsImportedData(false);
     }
   }, []);
 
@@ -118,10 +175,13 @@ const Categories = () => {
   const parse = (data: string[][]) => {
     const result: Category[] = parseCSV(data) as Category[];
     setCategories(result);
+    setIsImportedData(true);
   };
 
   return (
     <>
+      <ToastContainer />
+
       <Modal
         closable={false}
         maskClosable={true}
@@ -179,32 +239,21 @@ const Categories = () => {
         pageSize={pageSize}
         page={page}
         onChangePage={setPage}
+        pagination={!isImportedData}
       />
 
-      <CategoryDrawer
-        onCreated={cate => {
-          if (isEditing) {
-            setCategories(cates =>
-              cates.map(p => {
-                if (p.id === cate.id) {
-                  setCategory(cate);
-                  return cate;
-                }
-                return p;
-              }),
-            );
-          } else {
-            fetchCategories({ q: debouncedQuery, p: page });
-          }
-        }}
-        onClose={() => {
-          setIsAdding(false);
-          setIsEditing(false);
-        }}
-        isEditing={isEditing}
-        category={category}
-        open={isAdding || isEditing}
-      />
+      {(isAdding || isEditing) && (
+        <CategoryDrawer
+          onCreated={handleNewRecord}
+          onClose={() => {
+            setIsAdding(false);
+            setIsEditing(false);
+          }}
+          isEditing={isEditing}
+          category={category}
+          open={isAdding || isEditing}
+        />
+      )}
     </>
   );
 };
