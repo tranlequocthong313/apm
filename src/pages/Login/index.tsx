@@ -59,13 +59,6 @@ const LoginPage = () => {
         return;
       }
 
-      // TODO: Previous ticket required ADMIN role to login
-      // const isAdmin = profile.role === "ADMIN";
-      // if (!isAdmin) {
-      //   toast.error(t("notAllowed"));
-      //   return;
-      // }
-
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 

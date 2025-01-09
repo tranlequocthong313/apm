@@ -7,7 +7,6 @@ import axiosInstance from "../../../configs/apis";
 import PURCHASE_ENDPOINT from "../../../configs/apis/endpoints/purchase";
 import { Purchase } from "../../../configs/types/purchase";
 import PurchaseTable from "../../../components/PurchaseTable";
-import { parseCSV } from "../../../utils/parser";
 import { formatDatetime } from "../../../utils/formatter";
 import { ToastContainer } from "react-toastify";
 
@@ -161,11 +160,6 @@ const Purchases = () => {
     }
   };
 
-  const parse = (data: string[][]) => {
-    const result: Purchase[] = parseCSV(data) as Purchase[];
-    setPurchases(result);
-  };
-
   return (
     <>
       <ToastContainer />
@@ -209,7 +203,6 @@ const Purchases = () => {
 
       {/* Right Section */}
       <TableHeader
-        onParse={parse}
         exportedFilename={"purchase_" + new Date().toLocaleString()}
         exportedData={purchases}
         headers={HEADERS}

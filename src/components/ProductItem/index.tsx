@@ -9,7 +9,6 @@ interface Props {
   product: Product;
 }
 
-// TODO: Skeleton loading
 const ProductItem: React.FC<Props> = ({ product }) => {
   return (
     <Link to={"/products/" + product.urlName}>
@@ -44,7 +43,10 @@ const ProductItem: React.FC<Props> = ({ product }) => {
           <Flex gap={10} align="center">
             <span className="text-textSecondary line-through text-sm">${product.basePrice}</span>
             <strong className="text-primaryMain font-bold text-xl">
-              ${product.basePrice - product.basePrice * (product.discountPercentage / 100)}
+              $
+              {(product.basePrice - product.basePrice * (product.discountPercentage / 100)).toFixed(
+                2,
+              )}
             </strong>
           </Flex>
           <span className="text-danger text-sm">{product.stock} items left!</span>

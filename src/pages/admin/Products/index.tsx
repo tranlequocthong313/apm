@@ -18,7 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Product } from "../../../configs/types/product";
+import { Product, productSchema } from "../../../configs/types/product";
 import TableHeader from "../../../components/TableHeader";
 import ProductDrawer from "../../../components/ProductDrawer";
 import axiosInstance from "../../../configs/apis";
@@ -88,7 +88,11 @@ const Products = () => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isImportedData, setIsImportedData] = useState(false);
-  const [addedItems, setAddedItems] = useState<string[]>([]);
+  const [addedItems, setAddedItems] = useState<Product[]>([]);
+
+  const includedItem = (product: Product) => {
+    return addedItems.find(item => item.id === product.id || item.name === product.name);
+  };
 
   const columns: TableProps<Product>["columns"] = [
     {
@@ -125,7 +129,7 @@ const Products = () => {
       key: "action",
       render: value => (
         <Space size="middle">
-          {addedItems.includes(value.name) && (
+          {includedItem(value) && (
             <>
               <FaPen
                 onClick={() => setIsEditing(true)}
@@ -137,7 +141,7 @@ const Products = () => {
               />
             </>
           )}
-          {isImportedData && !addedItems.includes(value.name) && (
+          {isImportedData && !includedItem(value) && (
             <IoMdAddCircle
               onClick={() => addRecord(value)}
               className="hover:text-textPrimary w-5 h-5 text-success"
@@ -171,7 +175,7 @@ const Products = () => {
             description: product.description,
             categories: categories,
           });
-          setAddedItems([...addedItems, response.data.name]);
+          setAddedItems([...addedItems, response.data]);
           setProducts(prods =>
             prods.map(prod => {
               if (prod.id === product.id) {
@@ -215,7 +219,7 @@ const Products = () => {
       if (response.data.products.length > 0) {
         setProduct(response.data.products[0]);
       }
-      setAddedItems(response.data.products.map(prod => prod.name));
+      setAddedItems(response.data.products.map(prod => prod));
     } catch (error) {
       console.log("Error fetching products: ", error);
     }
@@ -284,7 +288,7 @@ const Products = () => {
 
   const parse = (data: string[][]) => {
     const result: Product[] = parseCSV(data) as Product[];
-    setProducts(result);
+    setProducts(result.filter(prod => productSchema.isValidSync(prod)));
     setIsImportedData(true);
   };
 

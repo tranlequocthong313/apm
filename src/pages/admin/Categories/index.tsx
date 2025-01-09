@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import TableHeader from "../../../components/TableHeader";
 import axiosInstance from "../../../configs/apis";
 import CATEGORY_ENDPOINT from "../../../configs/apis/endpoints/category";
-import { Category } from "../../../configs/types/category";
+import { Category, categorySchema } from "../../../configs/types/category";
 import CategoryTable from "../../../components/CategoryTable";
 import CategoryDrawer from "../../../components/CategoryDrawer";
 import { parseCSV } from "../../../utils/parser";
@@ -24,7 +24,14 @@ const Categories = () => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isImportedData, setIsImportedData] = useState(false);
-  const [addedItems, setAddedItems] = useState<string[]>([]);
+  const [addedItems, setAddedItems] = useState<Category[]>([]);
+
+  const includedItem = (category: Category) => {
+    return (
+      addedItems.find(item => item.id === category.id) ||
+      addedItems.find(item => item.name === category.name)
+    );
+  };
 
   const columns: TableProps<Category>["columns"] = [
     {
@@ -44,7 +51,7 @@ const Categories = () => {
       key: "action",
       render: value => (
         <Space size="middle">
-          {addedItems.includes(value.name) && (
+          {includedItem(value) && (
             <>
               <FaPen
                 onClick={() => setIsEditing(true)}
@@ -56,7 +63,7 @@ const Categories = () => {
               />
             </>
           )}
-          {isImportedData && !addedItems.includes(value.name) && (
+          {isImportedData && !includedItem(value) && (
             <IoMdAddCircle
               onClick={() => addRecord(value)}
               className="hover:text-textPrimary w-5 h-5 text-success"
@@ -75,7 +82,7 @@ const Categories = () => {
       const response = await axiosInstance.post<Category>(CATEGORY_ENDPOINT.create, {
         name: category.name,
       });
-      setAddedItems([...addedItems, response.data.name]);
+      setAddedItems([...addedItems, response.data]);
       setCategories(cates =>
         cates.map(cate => {
           if (cate.id === category.id) {
@@ -86,7 +93,7 @@ const Categories = () => {
       );
     } catch (error) {
       toast.error("Category already existed!");
-      setAddedItems([...addedItems, category.name]);
+      setAddedItems([...addedItems, category]);
       console.log("Error create category: ", error);
     }
   };
@@ -131,7 +138,7 @@ const Categories = () => {
       if (response.data.categories.length > 0) {
         setCategory(response.data.categories[0]);
       }
-      setAddedItems(response.data.categories.map(cate => cate.name));
+      setAddedItems(response.data.categories.map(cate => cate));
     } catch (error) {
       console.log("Error fetching categories: ", error);
     } finally {
@@ -174,7 +181,7 @@ const Categories = () => {
 
   const parse = (data: string[][]) => {
     const result: Category[] = parseCSV(data) as Category[];
-    setCategories(result);
+    setCategories(result.filter(cate => categorySchema.isValidSync(cate)));
     setIsImportedData(true);
   };
 

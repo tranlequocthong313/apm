@@ -13,7 +13,7 @@ interface Props {
   onOpenAdd?: () => void;
   exportedData: object[];
   exportedFilename: string;
-  onParse: (result: string[][]) => void;
+  onParse?: (result: string[][]) => void;
   headers?: { label: string; key: string }[];
   canImport?: boolean;
 }
@@ -72,7 +72,7 @@ const TableHeader: React.FC<Props> = ({
         complete: results => {
           if (results.data) {
             const data = results.data as string[][];
-            onParse(data);
+            onParse?.(data);
           }
         },
         error: (error, file) => console.log("error parse csv", error, file),
