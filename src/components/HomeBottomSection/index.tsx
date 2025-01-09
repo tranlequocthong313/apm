@@ -47,6 +47,7 @@ const HomeBottomSection = () => {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, sestCategory] = useState<string>("");
   const [priceRange, setPriceRange] = useState<number[]>([0, 999]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
 
   const handleDebouncedQuery = useMemo(() => {
     return debounce(setDebouncedQuery, 1000);
@@ -62,6 +63,7 @@ const HomeBottomSection = () => {
   };
 
   useEffect(() => {
+    setLoadingProducts(true);
     setFilteredProducts(
       products.filter(prod => {
         const p = prod.basePrice - prod.basePrice * (prod.discountPercentage / 100);
@@ -69,6 +71,7 @@ const HomeBottomSection = () => {
         if (category) {
           return match && prod.categories?.map(category => category.name).includes(category);
         }
+        setLoadingProducts(false);
         return match;
       }),
     );
@@ -217,7 +220,7 @@ const HomeBottomSection = () => {
             </Form>
           </Flex>
 
-          <ProductList products={filteredProducts} />
+          <ProductList pageSize={pageSize} loading={loadingProducts} products={filteredProducts} />
 
           {filteredProducts.length > 0 && (
             <Flex align="center" gap={10}>

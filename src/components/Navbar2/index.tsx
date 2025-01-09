@@ -98,7 +98,7 @@ const Navbar = () => {
 
       <Flex className="lg:gap-8 gap-5" align="center">
         <Badge count={5}>
-          <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Customize">
+          <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Cart">
             <AiOutlineShoppingCart className="w-5 h-5" />
           </Button>
         </Badge>
@@ -111,7 +111,7 @@ const Navbar = () => {
           </Button>
         </Badge>
         <Badge count={0}>
-          <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Setting">
+          <Button className="bg-secondaryBackground border-none rounded-lg h-10" title="Purchase">
             <Link reloadDocument to={"/purchases"}>
               <MdFavoriteBorder className="w-5 h-5" />
             </Link>

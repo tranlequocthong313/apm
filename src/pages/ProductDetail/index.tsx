@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Flex, Image, Rate, Row, Spin, Tag } from "antd";
+import { Button, Col, Flex, Image, Rate, Row, Tag } from "antd";
 import axiosInstance from "../../configs/apis";
 import { useNavigate, useParams } from "react-router";
 import { Product } from "../../configs/types/product";
@@ -9,6 +9,7 @@ import RecommendedProductList from "../../components/RecommendedProductList";
 import CheckoutModal from "../../components/CheckoutModal";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store/index";
+import SkeletonProductDetail from "../SkeletonProductDetail";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<Product>();
@@ -20,9 +21,11 @@ const ProductDetail = () => {
   const [isCheckout, setIsCheckout] = useState(false);
   const user = useSelector((state: IRootState) => state.auth.user);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
       try {
         const res = await axiosInstance.get("/product/" + urlName);
         setProduct(res.data);
@@ -31,6 +34,8 @@ const ProductDetail = () => {
         }
       } catch (error) {
         console.log("Error fetching product detail:::", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -86,74 +91,79 @@ const ProductDetail = () => {
     setIsCheckout(true);
   };
 
-  if (!product) {
-    return <Spin />;
-  }
-
   return (
-    <Row className="lg:w-4/5 pt-4 pb-20 product-detail !mx-auto overflow-hidden" gutter={50}>
-      <Col md={14} span={24} className="mb-5 md:mb-auto">
-        <Row gutter={20}>
-          <Col span={5}>{getPlaceholderImages()}</Col>
-          <Col span={19}>
-            <Image className="rounded-xl" src={img} />
+    <>
+      {loading || !product ? (
+        <SkeletonProductDetail />
+      ) : (
+        <Row className="lg:w-4/5 pt-4 product-detail !mx-auto overflow-hidden" gutter={50}>
+          <Col md={14} span={24} className="mb-5 md:mb-auto">
+            <Row gutter={20}>
+              <Col span={5}>{getPlaceholderImages()}</Col>
+              <Col span={19}>
+                <Image className="rounded-xl" src={img} />
+              </Col>
+            </Row>
           </Col>
-        </Row>
-      </Col>
-      <Col md={10} span={24}>
-        <Flex vertical>
-          <h4 className="text-h6 lg:text-h4 mb-3 text-textPrimary font-bold">{product.name}</h4>
-          <p className="text-danger lg:text-sm text-xs mb-4">{product.stock} items left</p>
-          <Flex className="mb-5" align="center" gap={16}>
-            <span className="line-through lg:text-2xl text-textSecondary">
-              ${product.basePrice}
-            </span>
-            <h3 className="lg:text-h3 text-h4 font-bold text-primaryMain">
-              $
-              {(product.basePrice - product.basePrice * (product.discountPercentage / 100)).toFixed(
-                2,
-              )}
-            </h3>
-            <Tag className="bg-gradient-to-r from-red-500 to-orange-400 text-white rounded-xl lg:px-3 font-bold">
-              {product.discountPercentage}% Disc
-            </Tag>
-          </Flex>
-          <Flex gap={20} className="mb-8 text-textPrimary flex-col lg:flex-row">
-            <Flex gap={16}>
-              <Rate value={Math.random() * 4 + 1} disabled />
-              <span>({(Math.random() * 4 + 1).toFixed(1)})</span>
+          <Col md={10} span={24}>
+            <Flex vertical>
+              <h4 className="text-h6 lg:text-h4 mb-3 text-textPrimary font-bold">{product.name}</h4>
+              <p className="text-danger lg:text-sm text-xs mb-4">{product.stock} items left</p>
+              <Flex className="mb-5" align="center" gap={16}>
+                <span className="line-through lg:text-2xl text-textSecondary">
+                  ${product.basePrice}
+                </span>
+                <h3 className="lg:text-h3 text-h4 font-bold text-primaryMain">
+                  $
+                  {(
+                    product.basePrice -
+                    product.basePrice * (product.discountPercentage / 100)
+                  ).toFixed(2)}
+                </h3>
+                <Tag className="bg-gradient-to-r from-red-500 to-orange-400 text-white rounded-xl lg:px-3 font-bold">
+                  {product.discountPercentage}% Disc
+                </Tag>
+              </Flex>
+              <Flex gap={20} className="mb-8 text-textPrimary flex-col lg:flex-row">
+                <Flex gap={16}>
+                  <Rate value={Math.random() * 4 + 1} disabled />
+                  <span>({(Math.random() * 4 + 1).toFixed(1)})</span>
+                </Flex>
+                <span>{(Math.random() * 10 + 1).toFixed(1)}k Reviews</span>
+              </Flex>
+              <p className="font-bold mb-4 text-textPrimary">Descriptions</p>
+              <p className="text-textSecondary">{product.description}</p>
             </Flex>
-            <span>{(Math.random() * 10 + 1).toFixed(1)}k Reviews</span>
-          </Flex>
-          <p className="font-bold mb-4 text-textPrimary">Descriptions</p>
-          <p className="text-textSecondary">{product.description}</p>
-        </Flex>
-        <Flex gap={20} className="mt-10">
-          <Button
-            type="primary"
-            className="bg-secondaryBackground text-slate-500 flex-1 rounded-3xl py-6 font-bold border-none"
-          >
-            Add To Cart
-          </Button>
-          <Button
-            onClick={openCheckout}
-            className="flex-1 rounded-3xl py-6 font-bold border-none"
-            type="primary"
-          >
-            Checkout Now
-          </Button>
-        </Flex>
-      </Col>
+            <Flex gap={20} className="mt-10">
+              <Button
+                type="primary"
+                className="bg-secondaryBackground text-slate-500 flex-1 rounded-3xl py-6 font-bold border-none"
+              >
+                Add To Cart
+              </Button>
+              <Button
+                onClick={openCheckout}
+                className="flex-1 rounded-3xl py-6 font-bold border-none"
+                type="primary"
+              >
+                Checkout Now
+              </Button>
+            </Flex>
+          </Col>
 
-      <RecommendedProductList size={4} filterItem={product} />
+          <CheckoutModal
+            products={[product]}
+            open={isCheckout}
+            onCancel={() => setIsCheckout(false)}
+            onOk={() => setIsCheckout(false)}
+          />
+        </Row>
+      )}
 
-      <CheckoutModal
-        products={[product]}
-        open={isCheckout}
-        onCancel={() => setIsCheckout(false)}
-        onOk={() => setIsCheckout(false)}
-      />
-    </Row>
+      <div className="lg:w-4/5 pb-20  product-detail !mx-auto overflow-hidden">
+        <RecommendedProductList size={4} filterItem={product} />
+      </div>
+    </>
   );
 };
 

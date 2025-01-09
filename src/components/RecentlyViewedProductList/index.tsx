@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
+import SkeletonProductItem from "../SkeletonProductItem";
 
 interface Props {
   size: number;
@@ -16,9 +17,11 @@ interface Props {
 
 const RecentlyViewedProductList: React.FC<Props> = ({ size = 4 }) => {
   const [products, setProducts] = useState<Product[]>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProductsFromLocalStorage = () => {
+      setLoading(true);
       try {
         const viewedProductsJson = localStorage.getItem("viewedProducts");
         if (viewedProductsJson) {
@@ -26,15 +29,13 @@ const RecentlyViewedProductList: React.FC<Props> = ({ size = 4 }) => {
         }
       } catch (error) {
         console.log("Error fetching recently viewed products: ", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProductsFromLocalStorage();
   }, []);
-
-  if (!products) {
-    return <></>;
-  }
 
   return (
     <Flex vertical className="px-3">
@@ -55,11 +56,17 @@ const RecentlyViewedProductList: React.FC<Props> = ({ size = 4 }) => {
             slidesPerView: 2,
           },
           1024: {
-            slidesPerView: Math.min(size, products.length),
+            slidesPerView: products ? Math.min(size, products.length) : size,
           },
         }}
       >
-        {products.map(product => (
+        {loading &&
+          new Array(size).fill(0).map((_, index) => (
+            <SwiperSlide key={index}>
+              <SkeletonProductItem />
+            </SwiperSlide>
+          ))}
+        {products?.map(product => (
           <SwiperSlide key={product.id}>
             <ProductItem product={product} />
           </SwiperSlide>
