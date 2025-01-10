@@ -8,6 +8,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import useSelectedMenuItem from "../../hooks/useSelectedMenuItem";
 import "./index.css";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 const { Sider } = Layout;
 
@@ -27,30 +28,30 @@ function getItem(
   } as MenuItem;
 }
 
-const menuItems: MenuItem[] = [
+const menuItems = (t: (val: string) => string): MenuItem[] => [
   getItem(
-    "Home",
+    t("home"),
     "/admin",
     <Link to={"/admin"}>
       <MdOutlineDashboard className="w-7 h-7" />
     </Link>,
   ),
   getItem(
-    "Products",
+    t("products"),
     "/admin/products",
     <Link to={"/admin/products"}>
       <MdOutlineWarehouse className="w-7 h-7" />
     </Link>,
   ),
   getItem(
-    "Categories",
+    t("categories"),
     "/admin/categories",
     <Link to={"/admin/categories"}>
       <MdOutlineCategory className="w-7 h-7" />
     </Link>,
   ),
   getItem(
-    "Purchases",
+    t("purchases"),
     "/admin/purchases",
     <Link to={"/admin/purchases"}>
       <AiOutlineShoppingCart className="w-7 h-7" />
@@ -64,6 +65,7 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
+  const { t } = useTranslation();
   const [onTablet, setOnTablet] = useState(false);
   const { selectedMenuItem, setSelectedMenuItem } = useSelectedMenuItem();
 
@@ -109,7 +111,7 @@ const Sidebar: React.FC<Props> = ({ collapsed, onCollapse }) => {
         defaultSelectedKeys={["1"]}
         mode="inline"
         theme="dark"
-        items={menuItems}
+        items={menuItems(t)}
       />
 
       {onTablet && (

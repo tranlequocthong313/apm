@@ -145,7 +145,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
 
   return (
     <Drawer
-      title={isEditing ? "Edit product" : "Create a new product"}
+      title={isEditing ? t("editProduct") : t("createNewProduct")}
       width={720}
       onClose={handleClose}
       open={open}
@@ -155,7 +155,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
             className="rounded-3xl border-none p-5 hover:!bg-slate-400 hidden md:flex"
             onClick={handleClose}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             className="rounded-3xl border-none p-5 hover:!bg-slate-400 bg-secondaryBackground text-textPrimary md:hidden !w-10 !h-10"
@@ -168,7 +168,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
             onClick={handleSubmit(onSubmit)}
             type="primary"
           >
-            Submit
+            {t("submit")}
           </Button>
           <Button
             className="rounded-3xl border-none p-5 md:hidden !w-10 !h-10"
@@ -184,7 +184,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
         <Row>
           <Button
             onClick={resetAll}
-            title="Clear all"
+            title={t("clearAll")}
             className="active:translate-y-1 bg-danger text-white border-none hover:!bg-danger hover:opacity-80 ml-auto !w-10 !h-10"
             icon={<MdDelete className="w-6 h-6" />}
           />
@@ -193,7 +193,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           <Col span={24}>
             <Form.Item
               name="name"
-              label="Name"
+              label={t("name")}
               validateStatus={errors.name ? "error" : ""}
               help={<p className="error-message">{errors.name ? errors.name.message : ""}</p>}
             >
@@ -209,7 +209,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           <Col span={24} md={8}>
             <Form.Item
               name="basePrice"
-              label="Base price $"
+              label={t("basePrice") + "$"}
               validateStatus={errors.basePrice ? "error" : ""}
               help={
                 <p className="error-message">{errors.basePrice ? errors.basePrice.message : ""}</p>
@@ -227,7 +227,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           <Col span={24} md={8}>
             <Form.Item
               name="discountPercentage"
-              label="Discount %"
+              label={t("discount") + "%"}
               validateStatus={errors.discountPercentage ? "error" : ""}
               help={
                 <p className="error-message">
@@ -247,7 +247,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           <Col span={24} md={8}>
             <Form.Item
               name="stock"
-              label="Stock"
+              label={t("stock")}
               validateStatus={errors.stock ? "error" : ""}
               help={<p className="error-message">{errors.stock ? errors.stock.message : ""}</p>}
             >
@@ -266,7 +266,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
             <Col span={24}>
               <Form.Item
                 name="categories"
-                label="Category"
+                label={t("category")}
                 validateStatus={errors.categories ? "error" : ""}
                 help={
                   <p className="error-message">
@@ -295,7 +295,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
           <Col span={24}>
             <Form.Item
               name="description"
-              label="Description"
+              label={t("description")}
               validateStatus={errors.description ? "error" : ""}
               help={
                 <p className="error-message">
@@ -315,7 +315,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item name="picture" label="Picture">
+            <Form.Item name="picture" label={t("picture")}>
               <Dragger
                 beforeUpload={file => {
                   setImageFile(file);
@@ -334,7 +334,7 @@ const ProductDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, p
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                <p className="ant-upload-text">{t("clickOrDrag")}</p>
               </Dragger>
             </Form.Item>
           </Col>

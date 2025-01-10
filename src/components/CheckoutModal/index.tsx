@@ -8,6 +8,7 @@ import PURCHASE_ENDPOINT from "../../configs/apis/endpoints/purchase";
 import { Purchase } from "../../configs/types/purchase";
 import "./index.css";
 import CheckoutSuccess from "../CheckoutSuccess";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -27,6 +28,7 @@ export type PurchaseSuccess = Pick<Purchase, "id" | "totalPrice" | "createdAt">;
 const randomDeliveryPrice = Math.round(Math.random() * 20);
 
 const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
+  const { t } = useTranslation();
   const [checkoutItems, setCheckoutItems] = useState<CheckoutItem[]>();
   const [purchaseSuccess, setPuchaseSuccess] = useState<PurchaseSuccess>();
 
@@ -126,29 +128,33 @@ const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
           </Flex>
 
           <Flex className="py-6 border-b-2 border-slate-200" vertical gap={10}>
-            <h6 className="font-semibold mb-1">Have a promotion code?</h6>
+            <h6 className="font-semibold mb-1">{t("havePromotionCode")}</h6>
             <Flex gap={16} align="center">
-              <Input className="bg-white rounded-lg py-2.5" placeholder="Enter Code" />
-              <Button className="h-10 !border-slate-200 text-textSecondary">Apply Code</Button>
+              <Input className="bg-white rounded-lg py-2.5" placeholder={t("enterCode")} />
+              <Button className="h-10 !border-slate-200 text-textSecondary">
+                {t("applyCode")}
+              </Button>
             </Flex>
           </Flex>
 
           <Flex gap={10} vertical className="py-6 border-b-2 border-slate-200 border-dashed ">
-            <h6 className="font-semibold mb-1">Order Summary</h6>
+            <h6 className="font-semibold mb-1">{t("orderSummary")}</h6>
             <Flex align="center" justify="space-between" className="text-textSecondary">
-              <span>{getTotalAmount()} items</span>
+              <span>
+                {getTotalAmount()} {t("items")}
+              </span>
               <span>${getFinalPrice().toFixed(2)}</span>
             </Flex>
             <Flex align="center" justify="space-between" className="text-textSecondary">
               <Flex align="center">
-                Delivery Cost <FaInfoCircle className="ml-2" />
+                {t("deliveryCost")} <FaInfoCircle className="ml-2" />
               </Flex>
               <span>${randomDeliveryPrice}</span>
             </Flex>
           </Flex>
 
           <Flex align="center" justify="space-between" className="py-8">
-            <span className="text-h5 font-semibold">Total:</span>
+            <span className="text-h5 font-semibold">{t("total")}:</span>
             <span className="text-h5 font-bold">${getFinalPrice().toFixed(2)}</span>
           </Flex>
 
@@ -157,7 +163,7 @@ const CheckoutModal: React.FC<Props> = ({ open, onOk, onCancel, products }) => {
             type="primary"
             className="rounded-lg w-full border-none p-6 bg-tertiaryBackground hover:!bg-primaryMain"
           >
-            Confirm Checkout
+            {t("confirmCheckout")}
           </Button>
         </>
       )}

@@ -5,6 +5,7 @@ import axiosInstance from "../../configs/apis";
 import PRODUCT_ENDPOINT from "../../configs/apis/endpoints/product";
 import ProductItem from "../ProductItem";
 import SkeletonProductItem from "../SkeletonProductItem";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   size: number;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const RecommendedProductList: React.FC<Props> = ({ size = 4, filterItem }) => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>();
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +37,7 @@ const RecommendedProductList: React.FC<Props> = ({ size = 4, filterItem }) => {
 
   return (
     <Flex vertical className="px-3">
-      <h5 className="lg:text-h5 text-h6 font-bold mt-14 mb-10">Recommended products</h5>
+      <h5 className="lg:text-h5 text-h6 font-bold mt-14 mb-10">{t("recommendedProducts")}</h5>
       <Row gutter={60}>
         {(loading || !products) &&
           new Array(size).fill(0).map((_, index) => (

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Select, Tag } from "antd";
+import { Select } from "antd";
+import { useTranslation } from "react-i18next";
 
 const TagSelectBox = () => {
+  const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [options] = useState([
     { label: "Apple", value: "apple" },
@@ -25,7 +27,7 @@ const TagSelectBox = () => {
     <div className="w-full max-w-md">
       <Select
         mode="multiple"
-        placeholder="Select items"
+        placeholder={t("selectItem")}
         value={selectedItems}
         onSelect={handleSelect}
         onDeselect={handleDeselect}

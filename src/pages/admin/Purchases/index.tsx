@@ -9,6 +9,7 @@ import { Purchase } from "../../../configs/types/purchase";
 import PurchaseTable from "../../../components/PurchaseTable";
 import { formatDatetime } from "../../../utils/formatter";
 import { ToastContainer } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const HEADERS = [
   {
@@ -54,6 +55,7 @@ const HEADERS = [
 ];
 
 const Purchases = () => {
+  const { t } = useTranslation();
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [purchase, setPurchase] = useState<Purchase>();
   const [page, setPage] = useState(1);
@@ -62,28 +64,28 @@ const Purchases = () => {
 
   const columns: TableProps<Purchase>["columns"] = [
     {
-      title: "Id",
+      title: t("id"),
       dataIndex: "id",
       key: "id",
       render: id => <div className="w-24 truncate">{id}</div>,
     },
     {
-      title: "Amount",
+      title: t("amount"),
       dataIndex: "amount",
       key: "amount",
     },
     {
-      title: "Total price",
+      title: t("totalPrice"),
       dataIndex: "totalPrice",
       key: "totalPrice",
     },
     {
-      title: "reviewNote",
+      title: t("reviewNote"),
       dataIndex: "reviewNote",
       key: "reviewNote",
     },
     {
-      title: "reviewComment",
+      title: t("reviewComment"),
       dataIndex: "reviewComment",
       key: "reviewComment",
       render: comment => (
@@ -93,13 +95,13 @@ const Purchases = () => {
       ),
     },
     {
-      title: "createdAt",
+      title: t("createdAt"),
       dataIndex: "createdAt",
       key: "createdAt",
       render: createdAt => <div>{formatDatetime(createdAt)}</div>,
     },
     {
-      title: "Action",
+      title: t("action"),
       key: "action",
       render: () => (
         <Space size="middle">
@@ -184,13 +186,13 @@ const Purchases = () => {
                 className="text-textPrimary border-none font-bold hover:!bg-gray-300 hover:opacity-80 rounded-lg p-5"
                 onClick={() => setOpenConfirmDelete(false)}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 className="bg-danger text-white font-bold border-none hover:!bg-danger hover:opacity-80 rounded-lg p-5"
                 onClick={deletePurchase}
               >
-                Delete
+                {t("delete")}
               </Button>
             </Flex>
           );
@@ -199,8 +201,8 @@ const Purchases = () => {
         <Flex gap={20} align="center">
           <FaTrash className="text-danger w-12 h-12" />
           <Flex vertical>
-            <strong className="text-lg mb-1">Delete purchase?</strong>
-            <span>A purchase will be deleted. This cannot be undone.</span>
+            <strong className="text-lg mb-1">{t("delete")}?</strong>
+            <span>{t("deleteConfirm")}</span>
           </Flex>
         </Flex>
       </Modal>

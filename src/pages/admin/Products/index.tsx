@@ -29,6 +29,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 import { Category } from "../../../configs/types/category";
 import CATEGORY_ENDPOINT from "../../../configs/apis/endpoints/category";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -78,6 +79,7 @@ const LineChart = ({ up = true }) => {
 };
 
 const Products = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [product, setProduct] = useState<Product>();
   const [query, setQuery] = useState("");
@@ -100,36 +102,36 @@ const Products = () => {
 
   const columns: TableProps<Product>["columns"] = [
     {
-      title: "Id",
+      title: t("id"),
       dataIndex: "id",
       key: "id",
       render: id => <div className="w-24 truncate">{id}</div>,
     },
     {
-      title: "Name",
+      title: t("name"),
       dataIndex: "name",
       key: "name",
       render: text => <strong>{text}</strong>,
     },
     {
-      title: "Price $",
+      title: t("price") + " $",
       dataIndex: "basePrice",
       key: "basePrice",
       render: text => `$${text}`,
     },
     {
-      title: "Stock",
+      title: t("stock"),
       dataIndex: "stock",
       key: "stock",
     },
     {
-      title: "Discount %",
+      title: t("discount") + " %",
       dataIndex: "discountPercentage",
       key: "discountPercentage",
       render: text => `${text}%`,
     },
     {
-      title: "Action",
+      title: t("action"),
       key: "action",
       render: value => (
         <Space size="middle">
@@ -331,8 +333,8 @@ const Products = () => {
         <Flex gap={20} align="center">
           <FaTrash className="text-danger w-12 h-12" />
           <Flex vertical>
-            <strong className="text-lg mb-1">Delete product?</strong>
-            <span>A product will be deleted. This cannot be undone.</span>
+            <strong className="text-lg mb-1">{t("delete")}?</strong>
+            <span>{t("deleteConfirm")}</span>
           </Flex>
         </Flex>
       </Modal>
@@ -344,7 +346,9 @@ const Products = () => {
             <Flex align="center" justify="space-between">
               <Flex vertical gap={8}>
                 <h6 className="text-h6 font-bold">{product?.name}</h6>
-                <span className="text-textSecondary text-[13px]">ID: {product.id}</span>
+                <span className="text-textSecondary text-[13px]">
+                  {t("id")}: {product.id}
+                </span>
               </Flex>
               <Flex gap={16}>
                 <Button
@@ -353,7 +357,7 @@ const Products = () => {
                   icon={<FaPen />}
                   onClick={() => setIsEditing(true)}
                 >
-                  Edit
+                  {t("edit")}
                 </Button>
                 <Button
                   onClick={() => setOpenConfirmDelete(true)}
@@ -364,7 +368,10 @@ const Products = () => {
             </Flex>
             <p className="text-textSecondary my-5 text-sm">{product?.description}</p>
             <span className="text-textSecondary">
-              Stock: <strong className="text-primaryMain text-xl">{product?.stock} items</strong>
+              {t("stock")}:{" "}
+              <strong className="text-primaryMain text-xl">
+                {product?.stock} {t("items")}
+              </strong>
             </span>
             <div className="my-7">
               {product?.categories?.map(category => (
@@ -385,7 +392,7 @@ const Products = () => {
             />
 
             <Flex vertical gap={6} className="my-6 flex-1 max-w-full">
-              <span className="text-textSecondary">Sales:</span>
+              <span className="text-textSecondary">{t("sales")}:</span>
               <Flex gap={10}>
                 <strong className="text-2xl">{Math.round(Math.random() * 1000)}</strong>
                 <Tag className="bg-danger text-white rounded-3xl flex items-center justify-between">
@@ -397,7 +404,7 @@ const Products = () => {
             </Flex>
 
             <Flex vertical gap={6} className="my-6 flex-1 max-w-full">
-              <span className="text-textSecondary">Salesprice:</span>
+              <span className="text-textSecondary">{t("salesprice")}:</span>
               <Flex gap={10}>
                 <strong className="text-2xl">${product.basePrice}</strong>
                 <Tag className="bg-success text-white rounded-3xl flex items-center justify-between">
@@ -412,14 +419,14 @@ const Products = () => {
               iconPosition="start"
               icon={<IoStatsChart />}
             >
-              View detail statistics
+              {t("viewDetailStatistics")}
             </Button>
           </Flex>
         </Col>
       ) : (
         <Flex vertical align="center" className="h-full">
           <Image preview={false} src={noDataFoundImage} width={500} />
-          <h5 className="text-h5 font-bold text-textSecondary">No data</h5>
+          <h5 className="text-h5 font-bold text-textSecondary">{t("noData")}</h5>
         </Flex>
       )}
 

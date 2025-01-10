@@ -24,6 +24,7 @@ import { Category, Product } from "../../configs/types/product";
 import PRODUCT_ENDPOINT from "../../configs/apis/endpoints/product";
 import axiosInstance from "../../configs/apis";
 import CATEGORY_ENDPOINT from "../../configs/apis/endpoints/category";
+import { useTranslation } from "react-i18next";
 
 const marks: SliderSingleProps["marks"] = {
   0: "$0",
@@ -33,6 +34,7 @@ const marks: SliderSingleProps["marks"] = {
 };
 
 const ProductsSection = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<{ label: string; value: string }[]>([
@@ -115,7 +117,7 @@ const ProductsSection = () => {
   return (
     <>
       <h5 className="text-h5 font-extrabold mt-4 mb-8">
-        {totalPage} result for {query || "All"}
+        {totalPage} {t("resultFor")} {query || t("all")}
       </h5>
 
       <Row gutter={50}>
@@ -123,7 +125,7 @@ const ProductsSection = () => {
           <Form>
             <Form.Item name={"categories"} label="Category" layout="vertical" className="md:mb-20">
               <Select
-                placeholder="Select categories"
+                placeholder={t("selectCategories")}
                 className="w-full h-12  !bg-secondaryBackground"
                 options={categoryOptions}
                 labelInValue
@@ -131,7 +133,7 @@ const ProductsSection = () => {
               />
             </Form.Item>
 
-            <Form.Item name={"price"} label="Price" layout="vertical" className="md:mb-20">
+            <Form.Item name={"price"} label={t("price")} layout="vertical" className="md:mb-20">
               <Slider
                 onChange={handlePriceFilter}
                 marks={marks}
@@ -143,7 +145,7 @@ const ProductsSection = () => {
               />
             </Form.Item>
 
-            <p className="mb-3">Rating</p>
+            <p className="mb-3">{t("rating")}</p>
             <Form.Item>
               <Checkbox>
                 <Rate disabled value={5} />
@@ -195,7 +197,7 @@ const ProductsSection = () => {
                       <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
                     )
                   }
-                  placeholder="Search..."
+                  placeholder={t("search") + "..."}
                   onChange={e => {
                     onQuery(e.target.value);
                     setPage(1);
@@ -208,7 +210,6 @@ const ProductsSection = () => {
                     "transition-all",
                     "duration-500",
                   )}
-                  autoFocus
                 />
               </Form.Item>
               <Button
@@ -216,7 +217,10 @@ const ProductsSection = () => {
                 size="large"
                 className="!border-secondaryBackground text-textSecondary "
               >
-                Sort by: <strong className="text-textPrimary hover:text-white">Popular</strong>
+                <Flex className="hidden md:flex" gap={8}>
+                  {t("sortBy")}:
+                  <strong className="text-textPrimary hover:text-white">{t("popular")}</strong>
+                </Flex>
               </Button>
             </Form>
           </Flex>

@@ -4,12 +4,15 @@ import { Card, Flex, Image, Rate } from "antd";
 import { CiHeart } from "react-icons/ci";
 import "./index.css";
 import { Link } from "react-router";
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   product: Product;
 }
 
 const ProductItem: React.FC<Props> = ({ product }) => {
+  const {t} = useTranslation()
+
   return (
     <Link to={"/products/" + product.urlName}>
       <Card
@@ -49,7 +52,7 @@ const ProductItem: React.FC<Props> = ({ product }) => {
               )}
             </strong>
           </Flex>
-          <span className="text-danger text-sm">{product.stock} items left!</span>
+          <span className="text-danger text-sm">{product.stock} { t('itemsLeft')}!</span>
         </Flex>
       </Card>
     </Link>

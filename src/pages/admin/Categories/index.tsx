@@ -12,8 +12,10 @@ import CategoryDrawer from "../../../components/CategoryDrawer";
 import { parseCSV } from "../../../utils/parser";
 import { IoMdAddCircle } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Categories = () => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [category, setCategory] = useState<Category>();
   const [query, setQuery] = useState("");
@@ -39,19 +41,19 @@ const Categories = () => {
 
   const columns: TableProps<Category>["columns"] = [
     {
-      title: "Id",
+      title: t("id"),
       dataIndex: "id",
       key: "id",
       render: id => <div className="w-24 truncate">{id}</div>,
     },
     {
-      title: "Name",
+      title: t("name"),
       dataIndex: "name",
       key: "name",
       render: text => <strong>{text}</strong>,
     },
     {
-      title: "Action",
+      title: t("action"),
       key: "action",
       render: value => (
         <Space size="middle">
@@ -209,13 +211,13 @@ const Categories = () => {
                 className="text-textPrimary border-none font-bold hover:!bg-gray-300 hover:opacity-80 rounded-lg p-5"
                 onClick={() => setOpenConfirmDelete(false)}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 className="bg-danger text-white font-bold border-none hover:!bg-danger hover:opacity-80 rounded-lg p-5"
                 onClick={deleteCategory}
               >
-                Delete
+                {t("delete")}
               </Button>
             </Flex>
           );
@@ -224,8 +226,8 @@ const Categories = () => {
         <Flex gap={20} align="center">
           <FaTrash className="text-danger w-12 h-12" />
           <Flex vertical>
-            <strong className="text-lg mb-1">Delete category?</strong>
-            <span>A category will be deleted. This cannot be undone.</span>
+            <strong className="text-lg mb-1">{t("delete")}</strong>
+            <span>{t("deleteConfirm")}</span>
           </Flex>
         </Flex>
       </Modal>

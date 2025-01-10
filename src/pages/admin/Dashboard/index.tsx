@@ -10,6 +10,7 @@ import { SiShopee } from "react-icons/si";
 import { IoStatsChart } from "react-icons/io5";
 import { FaChartLine } from "react-icons/fa";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const CardHeader = ({ title, icon }: { title: React.ReactNode; icon?: React.ReactNode }) => {
   return (
@@ -129,6 +130,8 @@ const data: Product[] = [
 ];
 
 const Dashboard = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     document.title = "Dashboard - Appscyclone Ecommerce Management";
   }, []);
@@ -140,13 +143,13 @@ const Dashboard = () => {
           <Card
             title={
               <CardHeader
-                title={<span className="text-sm text-white">Read more</span>}
+                title={<span className="text-sm text-white">{t("readMore")}</span>}
                 icon={<RiShareForwardLine className="bg-white rounded-full p-1" size={20} />}
               />
             }
             className="bg-[#581edd] rounded-2xl"
           >
-            <h3 className="w-4/5 text-h3 text-white font-bold">Product prices will increase</h3>
+            <h3 className="w-4/5 text-h3 text-white font-bold">{t("productPricesWillIncrease")}</h3>
             <FaChartLine className="mt-6 w-40 h-40 ml-auto mr-5 text-[#efdc5a]" />
           </Card>
         </Col>
@@ -155,7 +158,7 @@ const Dashboard = () => {
             <Card
               title={
                 <CardHeader
-                  title={<span className="text-sm text-textPrimary">Read more</span>}
+                  title={<span className="text-sm text-textPrimary">{t("readMore")}</span>}
                   icon={<RiShareForwardLine className="bg-white rounded-full p-1" size={20} />}
                 />
               }
@@ -171,7 +174,7 @@ const Dashboard = () => {
                 <Card
                   title={
                     <CardHeader
-                      title={<span className="text-sm text-white">Read more</span>}
+                      title={<span className="text-sm text-white">{t("readMore")}</span>}
                       icon={<RiShareForwardLine className="bg-white rounded-full p-1" size={20} />}
                     />
                   }
@@ -191,14 +194,14 @@ const Dashboard = () => {
         <Col lg={7} span={24} className="mb-5 lg:mb-0">
           <Flex vertical justify="space-between" className="bg-info rounded-2xl h-full px-6 py-5">
             <Flex vertical gap={20}>
-              <h6 className="text-white text-h6 font-semibold">Product Management Insights</h6>
+              <h6 className="text-white text-h6 font-semibold">{t("productManagementInsights")}</h6>
               <Card title="Sales Overview" className="bg-success rounded-2xl">
                 <h4 className="text-h4 text-textPrimary font-bold">$45,000</h4>
-                <p className="text-textPrimary text-sm">Total sales this month</p>
+                <p className="text-textPrimary text-sm">{t("Total sales this month")}</p>
               </Card>
               <Card title="Active Products" className="bg-warn rounded-2xl">
                 <h4 className="text-h4 text-textPrimary font-bold">120 Products</h4>
-                <p className="text-textPrimary text-sm">Active in inventory</p>
+                <p className="text-textPrimary text-sm">{t("activeInInventory")}</p>
               </Card>
             </Flex>
           </Flex>
@@ -211,9 +214,7 @@ const Dashboard = () => {
             className="bg-tertiaryBackground rounded-2xl px-6 py-5"
           >
             <Flex vertical gap={30}>
-              <h5 className="text-white text-h5 font-semibold felx-1">
-                Until August choose a discount product. The best discount will always help you.
-              </h5>
+              <h5 className="text-white text-h5 font-semibold felx-1">{t("dashboardInfo")}</h5>
               <Avatar.Group>
                 <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
                 <a href="https://ant.design">
@@ -225,7 +226,7 @@ const Dashboard = () => {
               </Avatar.Group>
             </Flex>
             <Flex justify="space-between">
-              <span className="text-white text-[14px]">Import start</span>
+              <span className="text-white text-[14px]">{t("importStart")}</span>
               <strong className="text-white text-[14px]">06/08/2023</strong>
             </Flex>
           </Flex>

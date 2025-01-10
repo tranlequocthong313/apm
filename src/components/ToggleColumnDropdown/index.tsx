@@ -1,6 +1,7 @@
 import { Button, Checkbox, Dropdown, MenuProps } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 interface Props {
@@ -14,6 +15,7 @@ const ToggleColumnDropdown: React.FC<Props> = ({
   selectedColumns,
   setSelectedColumns,
 }) => {
+  const { t } = useTranslation();
   const [showAll, setShowAll] = useState(true);
 
   const items: MenuProps["items"] = columns?.map(column => ({
@@ -31,6 +33,7 @@ const ToggleColumnDropdown: React.FC<Props> = ({
             cols = [...selectedColumns, key];
           }
           setSelectedColumns(cols);
+          setShowAll(columns.length === cols.length);
         }}
         onClick={e => e?.stopPropagation()}
         className="p-3 gap-5"
@@ -54,7 +57,7 @@ const ToggleColumnDropdown: React.FC<Props> = ({
           setShowAll(!showAll);
         }}
       >
-        Show all
+        {t("showAll")}
       </Checkbox>
     ),
   });
@@ -66,7 +69,7 @@ const ToggleColumnDropdown: React.FC<Props> = ({
         icon={<MdKeyboardArrowDown />}
         iconPosition="end"
       >
-        Show/Hide Columns
+        {t("toggleColumns")}
       </Button>
     </Dropdown>
   );

@@ -6,6 +6,7 @@ import { RiImportFill, RiShareBoxFill } from "react-icons/ri";
 import { MdClear } from "react-icons/md";
 import { CSVLink } from "react-csv";
 import Papa from "papaparse";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   query?: string;
@@ -28,6 +29,7 @@ const TableHeader: React.FC<Props> = ({
   headers,
   canImport = true,
 }) => {
+  const { t } = useTranslation();
   const [openSearch, setOpenSearch] = useState(false);
   const importedInputRef = useRef<HTMLInputElement>(null);
 
@@ -47,7 +49,7 @@ const TableHeader: React.FC<Props> = ({
             <MdClear className="w-5 h-5 cursor-pointer" onClick={() => onQuery("")} />
           )
         }
-        placeholder="Search..."
+        placeholder={t("search") + "..."}
         onChange={e => onQuery(e.target.value)}
         value={query}
         className={classNames(
@@ -105,7 +107,7 @@ const TableHeader: React.FC<Props> = ({
       <Flex gap={16} align="center" justify="space-between mb-5 md:mb-0">
         {canImport && (
           <Button
-            title="Import"
+            title={t("import")}
             className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
             icon={<RiImportFill className="w-5 h-5" />}
             onClick={() => importedInputRef.current?.click()}
@@ -113,7 +115,7 @@ const TableHeader: React.FC<Props> = ({
         )}
         <CSVLink data={exportedData} filename={exportedFilename} headers={headers}>
           <Button
-            title="Export"
+            title={t("export")}
             className="border-none bg-secondaryBackground rounded-full !w-12 !h-12"
             icon={<RiShareBoxFill className="w-5 h-5" />}
           />
@@ -125,7 +127,7 @@ const TableHeader: React.FC<Props> = ({
             iconPosition="start"
             onClick={() => onOpenAdd()}
           >
-            Add item
+            {t("addItem")}
           </Button>
         )}
       </Flex>

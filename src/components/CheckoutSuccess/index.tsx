@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { PurchaseSuccess } from "../CheckoutModal";
 import React from "react";
 import { formatDatetime } from "../../utils/formatter";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   purchaseSuccess: PurchaseSuccess;
@@ -11,27 +12,29 @@ interface Props {
 }
 
 const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Flex vertical gap={16} align="center" className="mb-10">
         <Flex align="center" justify="center" className="w-20 h-20 rounded-full bg-primaryMain/10">
           <FaCircleCheck className="text-primaryMain !w-10 h-10" />
         </Flex>
-        <span className="text-xl">Payment Success!</span>
+        <span className="text-xl">{t("paymentSuccess")}!</span>
         <strong className="font-bold text-h4">
           ${Number(purchaseSuccess.totalPrice).toFixed(2)}
         </strong>
       </Flex>
 
       <Flex vertical gap={20}>
-        <span className="font-semibold text-lg mb-2">Payment Details</span>
+        <span className="font-semibold text-lg mb-2">{t("paymentDetails")}</span>
 
         <Flex
           justify="space-between"
           align="center"
           className="flex-col md:flex-row items-start md:items-center"
         >
-          <span className="text-textSecondary">Ref Id</span>
+          <span className="text-textSecondary">{t("refId")}</span>
           <span>{purchaseSuccess.id}</span>
         </Flex>
 
@@ -40,10 +43,10 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
           align="center"
           className="flex-col md:flex-row items-start md:items-center"
         >
-          <span className="text-textSecondary">Payment Status</span>
+          <span className="text-textSecondary">{t("paymentStatus")}</span>
           <Flex gap={6} align="center">
             <FaCircleCheck className="text-primaryMain" />
-            <span>Success</span>
+            <span>{t("success")}</span>
           </Flex>
         </Flex>
 
@@ -52,7 +55,7 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
           align="center"
           className="flex-col md:flex-row items-start md:items-center"
         >
-          <span className="text-textSecondary">Payment Time</span>
+          <span className="text-textSecondary">{t("paymentTime")}</span>
           <span>{formatDatetime(new Date(purchaseSuccess.createdAt))}</span>
         </Flex>
 
@@ -61,7 +64,7 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
           align="center"
           className="border-t-2 border-slate-300 border-dashed py-6 pb-9 mt-2 flex-col md:flex-row items-start md:items-center"
         >
-          <span className="text-textSecondary text-lg">Total Payment</span>
+          <span className="text-textSecondary text-lg">{t("totalPayment")}</span>
           <span className="text-xl font-bold">
             ${Number(purchaseSuccess.totalPrice).toFixed(2)}
           </span>
@@ -76,11 +79,11 @@ const CheckoutSuccess: React.FC<Props> = ({ purchaseSuccess, onDone }) => {
             to={"/purchases?id=" + purchaseSuccess.id}
             reloadDocument
           >
-            View Purchase Detail
+            {t("viewPurchaseDetail")}
           </Link>
         </Button>
         <Button className="border-none h-12 rounded-lg" type="primary" onClick={onDone}>
-          Done
+          {t("done")}
         </Button>
       </Flex>
     </>

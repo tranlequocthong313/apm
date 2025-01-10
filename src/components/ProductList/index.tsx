@@ -4,6 +4,7 @@ import ProductItem from "../ProductItem";
 import noDataFoundImage from "../../assets/images/no-data-found.jpg";
 import "./index.css";
 import SkeletonProductItem from "../SkeletonProductItem";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   products: Product[];
@@ -12,11 +13,13 @@ interface Props {
 }
 
 const ProductList: React.FC<Props> = ({ loading, products, pageSize }) => {
+  const { t } = useTranslation();
+
   if (!loading && products.length === 0) {
     return (
       <Flex vertical align="center" className="h-full mx-auto animate__animated animate__fadeIn">
         <Image preview={false} src={noDataFoundImage} width={500} />
-        <h5 className="text-h5 font-bold text-textSecondary">No data</h5>
+        <h5 className="text-h5 font-bold text-textSecondary">{t("noData")}</h5>
       </Flex>
     );
   }

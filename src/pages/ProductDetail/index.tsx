@@ -10,8 +10,10 @@ import CheckoutModal from "../../components/CheckoutModal";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store/index";
 import SkeletonProductDetail from "../../components/SkeletonProductDetail";
+import { useTranslation } from "react-i18next";
 
 const ProductDetail = () => {
+  const { t } = useTranslation();
   const [product, setProduct] = useState<Product>();
   const { urlName } = useParams();
   const [img, setImg] = useState<string>(
@@ -112,7 +114,9 @@ const ProductDetail = () => {
           <Col md={10} span={24}>
             <Flex vertical>
               <h4 className="text-h6 lg:text-h4 mb-3 text-textPrimary font-bold">{product.name}</h4>
-              <p className="text-danger lg:text-sm text-xs mb-4">{product.stock} items left</p>
+              <p className="text-danger lg:text-sm text-xs mb-4">
+                {product.stock} {t("itemsLeft")}
+              </p>
               <Flex className="mb-5" align="center" gap={16}>
                 <span className="line-through lg:text-2xl text-textSecondary">
                   ${product.basePrice}
@@ -133,9 +137,11 @@ const ProductDetail = () => {
                   <Rate value={Math.random() * 4 + 1} disabled />
                   <span>({(Math.random() * 4 + 1).toFixed(1)})</span>
                 </Flex>
-                <span>{(Math.random() * 10 + 1).toFixed(1)}k Reviews</span>
+                <span>
+                  {(Math.random() * 10 + 1).toFixed(1)}k {t("reviews")}
+                </span>
               </Flex>
-              <p className="font-bold mb-4 text-textPrimary">Descriptions</p>
+              <p className="font-bold mb-4 text-textPrimary">{t("description")}</p>
               <p className="text-textSecondary">{product.description}</p>
             </Flex>
             <Flex gap={20} className="mt-10">
@@ -143,14 +149,14 @@ const ProductDetail = () => {
                 type="primary"
                 className="bg-secondaryBackground text-slate-500 flex-1 rounded-3xl py-6 font-bold border-none"
               >
-                Add To Cart
+                {t("addToCart")}
               </Button>
               <Button
                 onClick={openCheckout}
                 className="flex-1 rounded-3xl py-6 font-bold border-none"
                 type="primary"
               >
-                Checkout Now
+                {t("checkoutNow")}
               </Button>
             </Flex>
           </Col>

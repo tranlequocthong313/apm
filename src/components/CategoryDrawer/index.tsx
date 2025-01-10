@@ -77,7 +77,7 @@ const CategoryDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, 
             className="rounded-3xl border-none p-5 hover:!bg-slate-400 hidden md:flex"
             onClick={handleClose}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             className="rounded-3xl border-none p-5 hover:!bg-slate-400 bg-secondaryBackground text-textPrimary md:hidden !w-10 !h-10"
@@ -90,7 +90,7 @@ const CategoryDrawer: React.FC<Props> = ({ onClose, open, onCreated, isEditing, 
             onClick={handleSubmit(onSubmit)}
             type="primary"
           >
-            Submit
+            {t("submit")}
           </Button>
           <Button
             className="rounded-3xl border-none p-5 md:hidden !w-10 !h-10"

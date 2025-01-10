@@ -16,8 +16,7 @@ import USER_ENDPOINT from "../../configs/apis/endpoints/user";
 import { User } from "../../configs/types/user";
 import { Link, useNavigate } from "react-router";
 import { AxiosError } from "axios";
-import { useDispatch } from "react-redux";
-import { login as loginAction } from "../../store/slices/authSlice";
+import useLogin from "../../hooks/useLogin";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -31,8 +30,8 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const loginDispatch = useLogin();
 
   useEffect(() => {
     document.title = "Login - Appscyclone Ecommerce";
@@ -62,7 +61,7 @@ const LoginPage = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      dispatch(loginAction(profile));
+      loginDispatch(profile);
 
       navigate("/");
     } catch (error) {

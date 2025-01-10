@@ -5,12 +5,15 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { VscSettings } from "react-icons/vsc";
 import { RiNotification4Line } from "react-icons/ri";
 import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { logout } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router";
 import { IoLogOutOutline, IoMenu } from "react-icons/io5";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { GrLanguage } from "react-icons/gr";
+import useUser from "../../hooks/useUser";
+import useLanguage from "../../hooks/useLanguage";
+import useLogout from "../../hooks/useLogout";
+import useChangeLanguage from "../../hooks/useChangeLanguage";
 
 const { Header } = Layout;
 
@@ -19,9 +22,12 @@ interface Props {
 }
 
 const Navbar: React.FC<Props> = ({ onToggle }) => {
-  const user = useSelector((state: IRootState) => state.auth.user);
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const language = useLanguage();
+  const user = useUser();
   const navigate = useNavigate();
+  const logout = useLogout();
+  const changeLanguage = useChangeLanguage();
 
   const items: MenuProps["items"] = [
     {
@@ -36,9 +42,46 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
           }}
         >
           <MdHome className="w-6 h-6" />
-          Home
+          {t("home")}
         </Flex>
       ),
+    },
+    {
+      key: "3",
+      label: (
+        <Flex gap={30} align="center" className="p-2">
+          <GrLanguage className="w-6 h-6" />
+          {t("language")}
+        </Flex>
+      ),
+      children: [
+        {
+          key: "en",
+          label: (
+            <Flex
+              className={classNames("p-2", language === "en" ? "text-primaryMain font-bold" : "")}
+              align="center"
+              gap={30}
+              onClick={() => changeLanguage("en")}
+            >
+              <span>English</span>
+            </Flex>
+          ),
+        },
+        {
+          key: "vi",
+          label: (
+            <Flex
+              align="center"
+              className={classNames("p-2", language === "vi" ? "text-primaryMain font-bold" : "")}
+              gap={30}
+              onClick={() => changeLanguage("vi")}
+            >
+              <span>Tiếng việt</span>
+            </Flex>
+          ),
+        },
+      ],
     },
     { type: "divider" },
     {
@@ -51,12 +94,12 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
           onClick={() => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
-            dispatch(logout());
+            logout();
             navigate("/login");
           }}
         >
           <IoLogOutOutline className="w-6 h-6" />
-          Logout
+          {t("logout")}
         </Flex>
       ),
     },
@@ -85,7 +128,7 @@ const Navbar: React.FC<Props> = ({ onToggle }) => {
           icon={<IoMenu className="w-7 h-7" />}
         />
         <Input
-          placeholder="Search..."
+          placeholder={t("search") + "..."}
           prefix={<HiMagnifyingGlass />}
           className="border-none outline-none lg:w-96 w-full h-10 rounded-lg"
         />

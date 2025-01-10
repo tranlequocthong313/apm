@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import axiosInstance from "../../configs/apis";
 import PURCHASE_ENDPOINT from "../../configs/apis/endpoints/purchase";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onOk: (rate: number) => void;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const ReviewModal: React.FC<Props> = ({ onOk, onCancel, purchase, open }) => {
+  const { t } = useTranslation();
   const [rate, setRate] = useState(purchase.reviewNote || 5);
   const [comment, setComment] = useState(purchase.reviewComment || "");
 
@@ -42,18 +44,15 @@ const ReviewModal: React.FC<Props> = ({ onOk, onCancel, purchase, open }) => {
     >
       <Flex vertical gap={40}>
         <Flex className="text-center mt-5" vertical gap={10}>
-          <h5 className="text-h5 font-bold">How are you feeling</h5>
-          <span className="text-center text-sm text-textSecondary">
-            Your input is valuable in helping us better understand your needs and tailor our service
-            accordingly.
-          </span>
+          <h5 className="text-h5 font-bold">{t("howYouFeel")}?</h5>
+          <span className="text-center text-sm text-textSecondary">t{"reviewDescription"}</span>
         </Flex>
 
         <Rate className="mx-auto text-5xl" onChange={setRate} value={rate} />
 
         <Flex vertical gap={20}>
           <TextArea
-            placeholder="Add a Comment..."
+            placeholder={t("addComment") + "..."}
             value={comment}
             onChange={e => setComment(e.target.value)}
             rows={4}
@@ -65,7 +64,7 @@ const ReviewModal: React.FC<Props> = ({ onOk, onCancel, purchase, open }) => {
             type="primary"
             className="bg-primaryMain border-none rounded-lg py-6"
           >
-            Submit
+            {t("submit")}
           </Button>
         </Flex>
       </Flex>

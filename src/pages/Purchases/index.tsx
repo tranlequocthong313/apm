@@ -5,6 +5,7 @@ import { Purchase } from "../../configs/types/purchase";
 import axiosInstance from "../../configs/apis";
 import PURCHASE_ENDPOINT from "../../configs/apis/endpoints/purchase";
 import SkeletonPurchaseItem from "../../components/SkeletonPurchaseItem";
+import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 5;
 
@@ -14,6 +15,7 @@ interface PurchaseResponse {
 }
 
 const Purchases = () => {
+  const { t } = useTranslation();
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
@@ -50,21 +52,21 @@ const Purchases = () => {
 
   return (
     <Flex vertical className="lg:w-2/5 mx-auto pt-6 pb-20 lg:px-auto md:px-5 px-2">
-      <h4 className="mb-8 text-h4 font-bold">Your Purchases</h4>
+      <h4 className="mb-8 text-h4 font-bold">{t("yourPuchases")}</h4>
 
       <Flex className="px-10 py-5 rounded-t-xl bg-secondaryBackground w-full flex-col md:flex-row gap-3 md:gap-14">
         <Flex vertical gap={10}>
-          <span className="text-textSecondary text-sm">Order placed</span>
+          <span className="text-textSecondary text-sm">{t("orderPlaced")}</span>
           <strong>June 3 2024</strong>
         </Flex>
 
         <Flex vertical gap={10}>
-          <span className="text-textSecondary text-sm">Total</span>
+          <span className="text-textSecondary text-sm">{t("total")}</span>
           <strong>${purchases.reduce((res, cur) => Number(cur.totalPrice) + res, 0)}</strong>
         </Flex>
 
         <Flex vertical gap={10}>
-          <span className="text-textSecondary text-sm">Ship to</span>
+          <span className="text-textSecondary text-sm">{t("shipTo")}</span>
           <strong>Ho Chi Minh</strong>
         </Flex>
       </Flex>

@@ -2,49 +2,49 @@ import React from "react";
 import { FacebookOutlined, TwitterOutlined, InstagramOutlined } from "@ant-design/icons";
 import { FaCcVisa, FaCcMastercard, FaPaypal } from "react-icons/fa";
 import { Layout } from "antd";
+import { useTranslation } from "react-i18next";
 
 const { Footer: AntdFooter } = Layout;
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <AntdFooter className="bg-gray-900 text-gray-300 text-center md:text-start">
       <div className="container mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <h2 className="text-2xl font-bold text-white mb-4">Apps Cyclone</h2>
-          <p className="text-sm">
-            Discover a variety of products to fit your every need. Experience shopping like never
-            before!
-          </p>
+          <p className="text-sm">{t("footerDescription")}</p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-white mb-4">Quick Links</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">{t("quickLinks")}</h3>
           <ul className="space-y-2">
             <li>
               <a href="/about" className="hover:text-white">
-                About Us
+                {t("About Us")}
               </a>
             </li>
             <li>
               <a href="/contact" className="hover:text-white">
-                Contact Us
+                {t("contactUs")}
               </a>
             </li>
             <li>
               <a href="/faq" className="hover:text-white">
-                FAQ
+                {t("faq")}
               </a>
             </li>
             <li>
               <a href="/terms" className="hover:text-white">
-                Terms & Conditions
+                {t("termsConditions")}
               </a>
             </li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-white mb-4">Follow Us</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">{t("followUs")}</h3>
           <div className="flex space-x-4 text-2xl justify-center md:justify-normal">
             <a href="https://facebook.com" className="hover:text-blue-500">
               <FacebookOutlined />
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-white mb-4">We Accept</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">{t("weAccept")}</h3>
           <div className="flex space-x-4 text-3xl justify-center md:justify-normal">
             <FaCcVisa className="text-blue-500" />
             <FaCcMastercard className="text-red-600" />

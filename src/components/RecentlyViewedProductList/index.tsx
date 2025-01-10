@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import SkeletonProductItem from "../SkeletonProductItem";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   size: number;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const RecentlyViewedProductList: React.FC<Props> = ({ size = 4 }) => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>();
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +41,7 @@ const RecentlyViewedProductList: React.FC<Props> = ({ size = 4 }) => {
 
   return (
     <Flex vertical className="px-3">
-      <h5 className="lg:text-h5 text-h6 font-bold mt-14 mb-10">Recently viewed products</h5>
+      <h5 className="lg:text-h5 text-h6 font-bold mt-14 mb-10">{t("recentlyViewedProduct")}</h5>
 
       <Swiper
         loop

@@ -128,3 +128,7 @@
 .swiper-slide-container {
   @apply w-full h-full flex justify-center items-center overflow-hidden bg-[#f5f5f5];
 }
+
+.ant-dropdown-menu-submenu-title {
+  @apply flex items-center;
+}
