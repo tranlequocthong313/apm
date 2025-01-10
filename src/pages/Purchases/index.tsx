@@ -52,7 +52,7 @@ const Purchases = () => {
 
   return (
     <Flex vertical className="lg:w-2/5 mx-auto pt-6 pb-20 lg:px-auto md:px-5 px-2">
-      <h4 className="mb-8 text-h4 font-bold">{t("yourPuchases")}</h4>
+      <h4 className="mb-8 text-h4 font-bold">{t("yourPurchases")}</h4>
 
       <Flex className="px-10 py-5 rounded-t-xl bg-secondaryBackground w-full flex-col md:flex-row gap-3 md:gap-14">
         <Flex vertical gap={10}>

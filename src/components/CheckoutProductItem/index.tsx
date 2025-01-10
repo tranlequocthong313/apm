@@ -7,8 +7,10 @@ interface Props {
   onChangeAmount?: (id: string, amount: number) => void;
 }
 
+const DEFAULT_AMOUNT = 1;
+
 const CheckoutProductItem: React.FC<Props> = ({ product, onChangeAmount }) => {
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState(DEFAULT_AMOUNT);
 
   const getDiscountedPrice = () =>
     (product.basePrice - product.basePrice * (product.discountPercentage / 100)) * amount;

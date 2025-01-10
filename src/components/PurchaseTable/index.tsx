@@ -50,6 +50,7 @@ const PurchaseTable: React.FC<Props> = ({
           total: pageSize,
           current: page,
           pageSize: 10,
+          showSizeChanger: false,
         }}
         rowKey={"id"}
         columns={columns!.filter(column => selectedColumns.includes(String(column.key)))}

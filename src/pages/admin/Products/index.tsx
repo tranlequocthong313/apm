@@ -117,7 +117,7 @@ const Products = () => {
       title: t("price") + " $",
       dataIndex: "basePrice",
       key: "basePrice",
-      render: text => `$${text}`,
+      render: text => `$${Number(text).toFixed(2)}`,
     },
     {
       title: t("stock"),

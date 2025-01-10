@@ -228,23 +228,21 @@ const ProductsSection = () => {
           <ProductList pageSize={pageSize} loading={loadingProducts} products={filteredProducts} />
 
           {filteredProducts.length > 0 && (
-            <Flex align="center" gap={10}>
-              <Pagination
-                showSizeChanger={{
-                  value: pageSize,
-                  onChange: setPageSize,
-                  options: [
-                    { label: "6", value: 6 },
-                    { label: "8", value: 8 },
-                    { label: "12", value: 12 },
-                  ],
-                }}
-                onChange={setPage}
-                total={totalPage}
-                current={page}
-                pageSize={pageSize}
-              />
-            </Flex>
+            <Pagination
+              showSizeChanger={{
+                value: pageSize,
+                onChange: setPageSize,
+                options: [
+                  { label: "6", value: 6 },
+                  { label: "8", value: 8 },
+                  { label: "12", value: 12 },
+                ],
+              }}
+              onChange={setPage}
+              total={totalPage}
+              current={page}
+              pageSize={pageSize}
+            />
           )}
         </Col>
       </Row>

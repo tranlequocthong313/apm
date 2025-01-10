@@ -45,7 +45,7 @@ const ReviewModal: React.FC<Props> = ({ onOk, onCancel, purchase, open }) => {
       <Flex vertical gap={40}>
         <Flex className="text-center mt-5" vertical gap={10}>
           <h5 className="text-h5 font-bold">{t("howYouFeel")}?</h5>
-          <span className="text-center text-sm text-textSecondary">t{"reviewDescription"}</span>
+          <span className="text-center text-sm text-textSecondary">{t("reviewDescription")}</span>
         </Flex>
 
         <Rate className="mx-auto text-5xl" onChange={setRate} value={rate} />
